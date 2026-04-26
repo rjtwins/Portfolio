@@ -1,0 +1,99 @@
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using System.Globalization
+@using UIModels
+
+@inject IHelpTextService hts
+
+<RadzenCard Variant="Variant.Outlined" Style="height:100%; min-height:87px; padding:5px; padding-left:20px">
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="0" Style="width:100%; height:100%" AlignItems="AlignItems.Center">
+        <RadzenStack Style="width:100%; height:100%">
+            <RadzenStack JustifyContent="JustifyContent.Normal" Style="height: 100%; position:relative">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="5px" Style="position:absolute; top:0px">
+                    <RadzenText class="rz-text-tertiary-color" Style="overflow: hidden">
+                        @Text
+                    </RadzenText>
+                    <RadzenIcon Icon="info"
+                                Style="margin-top:0px;"
+                                class="rz-text-tertiary-color tooltip_icon"
+                                MouseLeave="hts.CloseTooltip"
+                                MouseEnter="@(args => hts.ShowTooltip(args, options:HelpTextOptions, text: HelpText))" />
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0px" AlignItems="AlignItems.Center" Style="height:100%">
+                    <RadzenText TextStyle="@(_displayValue.Length > 10 ? TextStyle.H5 : TextStyle.H4  )" Style="margin:0px; padding:0px;">
+                        <strong>
+                            @_displayValue
+                        </strong>
+                    </RadzenText>
+                    @if (ScenarioActive)
+                    {
+                        <RadzenBadge Text="@(Sign() + DifValue)"
+                                     BadgeStyle="@BadgeStyle!.Value"
+                                     Shade="@_shade"
+                                     Style="margin-left:10px; font-size:15px; padding:10px;">
+                        </RadzenBadge>
+                    }
+                </RadzenStack>
+                @if (ScenarioActive && ShowDifBadage)
+                {
+                    <RadzenText class="rz-text-tertiary-color" Style="position:absolute; bottom:0px">
+                        @($"Basisscenario: {Value}")
+                    </RadzenText>
+                }
+                <RadzenIcon Style="font-size:70px; position:absolute; right:10px; height:100%" Icon="@Icon" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenStack>
+</RadzenCard>
+
+@code {
+    [Parameter]
+    public required string Text { get; set; }
+
+    [Parameter]
+    public required string HelpText { get; set; }
+
+    [Parameter]
+    public required TooltipOptions HelpTextOptions { get; set; }
+
+    [Parameter]
+    public required string Icon { get; set; }
+
+    [Parameter]
+    public required string Value { get; set; }
+
+    [Parameter]
+    public required string ScenarioValue { get; set; }
+
+    [Parameter]
+    public required string DifValue { get; set; }
+
+    [Parameter]
+    public required bool ScenarioActive { get; set; }
+
+    [Parameter]
+    public required BadgeStyle? BadgeStyle { get; set; }
+
+    private Shade _shade => BadgeStyle == Radzen.BadgeStyle.Success || BadgeStyle == Radzen.BadgeStyle.Danger ? Shade.Darker : Shade.Default;
+
+    private string _displayValue => ScenarioActive ? ScenarioValue : Value;
+
+    [Parameter]
+    public string GoodSign { get; set; } = "+";
+    [Parameter]
+    public string BadSign { get; set; } = "-";
+    [Parameter]
+    public bool ShowDifBadage { get; set; } = true;
+
+    private string Sign()
+    {
+        if (BadgeStyle == Radzen.BadgeStyle.Success)
+            return GoodSign;
+        if (BadgeStyle == Radzen.BadgeStyle.Danger)
+            return BadSign;
+        return string.Empty;
+    }
+}

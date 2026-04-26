@@ -1,0 +1,349 @@
+﻿@using BCT.Application.EventManagement
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using static PresentationSettings
+
+@inherits LayoutComponentBase
+@implements IObserver<BCT.Domain.Entities.Company>
+@implements IObserver<NewCompanyEvent>
+@implements IObserver<NewProjectEvent>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IObserver<CompanyRemovedEvent>
+@implements IObserver<ProjectRemovedEvent>
+@implements IObserver<SidebarExtended>
+@implements IObserver<CompanyContentUpdatedEvent>
+@implements IDisposable
+
+@inject IAuthService AuthService
+@inject Sqids.SqidsEncoder<int> SqidsEncoder
+@inject NavigationManager NavigationManager
+
+@inject IGetUserUseCase GetUserUseCase
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+@inject IGetProjectUseCase GetProjectUseCase
+@inject IGetCompaniesForUserUseCase GetCompaniesFopUserUseCase
+
+<RadzenComponents @rendermode="InteractiveServer" />
+
+<AuthorizeView>
+    <Authorized>
+        <CascadingValue Value="@this" TValue="MainLayout">
+            <RadzenLayout>
+                <RadzenHeader Style="height:40px; max-height:40px">
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                        <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                            @* Toggle button *@
+                            <RadzenButton Icon="menu" Variant="Variant.Text" Style="height:40px; width:55px; color:white" Click="SidebarToggleButtonClicked" />
+                            <HeaderTitle />
+                        </RadzenStack>
+                        <HeaderMenuControl/>
+                    </div>
+                </RadzenHeader>
+                <RadzenSidebar Responsive=true Style=@($"width:fit-content; max-width:15vw; {(SidebarState.Value.Value ? "min-width:210px" : "min-width:0px")}") Expanded="SidebarState.Value.Value">
+                    <RadzenStack JustifyContent="JustifyContent.SpaceBetween" style="height: fit-content">
+                        <div>
+                            @if (SidebarMode == SidebarMode.Planner)
+                            {            
+                                <SidebarMenuControl Projects="@projects" Companies="@companies"/>
+                            }
+                            else if (SidebarMode == SidebarMode.Charting)
+                            {
+                                <SidebarChartingControl />
+                            }
+                        </div>
+                    </RadzenStack>
+                </RadzenSidebar>
+                <RadzenBody>
+                    <RadzenStack>
+                        <div style="padding-left:2%;">
+                            @* <BodyHeaderControl Companies="@companies" /> *@
+                            @Body
+                        </div>
+                    </RadzenStack>
+                </RadzenBody>
+            </RadzenLayout>
+        </CascadingValue>
+    </Authorized>
+    <NotAuthorized>
+        <div>
+            Please login
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code{
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState? CurrentUserState { get; set; }
+
+    [CascadingParameter]
+    private SelectedCompanyState? SelectedCompanyState { get; set; }
+
+    [CascadingParameter]
+    private SelectedProjectState? SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    CompanyContentUpdatedNotifier? CompanyContentUpdatedNotifier { get; set; }
+
+    [CascadingParameter]
+    public required UserAuthenticatedNotifier UserAuthenticatedNotifier { get; set; }
+
+    [CascadingParameter]
+    public required ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    [CascadingParameter]
+    public required NewCompanyNotifier NewCompanyNotifier { get; set; }
+
+    [CascadingParameter]
+    public required NewProjectNotifier NewProjectNotifier { get; set; }
+
+    [CascadingParameter]
+    public required CompanyRemovedNotifier CompanyRemovedNotifier { get; set; }
+
+    [CascadingParameter]
+    public required ProjectRemovedNotifier ProjectRemovedNotifier { get; set; }
+
+    [CascadingParameter]
+    public required SidebarState SidebarState { get; set; }
+
+    internal SidebarMode SidebarMode { get; set; } = SidebarMode.Planner;
+
+    private List<BCT.Domain.Entities.Project> projects { get; set; } = new();
+    private List<BCT.Domain.Entities.Company> companies { get; set; } = new ();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await AuthService.HandleAuth(AuthenticationStateTask);
+        }
+        catch (Exception)
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+
+        var lastCompanyId = CurrentUserState?.Value?.LastCompanyId;
+        var lastProjectId = CurrentUserState?.Value?.LastProjectId;
+
+        companies = await GetCompaniesFopUserUseCase.ExecuteAsync(CurrentUserState.Value);
+        companies = companies.OrderBy(x => x.Name).ToList();
+
+        SelectedCompanyState.Subscribe(this);
+
+        if (SelectedCompanyState.Value == null)
+        {
+            SelectedCompanyState.Value = companies.FirstOrDefault(x => x.Id == lastCompanyId);
+        }
+        if (SelectedCompanyState.Value == null)
+        {
+            SelectedCompanyState.Value = companies.OrderBy(x => x.Name).FirstOrDefault();
+        }
+
+        NewCompanyNotifier.Subscribe(this);
+        NewProjectNotifier.Subscribe(this);
+        ProjectContentUpdatedNotifier.Subscribe(this);
+        CompanyContentUpdatedNotifier.Subscribe(this);
+        CompanyRemovedNotifier.Subscribe(this);
+        ProjectRemovedNotifier.Subscribe(this);
+        SidebarState.Subscribe(this);
+
+        StateHasChanged();
+
+        await base.OnInitializedAsync();
+    }
+
+    private void SidebarToggleButtonClicked()
+    {
+        SidebarState.Value = new SidebarExtended() { Value = !SidebarState.Value.Value };
+    }
+
+    #region unused observer methods
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) { }
+    #endregion
+
+    public void OnNext(NewCompanyEvent value)
+    {
+        this.InvokeAsync(async () =>
+        {
+            var updatedCompanies = await GetCompaniesFopUserUseCase.ExecuteAsync(CurrentUserState.Value);
+            if(updatedCompanies.Count != companies.Count)
+            {
+                companies = updatedCompanies;
+                StateHasChanged();
+            }
+            if (companies.Count > 0 && SelectedCompanyState.Value == null)
+            {
+                SelectedCompanyState.Value = companies.OrderBy(x => x.Name).FirstOrDefault();
+                StateHasChanged();
+            }
+
+            SelectedProjectState.Value = null;
+        });
+    }
+
+    public void OnNext(NewProjectEvent value)
+    {
+        if (SelectedCompanyState?.Value == null)
+            return;
+
+        this.InvokeAsync(async () =>
+        {
+            var project = await GetProjectUseCase.ExecuteAsync(value.ProjectId);
+            if(project == null)
+                return;
+
+            if (project.CompanyId == (SelectedCompanyState?.Value?.Id ?? -1))
+            {
+                projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+                projects = projects.OrderBy(x => x.Name).ToList();
+                StateHasChanged();
+            }
+        });
+    }
+
+    public void OnNext(BCT.Domain.Entities.Company company)
+    {
+        this.InvokeAsync(async () =>
+        {
+            if(SelectedCompanyState.Value == null)
+                companies = await GetCompaniesFopUserUseCase.ExecuteAsync(CurrentUserState.Value);
+
+            if (SelectedCompanyState.Value == null && companies.Count > 0)
+                SelectedCompanyState.Value = companies.FirstOrDefault();
+
+            if (SelectedCompanyState.Value == null)
+            {
+                projects = new();
+                StateHasChanged();
+                NavigationManager.NavigateTo("home");
+                return;
+            }
+
+            projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+            projects = projects.OrderBy(x => x.Name).ToList();
+
+            if (NavigationManager.Uri.Contains("settings/"))
+                return;
+
+            try
+            {
+                NavigationManager.NavigateTo($"company/overview/{SqidsEncoder.Encode(SelectedCompanyState.Value.Id)}");
+            }
+            catch (Microsoft.AspNetCore.Components.NavigationException)
+            {
+
+            }
+            StateHasChanged();
+        });
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent value)
+    {
+        this.InvokeAsync(async () =>
+        {
+            if (SelectedCompanyState?.Value?.Id == null)
+                return;
+
+            if (value.Project.CompanyId != (SelectedCompanyState?.Value?.Id ?? -1))
+                return;
+
+            projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+            projects = projects.OrderBy(x => x.Name).ToList();
+
+            StateHasChanged();
+        });
+    }
+
+    public void OnNext(CompanyRemovedEvent value)
+    {
+        this.InvokeAsync(async () =>
+        {
+            if(!companies.Any(x => x.Id == value.CompanyId))
+                return;
+
+            companies = await GetCompaniesFopUserUseCase.ExecuteAsync(CurrentUserState.Value);
+
+            if(SelectedCompanyState?.Value?.Id == value.CompanyId)
+                SelectedCompanyState.Value = companies.FirstOrDefault();
+
+            StateHasChanged();
+        });
+    }
+
+    public void OnNext(ProjectRemovedEvent value)
+    {
+        this.InvokeAsync(async () =>
+        {
+            if (!projects.Select(x => x.Id).Contains(value?.ProjectId ?? -1))
+                return;
+
+            if (SelectedCompanyState?.Value == null)
+                return;
+
+            projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+            projects = projects.OrderBy(x => x.Name).ToList();
+
+            StateHasChanged();
+
+            if ((SelectedProjectState?.Value?.Id ?? -1) != (value?.ProjectId ?? -1) && SelectedProjectState?.Value != null)
+                return;
+
+            try
+            {
+                NavigationManager.NavigateTo($"company/overview/{SqidsEncoder.Encode(SelectedCompanyState.Value.Id)}");
+            }
+            catch (Microsoft.AspNetCore.Components.NavigationException)
+            {
+
+            }
+
+        });
+    }
+
+    public void OnNext(CompanyContentUpdatedEvent value)
+    {
+        if(!companies.Any(x => x.Id == value.Company.Id))
+            return;
+
+        InvokeAsync(async () =>
+        {
+            companies = await GetCompaniesFopUserUseCase.ExecuteAsync(CurrentUserState.Value);
+            companies = companies.OrderBy(x => x.Name).ToList();
+
+            StateHasChanged();
+        });
+    }
+
+    public void OnNext(SidebarExtended value)
+    {
+        InvokeAsync(async () =>
+        {
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void Dispose()
+    {
+        NewCompanyNotifier.Unsubscribe(this);
+        NewProjectNotifier.Unsubscribe(this);
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+        CompanyContentUpdatedNotifier.Unsubscribe(this);
+        CompanyRemovedNotifier.Unsubscribe(this);
+        ProjectRemovedNotifier.Unsubscribe(this);
+        SidebarState.Unsubscribe(this);
+    }
+}

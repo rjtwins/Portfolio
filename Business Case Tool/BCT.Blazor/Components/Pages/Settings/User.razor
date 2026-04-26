@@ -1,0 +1,293 @@
+﻿@page "/settings/user"
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using System.Security.Claims
+@using BCT.Blazor.State
+
+@attribute [Authorize]
+
+@* Services: *@
+@inject ContextMenuService ContextMenuService
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+
+@* Use cases: *@
+@inject IGetUsersUseCase GetUsersUseCase
+@inject IGetUserUseCase GetUserUseCase
+@inject IRemoveRoleFromUserUseCase RemoveRoleFromUserUseCase
+@inject IGetAllRolesUseCase GetAllRolesUseCase
+@inject IAddRoleToUserUseCase AddRoleToUserUseCase
+@inject IResetUserPasswordUseCase ResetUserPasswordUseCase
+@inject IDeleteUserUseCase DeleteUserUseCase
+@inject ICheckIfEmailAvailableUseCase CheckIfEmailAvailableUseCase
+@inject ICreateUserUseCase CreateUserUseCase
+@inject ICheckIfUserExistsUseCase CheckIfUserExistsUseCase
+@inject NavigationManager NavigationManager
+
+<title>Gebruikersbeheer</title>
+
+<AuthorizeView Roles="@($"{BCT.Domain.Const.Role.Admin}, {BCT.Domain.Const.Role.Coach}")" Context="UserAuth">
+    <Authorized>
+        <h4>Maak gebruiker aan:</h4>
+        <RadzenTemplateForm TItem="UserModel" Data=@userModel Submit="@(() => OnSubmit(userModel))">
+            <RadzenFieldset>
+                <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Left" AlignItems="AlignItems.Stretch" Style="width:25vw">
+                    <RadzenFormField Text="Email" AllowFloatingLabel="false" Style="width: 100%;">
+                        <RadzenTextBox Name="Email" @bind-Value=@userModel.Email Style="width: 100vw" 
+                        @onblur="ValidateEmail" 
+                        @onemptied="ValidateEmail" 
+                        @onfocusout="ValidateEmail" 
+                        @ontouchleave="ValidateEmail" />
+                    </RadzenFormField>
+                    <RadzenEmailValidator Component="Email" Text="Vull een valide email in." Popup=false />
+                    <RadzenRequiredValidator Component="Email" Text="Vull email in." Popup=false />
+                    <RadzenCustomValidator Component="Email" Validator="@(() => _currentEmailValid)" Text="Een account met dit email adress bestaat al." Popup=false />
+                    <RadzenButton Text="Aanmaken" ButtonType="ButtonType.Submit" style="width:15vw" />
+                </RadzenStack>
+            </RadzenFieldset>
+        </RadzenTemplateForm>
+        <br />
+        @if(_users.Count() == 0)
+        {
+            <div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;">
+                <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            </div>
+        }
+        else
+        {
+            <RadzenDataGrid Context="UserDataGrid"  Data="@_users" ColumnWidth="200px"
+            AllowFiltering="true" AllowSorting="true">
+                <Columns>
+                    <RadzenDataGridColumn Title="" Sortable="false" Filterable="false" TextAlign="TextAlign.Center" Width="35px" MinWidth="35px">
+                        <Template Context="user">
+                            <RadzenButton 
+                            Disabled="@_loading"
+                            Icon="edit" 
+                            Variant="Variant.Text" 
+                            ButtonStyle="ButtonStyle.Base" 
+                            Click="@(args => ShowContextMenuUser(args, user))" />
+                        </Template>    
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn Property="Name" Filterable="true" Title="Naam"/>
+                    <RadzenDataGridColumn Property="Email" Filterable="true" Title="Email"/>
+                    <RadzenDataGridColumn Property="LastLogin" Filterable="true" Title="Laatste inlog datum" FormatString="{0:g}" />
+                    <RadzenDataGridColumn Property="CreatedAt" Filterable="true" Title="Aangemaakt op" FormatString="{0:g}" />
+                    <RadzenDataGridColumn Property="Roles" Filterable="false" Sortable="false" Title="Aanvullende rollen">
+                        <Template Context="user">
+                            <UserRolesTemplate 
+                                User="@user"
+                                Disabled="@_loading"
+                                RemoveUserRoleClicked="@(async (args) => await RemoveRole(args.User, args.Role))" 
+                                ShowContextMenAddRoleClicked="@(async (args) => await ShowContextMenuRole(args.MouseArgs, args.User))"/>
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        }
+
+        @* Loading overlay: *@
+        <RadzenCard id="Loading overlay" Style="background: #FFFFFF80; display:flex; position: absolute; top:0px; left: 0px; width: 100%; height: 100%; justify-items: center; justify-content: center; align-items: center; z-index: 1000; opacity: 1" Visible=_loading>
+            <RadzenCard Style="display: flex; min-width: 25%; min-height: 25%; opacity: 1; justify-items: center; justify-content: center; align-items: center; ">
+                @(string.IsNullOrEmpty(_loadingMessage) ? "Laden..." : _loadingMessage)
+            </RadzenCard>
+        </RadzenCard>
+    </Authorized>
+    <NotAuthorized>
+        <p>U heeft geen toegang tot deze pagina.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    [CascadingParameter]
+    private CurrentUserState? CurrentUserState { get; set; }
+
+    private UserModel userModel = new UserModel();
+    private BCT.Domain.Entities.User[] _users = new Domain.Entities.User[0];
+    private BCT.Domain.Entities.Role[] _roles = new Domain.Entities.Role[0];
+    private bool _loading = false;
+    private bool _currentEmailValid { get; set; } = true;
+    private string _loadingMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _users = await GetUsersUseCase.ExecuteAsync();
+        _users = _users.OrderBy(x => x.Name).ToArray();
+
+        _roles = await GetAllRolesUseCase.ExecuteAsync();
+        _roles = _roles.OrderBy(x => x.Name).ToArray();
+    }
+
+    private async Task RemoveRole(BCT.Domain.Entities.User user, BCT.Domain.Entities.Role role)
+    {
+        await RemoveRoleFromUserUseCase.ExecuteAsync(user, role);
+
+        _loading = true;
+        _loadingMessage = "Bezig met verwijderen van rol...";
+        StateHasChanged();
+        await Task.Delay(500);
+
+        _users = await GetUsersUseCase.ExecuteAsync();
+        _users = _users.OrderBy(x => x.Name).ToArray();
+
+        _loading = false;
+        _loadingMessage = string.Empty;
+    }
+
+    private void OnSubmit(UserModel userModel)
+    {
+        InvokeAsync(async () =>
+        {
+            string userId = string.Empty;
+            try
+            {
+                userId = await CreateUserUseCase.ExecuteAsync(userModel.Email);
+            }
+            catch (Exception)
+            {
+                NotificationService.Notify(new()
+                    {
+                        Severity = NotificationSeverity.Warning,
+                        Summary = "Er is iets fout gegaan!",
+                        Detail = "Neem contact op met de applicatiebeheerder."
+                    });
+                throw;
+            }
+
+            NotificationService.Notify(new()
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Gebruiker aangemaakt",
+                    Detail = "Ze zullen een e-mail ontvangen om hun wachtwoord in te stellen."
+                });
+
+            NotificationService.Notify(new()
+                {
+                    Severity = NotificationSeverity.Info,
+                    Summary = "Gebruikers bestand wordt geüpdatet",
+                    Detail = "Dit kan even duren, u krijg een notificatie en de gebruikers lijst wordt vanzelf voor u ververst.",
+                    Duration = 30000
+                });
+
+            AfterSubmitNewUser(userModel.Email, userId);
+        });
+    }
+
+    private void AfterSubmitNewUser(string newUserEmail, string newUserId)
+    {
+        InvokeAsync(async () =>
+        {
+            Domain.Entities.User? newUser = null;
+            await Task.Delay(1000);
+
+            for (int i = 0; i < 10; i++)
+            {
+                var userExsists = await CheckIfUserExistsUseCase.ExecuteAsync(newUserId);
+                if (userExsists)
+                {
+                    newUser = await GetUserUseCase.ExecuteAsync(newUserId);
+                    break;
+                }
+                await Task.Delay(5000);
+            }
+
+            var tempUsers =_users.ToList();
+            tempUsers.Add(newUser);
+            _users = tempUsers.OrderBy(x => x.Name).ToArray();
+
+            NotificationService.Notify(new()
+            {
+                Severity = NotificationSeverity.Info,
+                Summary = "Gebruikers bestand wordt geüpdatet",
+                Detail = $"Gebruiker {newUserEmail}\nIs aan het overzicht toegevoegd.",
+                Duration = 10000
+            });
+
+            StateHasChanged();
+        });
+    }
+
+    private async Task ShowContextMenuUser(MouseEventArgs args, BCT.Domain.Entities.User user)
+    {
+        ContextMenuService.Open(args, rf => @<UserManagementContextMenu OnItemClicked="@((args) => OnUserMenuItemClick(args, user))"/>);
+    }
+
+    private async Task OnUserMenuItemClick(string value, BCT.Domain.Entities.User user)
+    {
+        _loading = true;
+        
+        StateHasChanged();
+
+        switch (value)
+        {
+            case "1":
+                _loadingMessage = "Bezig met het resetting van gebruikers wachtwoord...";
+                await ResetUserPasswordUseCase.ExecuteAsync(user);
+                break;
+            case "2":
+                _loadingMessage = "Bezig met verwijderen van gebruiker...";
+                await DeleteUserUseCase.ExecuteAsync(user);
+                break;
+            default:
+                break;
+        }
+
+        ContextMenuService.Close();
+
+        await Task.Delay(500);
+        _users = await GetUsersUseCase.ExecuteAsync();
+        _users = _users.OrderBy(x => x.Name).ToArray();
+
+        _loading = false;
+        _loadingMessage = string.Empty;
+        StateHasChanged();
+    }
+
+    private async Task ValidateEmail()
+    {
+        if (string.IsNullOrEmpty(userModel.Email))
+        {
+            _currentEmailValid = true; // Allow empty emails for other validators.
+            return;
+        }
+
+        _currentEmailValid = await CheckIfEmailAvailableUseCase.ExecuteAsync(userModel.Email);
+    }
+
+    private async Task ShowContextMenuRole(MouseEventArgs args, BCT.Domain.Entities.User user)
+    {
+        var options = _roles.Where(x => !user.Roles.Select(y => y.Auth0Id)
+            .Contains(x.Auth0Id))
+            .ToList();
+
+        options = options.Where(x => CurrentUserState.Value.CanAssignRole(x)).ToList();
+    
+        ContextMenuService.Open(args, rf => @<UserAddRoleContextMenu Options=options OnItemClicked="@(async (value) => await OnRoleMenuItemClick(value, user))" />);
+    }
+
+    private async Task OnRoleMenuItemClick(Domain.Entities.Role role, Domain.Entities.User user)
+    {
+        await AddRoleToUserUseCase.ExecuteAsync(user, role);
+
+        _loading = true;
+        _loadingMessage = "Bezig met toevoegen van rol...";
+        StateHasChanged();
+
+        await Task.Delay(500);
+        
+        _users = await GetUsersUseCase.ExecuteAsync();
+        _users = _users.OrderBy(x => x.Name).ToArray();
+        ContextMenuService.Close();
+
+        _loading = false;
+        _loadingMessage = string.Empty;
+        StateHasChanged();
+    }
+
+
+    public class UserModel
+    {
+        public string Email { get; set; }
+    }
+}

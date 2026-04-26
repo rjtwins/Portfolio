@@ -1,0 +1,13 @@
+﻿@page "/"
+@page "/home"
+@attribute [Authorize]
+
+<PageTitle>Home</PageTitle>
+<AuthorizeView Roles="@($"{Domain.Const.Role.Admin}, {Domain.Const.Role.Coach}")">
+    <Authorized>
+        Welkom bij de Investeringscalculator! Start door een onderneming aan te maken.
+    </Authorized>
+    <NotAuthorized>
+        Welkom bij de Investeringscalculator! Vraag aan je coach om je toe te voegen aan een onderneming.
+    </NotAuthorized>
+</AuthorizeView>

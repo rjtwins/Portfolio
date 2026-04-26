@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.18" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.18" />
+    <PackageReference Include="Hangfire.InMemory" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="9.0.0" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AzureEmailService\BCT.AzureEmailService.csproj" />
+    <ProjectReference Include="..\BCT.Application\BCT.Application.csproj" />
+    <ProjectReference Include="..\BCT.Auth0Api\BCT.Auth0Api.csproj" />
+    <ProjectReference Include="..\BCT.Domain\BCT.Domain.csproj" />
+    <ProjectReference Include="..\BCT.EF\BCT.EF.csproj" />
+    <ProjectReference Include="..\BCT.ExcelConverter\BCT.ExcelConverter.csproj" />
+    <ProjectReference Include="..\BCT.HubSpotIntergration\BCT.HubSpotIntegration.csproj" />
+    <ProjectReference Include="..\BCT.Logging\BCT.Logging.csproj" />
+  </ItemGroup>
+
+</Project>

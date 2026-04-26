@@ -1,0 +1,19 @@
+﻿<RadzenMenu Style="margin:0px; padding:0px" Click="OnMenuClick">
+    <RadzenMenuItem Icon="lock_reset" Text="Wachtwoord opnieuw instellen" Value="1" />
+    <AuthorizeView Roles="@(BCT.Domain.Const.Role.Admin)" Context="UserContextMenuContext">
+        <Authorized>
+            <RadzenMenuItem Icon="person_remove" IconColor="Red" Text="Gebruiker verwijderen" Value="2" />
+        </Authorized>
+    </AuthorizeView>
+</RadzenMenu>
+
+@code {
+    [Parameter]
+    public Action<string> OnItemClicked { get; set; }
+
+    private void OnMenuClick(MenuItemEventArgs args)
+    {
+        var value = args.Value.ToString();
+        OnItemClicked?.Invoke(value);
+    }
+}

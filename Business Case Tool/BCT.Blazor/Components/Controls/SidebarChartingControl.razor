@@ -1,0 +1,22 @@
+﻿<RadzenAccordion Multiple=@true class="rz-shadow-0 rz-border-radius-0">
+    <Items>
+        <RadzenAccordionItem Text="Grafieken" Icon="topic" Selected=true class="rz-text-primary-color">
+            <RadzenPanelMenu>
+                <RadzenPanelMenuItem Path=@($"/company/compareProjects")
+                                        Icon="edit_note"
+                                        Text="Verglijk projecten"
+                                        class="rz-text-tertiary-color layoutMenuItem">
+                </RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Path=@($"/project/SensitivityAnalysis")
+                                     Icon="edit_note"
+                                     Text="Gevoeligheids analyse"
+                                     class="rz-text-tertiary-color layoutMenuItem">
+                </RadzenPanelMenuItem>
+            </RadzenPanelMenu>
+        </RadzenAccordionItem>
+    </Items>
+</RadzenAccordion>
+
+@code {
+
+}

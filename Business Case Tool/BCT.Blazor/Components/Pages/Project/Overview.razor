@@ -1,0 +1,239 @@
+﻿@page "/project/overview/{ProjectCode}"
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IObserver<ProjectRemovedEvent>
+@implements IDisposable
+
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@inject Sqids.SqidsEncoder<int> SqidsEncoder
+@inject DialogService DialogService
+
+@* Use cases: *@
+@inject IGetProjectUseCase GetProjectUseCase
+@inject ISaveProjectUseCase SaveProjectUseCase
+@inject ISaveProjectToExcelUseCase SaveProjectToExcelUseCase
+@inject IUpdateProjectFromExcelFile UpdateProjectFromExcelFileUseCase
+
+@attribute [Authorize]
+@attribute [StreamRendering]
+
+<div id="scroll_anchor">
+
+</div>
+
+<title>@(SelectedProjectState.Value == null ? "Investering" : SelectedProjectState.Value.Name)</title>
+
+@if(SelectedProjectState.Value == null)
+{
+    <div>
+
+    </div>
+}
+else
+{
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+        <RadzenStack Orientation="Orientation.Horizontal" Style="width:20%; padding-bottom:10px">
+            <RadzenIcon Icon="edit_note" Style="font-size:4rem" />
+            <RadzenStack Orientation="Orientation.Vertical" Gap="0px" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
+                <RadzenText Style="margin:0px">
+                    <strong>@(SelectedProjectState.Value.Name)</strong>
+                </RadzenText>
+                <RadzenLink Path="@($"company/overview/{SqidsEncoder.Encode(SelectedCompanyState?.Value?.Id ?? 0)}")">
+                    <RadzenText Style="margin:0px; opacity:0;">
+                        -
+                        @* @(SelectedCompanyState?.Value?.Name) *@
+                    </RadzenText>
+                </RadzenLink>
+            </RadzenStack>
+        </RadzenStack>
+        @*         <RadzenText Style="width:20%;">
+            @(SelectedCompanyState?.Value?.Name) - @(SelectedProjectState.Value.Name)
+        </RadzenText> *@
+        <RadzenSteps @bind-SelectedIndex="stepsSelectedIndex" ShowStepsButtons=false Style="width:100%">
+            <Steps>
+                <RadzenStepsItem Text="@(SelectedCompanyState.Value?.Name ?? "")">
+                </RadzenStepsItem>
+                <RadzenStepsItem Text="PROJECT" Style="color:var(--rz-secondary)">
+                </RadzenStepsItem>
+                <RadzenStepsItem Text="SPECIFICATIE">
+                </RadzenStepsItem>
+                <RadzenStepsItem Text="BEREKENING">
+                </RadzenStepsItem>
+                <RadzenStepsItem Text="UITKOMST">
+                </RadzenStepsItem>
+            </Steps>
+        </RadzenSteps>
+        <div style="display:flex; flex-direction:row; justify-content: flex-end">
+            <RadzenButton Variant="Variant.Text" Icon="chevron_left" Size="ButtonSize.Large" Click="PreviousStep"></RadzenButton>
+            <RadzenButton Variant="Variant.Text" Icon="chevron_right" Size="ButtonSize.Large" Click="NextStep"></RadzenButton>
+        </div>
+    </RadzenStack>
+    @switch (stepsSelectedIndex)
+    {
+        case 0:
+            NavigationManager.NavigateTo($"company/overview/{SqidsEncoder.Encode(SelectedCompanyState?.Value?.Id ?? 0)}");
+            break;
+        case 1:
+            DialogService.CloseSide();
+            <ProjectStep1></ProjectStep1>
+            break;
+        case 2:
+            DialogService.CloseSide();
+            <ProjectStep2></ProjectStep2>
+            break;
+        case 3:
+            DialogService.CloseSide();
+            <ProjectStep3></ProjectStep3>
+            break;
+        case 4:
+            SidebarState.Value = new() { Value = false };
+            DialogService.CloseSide();
+            <ProjectStep4 @ref=@_step4></ProjectStep4>
+            break;
+        default:
+            <div></div>
+            break;
+    }
+    <RadzenStack 
+    Orientation="Orientation.Horizontal" 
+    Style="height:fit-content; margin-left:50px; margin-right:50px; margin-top:25px" 
+    JustifyContent="JustifyContent.SpaceBetween">
+
+        @if (stepsSelectedIndex > 0)
+        {
+            <RadzenButton Click="@PreviousStep">
+                Terug
+            </RadzenButton>
+        }
+        else
+        {
+            <div></div>
+        }
+        @if (stepsSelectedIndex < 4)
+        {
+            <RadzenButton Click="@NextStep">
+                Volgende
+            </RadzenButton>
+        }
+        else
+        {
+            <RadzenButton Click="@_step4.PrintReport" Text="Download PDF" />
+        }
+    </RadzenStack>
+}
+
+@code {
+    [CascadingParameter]
+    public ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+    [CascadingParameter]
+    public ProjectRemovedNotifier ProjectRemovedNotifier { get; set; }
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+    [CascadingParameter]
+    private SidebarState SidebarState { get; set; }
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+
+
+    [Parameter]
+    public required string ProjectCode { get; set; }
+
+    private ProjectStep4 _step4 { get; set; }
+
+    private int stepsSelectedIndex = 1;
+
+    private InputFile upload;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (stepsSelectedIndex == 0)
+            stepsSelectedIndex = 1;
+
+        //SelectedProjectState.Value = null;
+        await base.OnParametersSetAsync();
+        //await SetupGrid();
+
+        var projectId = SqidsEncoder.Decode(ProjectCode).First();
+        SelectedProjectState.Value = await GetProjectUseCase.ExecuteAsync(projectId);
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (stepsSelectedIndex == 0)
+            stepsSelectedIndex = 1;
+
+        await base.OnInitializedAsync();
+
+        ProjectContentUpdatedNotifier.Subscribe(this);
+        ProjectRemovedNotifier.Subscribe(this);
+    }
+
+    private async Task NextStep()
+    {
+        stepsSelectedIndex = Math.Min(stepsSelectedIndex + 1, 4);
+        await JS.InvokeVoidAsync("StepWizardScrollToTop");
+    }
+
+    private async Task PreviousStep()
+    {
+        stepsSelectedIndex = Math.Max(stepsSelectedIndex - 1, 0);
+        await JS.InvokeVoidAsync("StepWizardScrollToTop");
+    }
+
+    private async Task SaveProject()
+    {
+        await SaveProjectUseCase.ExecuteAsync(SelectedProjectState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(ProjectContentUpdatedEvent value)
+    {
+        if(value?.Project == null)
+            return;
+
+        if (value.Project.Id != SelectedProjectState.Value?.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            SelectedProjectState.UpdateContentOnly(await GetProjectUseCase.ExecuteAsync(SelectedProjectState.Value.Id));
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectRemovedEvent value)
+    {
+        if(value?.ProjectId == null)
+            return;
+
+        if (value.ProjectId != SelectedProjectState.Value?.Id)
+            return;
+            
+        SelectedProjectState.Value = null;
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+        ProjectRemovedNotifier.Unsubscribe(this);
+    }
+}

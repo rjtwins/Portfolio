@@ -1,0 +1,244 @@
+﻿@page "/project/step3"
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using ThrottleDebounce
+
+@implements IObserver<BCT.Domain.Entities.Project>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IDisposable
+
+@inject IProjectValueService pvs
+@inject ISaveProjectUseCase SaveProjectUseCase
+@inject IHelpTextService hts
+@inject IGetProjectDoubleValues GetProjectDoubleValues
+@inject DialogService DialogService
+
+<RadzenStack Orientation="Orientation.Vertical" Style="width:100%">
+    <RadzenText Style="width:100%">
+        <strong>Stap 4: Berekening</strong><br />
+        Hier ga je de berekening voor de financiële business case doen en vul je de belangrijkste kostengegevens in.<br />
+        Dit is een essentiële stap omdat het inzicht geeft in de financiële haalbaarheid van je project.<br />
+        Door de kosten en baten duidelijk in kaart te brengen, kun je weloverwogen beslissingen nemen.​    
+    </RadzenText>
+
+    @if(SelectedProjectState.Value.ChosenGridMethod == 0)
+    {
+        <RadzenButton Text="SNEL INVULLEN" Click="FastFillButtonClick" Icon="open_in_new" Style="width:180px">
+        </RadzenButton>
+        <RadzenButton Text="HANDMATIG INVULLEN" Click="ManualFillButtonClick" Icon="table" Style="width:180px">
+        </RadzenButton>
+    }
+    else
+    {
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenCard Style="width:100%" Variant="Variant.Outlined">
+                <RadzenStack Orientation="Orientation.Vertical">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                        <RadzenIcon 
+                        Icon="info"
+                        Style="padding-top:10px;"
+                        class="tooltip_icon"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.StartingYear))"/>
+                        <RadzenFormField Text="Startjaar​" class="short-input">
+                            <RadzenNumeric TValue="int" Step="1" @bind-Value=@SelectedProjectState.Value.StartYear Change=@(async () => await pvs.SaveProject(SelectedProjectState.Value))/>
+                        </RadzenFormField>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                        <RadzenIcon 
+                        Icon="info"
+                        Style="padding-top:10px;"
+                        class="tooltip_icon"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Horizon))"/>
+                        <RadzenFormField Text="Horizon​" class="short-input">
+                            <RadzenNumeric TValue="int" Format="0 jaar" Min="1" Step="1" @bind-Value=@SelectedProjectState.Value.Horizon 
+                            Change=@(async () => await pvs.SaveProject(SelectedProjectState.Value))/>
+                        </RadzenFormField>
+                    </RadzenStack>
+
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                        <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Interest))"/>
+                        <RadzenText Style="margin:0px">
+                            Netto Contante Waarde berekenen?
+                        </RadzenText>
+                        <RadzenSwitch @bind-Value=@SelectedProjectState.Value.InterestEnabled Change="@(() => pvs.SaveProject(SelectedProjectState.Value))"/>
+                    </RadzenStack>                
+
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left" Visible=@(SelectedProjectState.Value.InterestEnabled)>
+                        <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Interest))"/>
+                        <RadzenFormField Text="Rentevoet​" class="short-input">
+                            <RadzenNumeric 
+                            Placeholder="0.00" 
+                            TValue="double"
+                            Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                            Format="#.## %"
+                            ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                            Step="0.001" 
+                            @bind-Value=@(pvs.GetValue<DoubleValue>("Interest", Data).Value) Change="@(() => pvs.SaveValue("Interest", Data))"/>
+                        </RadzenFormField>
+                    </RadzenStack>
+                    <RadzenButton Text="SNEL INVULLEN" Click="FastFillButtonClick" Icon="open_in_new" Style="width:180px">
+                    </RadzenButton>
+                    @* <RadzenButton Variant="Variant.Text" class="rz-text-secondary-color" Style="width:fit-content; align-self:end" Icon="@(GridExpanded ? "collapse_content" : "expand_content")" Click="ToggleGridExpanded"/> *@
+                    <ProjectBCFin/>
+                    <br />
+                </RadzenStack>
+                <RadzenStack Orientation="Orientation.Vertical">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                        <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Payback))"/>
+                        <RadzenFormField Text="Terugverdientijd" class="short-input">
+                            @if(pvs.GetValue<DoubleValue>("Payback", Data).Value < 0)
+                            {
+                                <RadzenTextBox Disabled=true Value="Buiten de horizon"/>
+                            }
+                            else
+                            {
+                                <RadzenNumeric Disabled=true TValue="double" Format="#.# mnd" Value="@(pvs.GetValue<DoubleValue>("Payback", Data).Value * 12)"/>
+                            }
+                        </RadzenFormField>
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenCard>
+        </RadzenStack>
+        @*         <RadzenCard Style="width:100%" Variant="Variant.Outlined">
+            <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                <RadzenIcon 
+                Icon="info"
+                class="tooltip_icon"
+                Style="padding-top:10px;"
+                MouseLeave="hts.CloseTooltip"
+                MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Risks))"/>
+                <RadzenFormField Text="Risico's" AllowFloatingLabel="false" Style="width: 100%">
+                    <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Risk", Data).Value) Change="@(() => pvs.SaveValue("Risk", Data))"/>
+                </RadzenFormField>
+            </RadzenStack>
+        </RadzenCard> *@
+        <RadzenCard Style="width:100%" Variant="Variant.Outlined" class="project-step-notes-container">
+            <RadzenText><strong>Notities</strong></RadzenText>
+            <br />
+            <RadzenText>
+                Gebruik dit notitieveld om belangrijke details en aannames over de inkomsten vast te leggen. Noteer aannames over de methoden die je hebt gebruikt voor berekeningen, mogelijke risico's en onzekerheden, en specifieke details zoals contracten of klantsegmenten. Dit zorgt voor transparantie en helpt bij het maken van weloverwogen beslissingen en communicatie met je team.​
+            </RadzenText>
+            <RadzenTextArea @bind-Value=@(pvs.GetValue<StringValue>("Step4Notes", Data).Value) Change=@(() => pvs.SaveValue("Step4Notes", Data)) class="project-step-notes">
+            </RadzenTextArea>
+        </RadzenCard>
+    }
+
+</RadzenStack>
+
+
+@code {
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+
+    private Dictionary<string, Domain.Entities.ValueModel> Data { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SelectedProjectState.Subscribe(this);
+        ProjectContentUpdatedNotifier.Subscribe(this);
+
+        Data = await pvs.GetProjectData(SelectedProjectState.Value);
+
+        //Todo per attribute calculation:
+        var doubleValues = await GetProjectDoubleValues.ExecuteAsync(SelectedProjectState.Value);
+        doubleValues.ForEach(x => Data[x.Key] = x);
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task FastFillButtonClick()
+    {
+        //DialogService.OnClose += OnFastFillClose;
+        DialogOptions options = new()
+        {
+             CssClass="fast-fill-dialog",
+        };
+        await DialogService.OpenAsync<ProjectGridWizard>("Snel invullen", options: options);
+    }
+
+    public async Task ManualFillButtonClick()
+    {
+        SelectedProjectState.Value.ChosenGridMethod = 2;
+        await SaveProjectUseCase.ExecuteAsync(SelectedProjectState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+    }
+
+    // private void OnFastFillClose(dynamic value)
+    // {
+    //     if (!(value is Domain.Entities.ProjectGridWizard))
+    //         return;
+
+
+    // }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(BCT.Domain.Entities.Project p)
+    {
+        if(p == null || SelectedProjectState.Value == null)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            Data = await pvs.GetProjectData(SelectedProjectState.Value);
+            var doubleValues = await GetProjectDoubleValues.ExecuteAsync(SelectedProjectState.Value);
+            doubleValues.ForEach(x => Data[x.Key] = x);
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent projectContentUpdatedEvent)
+    {
+        var project = projectContentUpdatedEvent.Project;
+        if (SelectedProjectState.Value == null || project.Id != SelectedProjectState.Value.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            Data = await pvs.GetProjectData(SelectedProjectState.Value);
+            var doubleValues = await GetProjectDoubleValues.ExecuteAsync(SelectedProjectState.Value);
+            doubleValues.ForEach(x => Data[x.Key] = x);
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void Dispose()
+    {
+        SelectedProjectState.Unsubscribe(this);
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+}

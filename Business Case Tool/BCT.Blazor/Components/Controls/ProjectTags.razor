@@ -1,0 +1,210 @@
+﻿@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using BCT.Application.UseCases.Commands
+
+@implements IObserver<Project>
+@implements IDisposable
+
+@inject IJSRuntime JS
+@inject IHelpTextService hts
+@inject IGetCompanyTagsUseCase GetCompanyTags
+@inject IGetProjectTagsUseCase GetProjectTags
+@inject IAddTagToProjectUseCase AddTagToProject
+@inject ICreateAndAddNewTagUseCase CreateAndAddNewTag
+@inject IRemoveTagFromProjectUseCase RemoveTagFromProject
+
+<RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+    <RadzenIcon Icon="info"
+    Style="padding-top:0px;"
+    class="tooltip_icon"
+    MouseLeave="hts.CloseTooltip"
+    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Tags))" />
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1px" Wrap="FlexWrap.Wrap">
+        @if (selectedTags.Count == 0)
+        {
+            <RadzenButton Visible=@(!addMode)
+                          Icon="add"
+                          Text="Voeg een tag toe"
+                          Size="ButtonSize.ExtraSmall"
+                          Variant="Variant.Filled"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Style="margin:0px; padding:0px; height:22px; width:145px"
+                          Click="@OnAddButtonClicked" />
+        }
+        @foreach(var tag in selectedTags)
+        {
+            <RadzenBadge Style="width:min-content; height:min-content; margin:2px">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.1rem">
+                    @tag.Text <RadzenButton Icon="close"
+                                             Size="ButtonSize.ExtraSmall"
+                                             Variant="Variant.Text"
+                                             ButtonStyle="ButtonStyle.Light"
+                                             Style="margin:0px; padding:0px"
+                                             Click="@(async () => await RemoveTag(tag.Id))" />
+                </RadzenStack>
+            </RadzenBadge>
+        }
+        @if(selectedTags.Count > 0 || addMode)
+        {
+            <RadzenButton 
+                        Visible=@(!addMode)
+                        Icon="add"
+                        Size="ButtonSize.ExtraSmall"
+                        Variant="Variant.Flat"
+                        ButtonStyle="ButtonStyle.Primary"
+                        Style="margin:0px; padding:0px; height:24px; width:24px"
+                        Click="@OnAddButtonClicked" />
+
+            <RadzenAutoComplete @ref=@radzenAutoComplete
+            id="tagsAutoComplete"
+            @bind-Value=@tagFieldContent
+            OpenOnFocus="true"
+            Data=@availableTags 
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+            TextProperty="@(nameof(Tag.Text))"
+            Visible=@addMode/>
+        }
+    </RadzenStack>
+</RadzenStack>
+
+@code {
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+    private bool addMode { get; set; } = false;
+
+    private RadzenAutoComplete radzenAutoComplete;
+
+    private string tagFieldContent
+    {
+        get
+        {
+            return _tagFieldContent;
+        }
+
+        set
+        {
+            _tagFieldContent = value;
+            autocompleteValues.Add(value);
+
+            InvokeAsync(async () =>
+            {
+                await Task.Delay(100);
+                var text = autocompleteValues.Last();
+                autocompleteValues.Clear();
+                await OnChange(text);
+            });
+        }
+    }
+
+    private List<string> autocompleteValues = new List<string>();
+
+    private string _tagFieldContent = "";
+
+
+    private HashSet<Tag> selectedTags = new();
+    private List<Tag> allTags = new List<Tag>();
+    private List<Tag> availableTags = new List<Tag>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SelectedProjectState.Subscribe(this);
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        await UpdateAvailableTags();
+    }
+
+    private async Task UpdateAvailableTags()
+    {
+        this.allTags.Clear();
+        this.availableTags.Clear();
+        this.selectedTags.Clear();
+
+        if (SelectedProjectState.Value == null)
+            return;
+
+        var companyTags = await GetCompanyTags.ExecuteAsync(SelectedProjectState.Value.CompanyId);
+        var selectedTags = await GetProjectTags.ExecuteAsync(SelectedProjectState.Value.Id);
+
+        this.allTags = companyTags.ToList();
+        this.availableTags = allTags.Except(selectedTags).OrderBy(x => x.Text).ToList();
+        this.selectedTags = selectedTags.OrderBy(x => x.Text).ToHashSet();
+    }
+
+    private async Task OnChange(dynamic value)
+    {
+        addMode = false;
+
+        if (!(value is string text))
+            return;
+
+        if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            return;
+
+        var selectedTag = availableTags.FirstOrDefault(x => x.Text == text);
+
+        if (selectedTag != null)
+        {
+            await AddTagToProject.ExecuteAsync(selectedTag.Id, SelectedProjectState.Value.Id);
+        }
+        else
+        {
+            await CreateAndAddNewTag.ExecuteAsync(text, SelectedProjectState.Value.Id);
+        }
+
+        _tagFieldContent = string.Empty;
+
+        await UpdateAvailableTags();
+
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    private async Task RemoveTag(int tagId)
+    {
+        await this.RemoveTagFromProject.ExecuteAsync(tagId, SelectedProjectState.Value.Id);
+        await UpdateAvailableTags();
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) { }
+
+    public void OnNext(Project value)
+    {
+        InvokeAsync(async () =>
+        {
+            await UpdateAvailableTags();
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    private async Task OnAddButtonClicked()
+    {
+        addMode = true;
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+
+        await JS.InvokeVoidAsync("focusRadzenInput", "tagsAutoComplete");
+    }
+
+    public void Dispose()
+    {
+        SelectedProjectState.Unsubscribe(this);
+    }
+}

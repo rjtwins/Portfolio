@@ -1,0 +1,160 @@
+﻿@inject NavigationManager NavigationManager
+@inject DialogService DialogService
+
+<RadzenRadioButtonList @bind-Value=@SensitivityScenario.Mode TValue="Domain.Enums.ScnearioMode" Change="@(async () => await SensitivityScenarioChanged())">
+    <Items>
+        <RadzenRadioButtonListItem class="scenario_radio_button" Text="Relatief" Value="@Domain.Enums.ScnearioMode.Relative" />
+        <RadzenRadioButtonListItem class="scenario_radio_button" Text="Absoluut" Value="@Domain.Enums.ScnearioMode.Absolute" />
+    </Items>
+</RadzenRadioButtonList>
+<br />
+@if (SensitivityScenario.Mode == Domain.Enums.ScnearioMode.Relative)
+{
+    <RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenFormField Text="Nieuwe investeringen​" class="short-input">
+                <RadzenNumeric Placeholder="0.00"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="0.## %"
+                               ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                               Step="0.001"
+                               @bind-Value=@SensitivityScenario.InvestmentMod
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Nieuwe kosten" class="short-input">
+                <RadzenNumeric Placeholder="0.00"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="0.## %"
+                               ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                               Step="0.001"
+                               @bind-Value=@SensitivityScenario.CostMod
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Extra inkomsten" class="short-input">
+                <RadzenNumeric Placeholder="0.00"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="0.## %"
+                               ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                               Step="0.001"
+                               @bind-Value=@SensitivityScenario.IncomeMod
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenFormField Text="Vermeden investeringen" class="short-input">
+                <RadzenNumeric Placeholder="0.00"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="0.## %"
+                               ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                               Step="0.001"
+                               @bind-Value=@SensitivityScenario.AvoidedInvestmentMod
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Vermeden kosten" class="short-input">
+                <RadzenNumeric Placeholder="0.00"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="0.## %"
+                               ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                               Step="0.001"
+                               @bind-Value=@SensitivityScenario.AvoidedCostMod
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Gederfde inkomsten" class="short-input">
+                <RadzenNumeric Placeholder="0.00"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="0.## %"
+                               ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                               Step="0.001"
+                               @bind-Value=@SensitivityScenario.LostIncomeMod
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+        </RadzenStack>
+    </RadzenStack>
+}
+else
+{
+    <RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenFormField Text="Nieuwe investeringen (begin horizon)​" class="short-input">
+                <RadzenNumeric Placeholder="0.0"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="€ 0.0k"
+                               Step="1"
+                               @bind-Value=@SensitivityScenario.InvestmentDif
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Nieuwe kosten (per jaar)" class="short-input">
+                <RadzenNumeric Placeholder="0.0"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="€ 0.0k"
+                               Step="1"
+                               @bind-Value=@SensitivityScenario.CostDif
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Extra inkomsten (per jaar)" class="short-input">
+                <RadzenNumeric Placeholder="0.0"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="€ 0.0k"
+                               Step="1"
+                               @bind-Value=@SensitivityScenario.IncomeDif
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenFormField Text="Vermeden investeringen (begin horizon)" class="short-input">
+                <RadzenNumeric Placeholder="0.0"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="€ 0.0k"
+                               Step="1"
+                               @bind-Value=@SensitivityScenario.AvoidedInvestmentDif
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Vermeden kosten (per jaar)" class="short-input">
+                <RadzenNumeric Placeholder="0.0"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="€ 0.0k"
+                               Step="1"
+                               @bind-Value=@SensitivityScenario.AvoidedCostDif
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+            <RadzenFormField Text="Gederfde inkomsten (per jaar)" class="short-input">
+                <RadzenNumeric Placeholder="0.0"
+                               TValue="double"
+                               Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                               Format="€ 0.0k"
+                               Step="1"
+                               @bind-Value=@SensitivityScenario.LostIncomeDif
+                               Change="@(async () => await SensitivityScenarioChanged())" />
+            </RadzenFormField>
+        </RadzenStack>
+    </RadzenStack>
+}
+
+@code {
+    [Parameter]
+    public required Domain.Entities.Scenario SensitivityScenario { get; set; }
+
+    [Parameter]
+    public required Func<Task> SensitivityScenarioChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += (object sender, LocationChangedEventArgs e) =>
+        {
+            DialogService.CloseSide();
+        };
+
+        await base.OnInitializedAsync();
+    }
+}

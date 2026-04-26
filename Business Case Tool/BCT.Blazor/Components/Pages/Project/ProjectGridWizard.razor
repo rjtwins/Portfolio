@@ -1,0 +1,457 @@
+﻿@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Application.UseCases.Commands;
+@using BCT.Application.UseCases.Queries;
+
+@implements IObserver<BCT.Domain.Entities.Project>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IDisposable
+
+@inject DialogService DialogService
+@inject ISaveProjectGridWizardUseCase SaveProjectGridWizardUseCase
+@inject IApplyProjectGridWizardUseCase ApplyProjectGridWizardUseCase
+@inject IGetProjectGridWizardUseCase GetProjectGridWizardUseCase
+@inject IHelpTextService hts
+@inject ISaveProjectUseCase SaveProjectUseCase
+
+@if(this.Model == null)
+{
+    <div></div>
+}else if (Loading)
+{
+    <div style="width:fit-content; height:fit-content; justify-content:center; justify-items:center; justify-self:center; align-content:center; align-content:center; align-self:center">
+        <RadzenProgressBarCircular ShowValue=false Style="width:250px; height:250px" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+        </RadzenProgressBarCircular>
+    </div>
+}
+else
+{   
+    <RadzenAccordion Multiple="false" @bind-SelectedIndex=@_selectedIndex>
+        <Items>
+            <RadzenAccordionItem Icon="assignment" Text="Project" Selected=true >
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                    <RadzenIcon 
+                    Icon="info"
+                    class="tooltip_icon"
+                    MouseLeave="hts.CloseTooltip"
+                    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.StartingYear))"/>
+                    <RadzenFormField Text="Startjaar​" class="short-input">
+                        <RadzenNumeric 
+                        TValue="int" 
+                        Step="1" 
+                        @bind-value=@Model.StartYear 
+                        Change="@OnStartYearChanged"/>
+                    </RadzenFormField>
+                    <RadzenIcon 
+                    Icon="info"
+                    class="tooltip_icon"
+                    MouseLeave="hts.CloseTooltip"
+                    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Horizon))"/>
+                    <RadzenFormField Text="Horizon​" class="short-input">
+                        <RadzenNumeric 
+                        TValue="int" 
+                        Format="0 jaar"
+                        Min="1" 
+                        Step="1"
+                        @bind-value=@Model.Horizon />
+                    </RadzenFormField>
+                </RadzenStack>
+                <br />
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                    Icon="info"
+                    class="tooltip_icon"
+                    MouseLeave="hts.CloseTooltip"
+                    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Interest))"/>
+                    <RadzenText Style="margin:0px">
+                        Netto Contante Waarde berekenen?
+                    </RadzenText>
+                    <RadzenSwitch @bind-Value=@Model.InterestEnabled/>
+                </RadzenStack>
+                <br />
+                <RadzenFormField Text="Rentevoet​" class="short-input" Visible=@Model.InterestEnabled Style="margin-bottom: 20px">
+                    <RadzenNumeric 
+                    Placeholder="0.00"
+                    TValue="double"
+                    Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                    Format="#.## %"
+                    ConvertValue="@(x => double.Parse(x.Replace("%", "").TrimEnd().TrimStart()) / 100)"
+                    Step="0.001"
+                    @bind-Value=@Model.Interest/>
+                </RadzenFormField>
+                <br />
+                <RadzenButton Click="@(() => _selectedIndex = 1)" Style="margin-bottom: 10px">
+                    Ga verder naar investeringen
+                </RadzenButton>
+            </RadzenAccordionItem>
+            <RadzenAccordionItem Icon="sell" Text="Investeringen">
+                <RadzenRow>
+                    <RadzenColumn Style="display:flex; align-items:center;">
+                        <RadzenText>
+                            In welk jaar vindt de investering plaats?​
+                        </RadzenText>
+                    </RadzenColumn>
+                    <RadzenColumn Size="1" Style="display:flex; align-items:center;"></RadzenColumn>
+                    <RadzenColumn>
+                        <RadzenNumeric TextAlign="TextAlign.Right" TValue="int" Step="1" Min="0" @bind-Value=@Model.NewInvestmentYear/>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenRow>
+                    <RadzenColumn Style="display:flex; align-items:center;">
+                        <RadzenText>
+                            Wat is de omvang van de investering?​
+                        </RadzenText>
+                    </RadzenColumn>
+                    <RadzenColumn Size="1" Style="display:flex; align-items:center; justify-content:end">k€</RadzenColumn>
+                    <RadzenColumn>
+                        <RadzenNumeric 
+                        Format="0.0"
+                        Step="0.1"
+                        TextAlign="TextAlign.Right"
+                        Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                        TValue="double"
+                        @bind-value="@Model.NewInvestment" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenRow>
+                    <RadzenColumn Size="2" Style="display:flex; align-items:center;">
+                        Opmerking
+                    </RadzenColumn>
+                    <RadzenColumn Size="10">
+                        <RadzenTextBox Style="width:100%" @bind-Value=@Model.NewInvestmentDescription/>
+                    </RadzenColumn>
+                </RadzenRow>
+                <br />
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                    <RadzenText style="margin: 0px;">
+                        Zijn er andere investeringen die vermeden worden door dit project?​
+                    </RadzenText>
+                    <RadzenCheckBox @bind-Value="@(this.Model.AvoidedInvestmentEnabled)" />
+                </RadzenStack>
+                <div style="@(Model.AvoidedInvestmentEnabled ? "background-color:#c0e6f5; padding:10px" : "display:none;")" class="fade-in-200">
+                    <RadzenRow>
+                        <RadzenColumn Style="display:flex; align-items:center;">
+                            <RadzenText>
+                                In welk jaar zou de vermeden investering plaatsgevonden hebben?​
+                            </RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn Size="1" Style="display:flex; align-items:center;"></RadzenColumn>
+                        <RadzenColumn>
+                            <RadzenNumeric TextAlign="TextAlign.Right" TValue="int" Step="1" Min="0" @bind-Value=@Model.AvoidedInvestmentYear/>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow>
+                        <RadzenColumn Style="display:flex; align-items:center;">
+                            <RadzenText>
+                                Wat zou de omvang van de vermeden investering geweest zijn?​
+                            </RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn Size="1" Style="display:flex; align-items:center; justify-content:end">k€</RadzenColumn>
+                        <RadzenColumn Style="display:flex; align-items:center;">
+                            <RadzenNumeric 
+                            Format="0.0"
+                            Step="0.1"
+                            TextAlign="TextAlign.Right"
+                            Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                            TValue="double"
+                            @bind-value="@Model.AvoidedInvestment" />
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow>
+                        <RadzenColumn Size="2" Style="display:flex; align-items:center;">
+                            Opmerking
+                        </RadzenColumn>
+                        <RadzenColumn Size="10">
+                            <RadzenTextBox Style="width:100%" @bind-Value=@Model.AvoidedInvestmentDescription/>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </div>
+                <br />
+                <RadzenButton Click="@(() => _selectedIndex = 2)" Style="margin-bottom: 10px">
+                    Ga verder naar kosten
+                </RadzenButton>
+            </RadzenAccordionItem>
+            <RadzenAccordionItem Icon="trending_down" Text="Jaarlijkse kosten">
+                <RadzenText>
+                    Wat zijn de jaarlijkse kosten als gevolg van de investering?​
+                </RadzenText>
+                <RadzenRow>
+                    <RadzenColumn>
+
+                    </RadzenColumn>
+                    <RadzenColumn Size="1">
+
+                    </RadzenColumn>
+                    <RadzenColumn>
+                        Jaarlijks bedrag
+                    </RadzenColumn>
+                    <RadzenColumn>
+                        Vanaf jaar
+                    </RadzenColumn>
+                    <RadzenColumn>
+                        Opmerking
+                    </RadzenColumn>
+                </RadzenRow>
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.ICTHardware))"
+                Text="@("ICT hardware")"/>
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.ICTSoftware))"
+                Text="@("ICT software")" />
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.Equipment))"
+                Text="@("Materieel")" />
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.EquipmentUsage))"
+                Text="@("Materiaal / verbruiksmiddelen")" />
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.Personnel))"
+                Text="@("Personeel")" />
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.Energy))"
+                Text="@("Energie")" />
+                <WizardAccordionItem
+                ProjectGridWizard="@Model"
+                PropertyName="@(nameof(Model.Other))"
+                Text="@("Overige")" />
+                <br />
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                    <RadzenText style="margin: 0px;">
+                        Zijn er jaarlijkse kosten die vermeden worden door dit project?​
+                    </RadzenText>
+                    <RadzenCheckBox @bind-Value="@(this.Model.AvoidedCostEnabled)" />
+                </RadzenStack>
+                <div style="@(Model.AvoidedCostEnabled ? "background-color:#c0e6f5; padding:10px" : "display:none;")" class="fade-in-200">
+                    <RadzenRow>
+                        <RadzenColumn>
+
+                        </RadzenColumn>
+                        <RadzenColumn Size="1">
+
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Jaarlijks bedrag
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Vanaf jaar
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Opmerking
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <WizardAccordionItem
+                    ProjectGridWizard="@Model"
+                    PropertyName="@(nameof(Model.EquipmentOvoided))"
+                    Text="@("Materieel")" />
+                    <WizardAccordionItem
+                    ProjectGridWizard="@Model"
+                    PropertyName="@(nameof(Model.PersonnelOvoided))"
+                    Text="@("Personeel")" />
+                    <WizardAccordionItem
+                    ProjectGridWizard="@Model"
+                    PropertyName="@(nameof(Model.EnergyOvoided))"
+                    Text="@("Energy")" />
+                    <WizardAccordionItem
+                    ProjectGridWizard="@Model"
+                    PropertyName="@(nameof(Model.OtherOvoided))"
+                    Text="@("Overige")" />
+                </div>
+                <br />
+                <RadzenButton Click="@(() => _selectedIndex = 3)" Style="margin-bottom: 10px">
+                    Ga verder naar inkomsten
+                </RadzenButton>
+            </RadzenAccordionItem>
+            <RadzenAccordionItem Icon="trending_up" Text="Jaarlijkste inkomsten">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                    <RadzenText style="margin: 0px;">
+                        Zijn er extra inkomsten als gevolg van de investering?​
+                    </RadzenText>
+                    <RadzenCheckBox @bind-Value="@(this.Model.ExtraIncomeEnabled)" />
+                </RadzenStack>
+                <div style="@(Model.ExtraIncomeEnabled ? "background-color:#c0e6f5; padding:10px" : "display:none;")" class="fade-in-200">
+                    <RadzenRow>
+                        <RadzenColumn>
+
+                        </RadzenColumn>
+                        <RadzenColumn Size="1">
+
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Jaarlijks bedrag
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Vanaf jaar
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Opmerking
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <WizardAccordionItem
+                    ProjectGridWizard="@Model"
+                    PropertyName="@(nameof(Model.ExtraIncome))"
+                    Text="@("Extra inkomsten")" />
+                </div>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+                    <RadzenText style="margin: 0px;">
+                        Zijn er gederfde inkomsten als gevolg van de investering?​
+                    </RadzenText>
+                    <RadzenCheckBox @bind-Value="@(this.Model.LostIncomeEnabled)" />
+                </RadzenStack>
+                <div style="@(Model.LostIncomeEnabled ? "background-color:#c0e6f5; padding:10px" : "display:none;")" class="fade-in-200">
+                    <RadzenRow>
+                        <RadzenColumn>
+
+                        </RadzenColumn>
+                        <RadzenColumn Size="1">
+
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Jaarlijks bedrag
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Vanaf jaar
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            Opmerking
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <WizardAccordionItem
+                    ProjectGridWizard="@Model"
+                    PropertyName="@(nameof(Model.LostIncome))"
+                    Text="@("Gederfde inkomsten")" />
+                </div>
+                <br />
+                <RadzenButton Click="@(() => _selectedIndex = 4)" Style="margin-bottom: 10px">
+                    Ga verder naar restwaarde
+                </RadzenButton>
+            </RadzenAccordionItem>
+            <RadzenAccordionItem Icon="currency_exchange" Text="Restwaarde" >
+                Is er nog een restwaarde voor deze investering aan het einde van het project in 
+                @(SelectedProjectState.Value.StartYear + SelectedProjectState.Value.Horizon)?
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="10px" AlignItems="AlignItems.Center">
+                    k€
+                    <RadzenNumeric 
+                    Format="0.0"
+                    Step="0.1"
+                    TextAlign="TextAlign.Right"
+                    Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                    TValue="double"
+                    @bind-value="@Model.ResidualValue" />                
+                </RadzenStack>
+                <br />
+            </RadzenAccordionItem>
+        </Items>
+    </RadzenAccordion>
+    <br />
+    <RadzenButton Text="Toepassen" Click="ApplyModel">
+    </RadzenButton>
+}
+@code {
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+
+    public Domain.Entities.ProjectGridWizard? Model { get; set; }
+
+    private int _selectedIndex = 0;
+
+    private bool Loading { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Loading = false;
+
+        SelectedProjectState.Subscribe(this);
+        ProjectContentUpdatedNotifier.Subscribe(this);
+
+        DialogService.OnClose += DialogIsClosing;
+
+        if (SelectedProjectState?.Value == null)
+            return;
+
+        Model = await GetProjectGridWizardUseCase.ExecuteAsync(SelectedProjectState.Value.Id);
+    }
+
+    private void DialogIsClosing(dynamic value)
+    {
+        SaveProjectGridWizardUseCase.ExecuteAsync(Model);
+    }
+
+    private async Task ApplyModel()
+    {
+        var options = new ConfirmOptions
+        {
+            OkButtonText = "Akkoord",
+            CancelButtonText = "Annuleren",
+        };
+
+        var result = await DialogService.Confirm(
+            "Let op: de eerder ingevulde waarden worden overschreven door de in dit venster ingevulde gegevens.", 
+            "Akkoord om waarden te overschrijven?",
+            options);
+
+        if (result != true)
+            return;
+
+        //Apply, and  close, we save on close;
+        Loading = true;
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+
+        //We used the wizard so we have chosen method 1;
+        SelectedProjectState.Value.ChosenGridMethod = 1;
+        await SaveProjectUseCase.ExecuteAsync(SelectedProjectState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+        await ApplyProjectGridWizardUseCase.ExecuteAsync(Model, CurrentUserState?.Value?.Name ?? "NULL");
+        DialogService.Close(Model);
+    }
+
+    private void OnStartYearChanged(int _)
+    {
+        if(Model == null)
+            return;
+
+        var yearProperties = typeof(Domain.Entities.ProjectGridWizard).GetProperties()
+            .Where(x => x.CanWrite)
+            .Where(x => x.Name.ToLower().EndsWith("year"))
+            .Where(x => x.Name != nameof(Domain.Entities.ProjectGridWizard.StartYear))
+            .ToList();
+
+        yearProperties.ForEach(x => x.SetValue(Model, Model.StartYear));
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(BCT.Domain.Entities.Project p)
+    {
+        //This should not be possible when we are in this screen!
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent projectContentUpdatedEvent)
+    {
+        //This can be ignored.
+    }
+
+    public void Dispose()
+    {
+        SelectedProjectState.Unsubscribe(this);
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+}

@@ -1,0 +1,137 @@
+﻿@page "/company/compareProjects"
+
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+@using BCT.Blazor.UIModels
+@using BCT.Domain.Entities
+
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IObserver<ProjectRemovedEvent>
+@implements IDisposable
+
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+@inject IGetCompaniesForUserUseCase GetCompaniesForUserUseCase
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+
+<RadzenDropDown @bind-Value="@_selectedCompany"
+Data="@_availableCompanies"
+TextProperty="Name"
+ValueProperty="Id"
+Multiple=false
+Placeholder="Selecteer bedrijf"
+Change="@(async () => await UpdateProjects())"
+FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+FilterOperator="StringFilterOperator.Contains"
+AllowFiltering="true" />
+
+<RadzenDropDown @bind-Value=@_selectedProjects
+Data="@_availableProjects"
+TextProperty="@nameof(Project.Name)"
+ValueProperty="@nameof(Project.Id)"
+Multiple=true
+Placeholder="Selecteer proeject(en)"
+Change="@(async () => await _compareChart.UpdateChart())"
+FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+FilterOperator="StringFilterOperator.Contains"
+AllowFiltering="true" />
+
+<RadzenDropDown @bind-Value=@_selectedProperties
+Data="@_avaialbleProperties"
+TextProperty="Value"
+ValueProperty="Key"
+Multiple=true
+Placeholder="Selecteer project eigenschap(en)"
+Change="@(async () => await _compareChart.UpdateChart())"
+FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+FilterOperator="StringFilterOperator.Contains"
+AllowFiltering="true" />
+
+<div style="height:90vh">
+    <CompareProjectsChart @ref=_compareChart SelectedProjects="@_selectedProjects" Properties="_selectedProperties" />
+</div>
+
+@code {
+
+    [CascadingParameter]
+    private CurrentUserState currentUserState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    private List<string> _selectedProperties { get; set; } = new();
+    private List<int> _selectedProjects { get; set; } = new();
+    private int? _selectedCompany { get; set; } = null;
+
+    private List<Company> _availableCompanies { get; set; } = new();
+    private List<KeyValueItem> _avaialbleProperties { get; set; } = new();
+    private List<Project> _availableProjects { get; set; } = new();
+    private CompareProjectsChart _compareChart { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (currentUserState?.Value == null)
+            return;
+
+        ProjectContentUpdatedNotifier.Subscribe(this);
+        _availableCompanies = await GetCompaniesForUserUseCase.ExecuteAsync(currentUserState.Value);
+        _avaialbleProperties = PresentationSettings.PropertySelectorOptions.Select(x => new KeyValueItem() { Key = x.Key, Value = x.Value }).ToList();
+    }
+
+    private async Task UpdateProjects()
+    {
+        _selectedProjects.Clear();
+        var company = _availableCompanies.FirstOrDefault(x => x.Id == _selectedCompany);
+
+        if (company == null)
+            return;
+
+        _availableProjects = await GetProjectsForCompanyUseCase.ExecuteAsync(company);
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) { throw new NotImplementedException(); }
+
+    public void OnNext(ProjectContentUpdatedEvent value)
+    {
+        if (!_selectedProjects.Contains(value.Project.Id))
+            return;
+
+        InvokeAsync(async () =>
+        {
+            await _compareChart.RefreshData();
+            await _compareChart.UpdateChart();
+        });
+    }
+
+    public void OnNext(ProjectRemovedEvent value)
+    {
+        if (!_selectedProjects.Contains(value.ProjectId))
+            return;
+
+        _selectedProjects.RemoveAll(x => x == value.ProjectId);
+
+        InvokeAsync(async () =>
+        {
+            await _compareChart.RefreshData();
+            await _compareChart.UpdateChart();
+        });
+    }
+
+    public void Dispose()
+    {
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+
+    class KeyValueItem
+    {
+        public required string Key { get; set; }
+        public required string Value { get; set; }
+    }
+}

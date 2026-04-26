@@ -1,0 +1,14 @@
+﻿<RadzenMenu Click="@((args) => OnItemClicked((Domain.Entities.Role)args.Value))">
+    @foreach(var o in Options)
+    {
+        <RadzenMenuItem Text="@o.Name" Value="@o"/>
+    }
+</RadzenMenu>
+
+@code {
+    [Parameter]
+    public List<Domain.Entities.Role> Options { get; set; } = new();
+
+    [Parameter]
+    public Action<Domain.Entities.Role> OnItemClicked { get; set; }
+}

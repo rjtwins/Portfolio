@@ -1,0 +1,169 @@
+﻿@page "/project/step2"
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+
+@implements IObserver<BCT.Domain.Entities.Project>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IDisposable
+
+@inject IProjectValueService pvs
+@inject IHelpTextService hts
+
+<RadzenStack Orientation="Orientation.Vertical">
+    <div Style="width:100%" >
+        @((MarkupString)HelpText.Step2.IntroText)
+    </div>
+    <RadzenStack Orientation="Orientation.Horizontal">
+        <RadzenCard Style="width:100%;"  Variant="Variant.Outlined">
+            <RadzenText>
+                <strong>Besliscriteria</strong>
+                <ul>
+                    <li>Met de schuifjes geeft u aan hoe belangrijk elk criterium is voor uw investeringsbeslissing.</li>
+                    <li>In de bijbehorende tekstvelden beschrijft u concreet hoe uw project scoort op deze criteria.</li>
+                </ul>
+            </RadzenText>
+            <br />
+            <RadzenRow AlignItems="AlignItems.Center" Style="padding-bottom:0px">
+                <RadzenColumn Style="min-width:250px" Size="2">
+                    Criteria
+                </RadzenColumn>
+                 <RadzenColumn Style="min-width:200px" Size="2">
+                     <RadzenStack Orientation="Orientation.Horizontal" gap="0px" JustifyContent="JustifyContent.SpaceBetween">
+                         <div>
+                             Niet belangrijk
+                         </div>
+                         <div>
+                             -
+                         </div>
+                         <div>
+                             Heel belangrijk
+                         </div>
+                     </RadzenStack>
+                 </RadzenColumn>
+                 <RadzenColumn Style="min-width: 0px; padding-left:15px">
+                    Toelichting
+                 </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow AlignItems="AlignItems.Center" Style="padding-bottom:0px">
+                <RadzenColumn Style="min-width:250px" Size="2">
+                </RadzenColumn>
+                 <RadzenColumn Style="min-width:200px" Size="2">
+                    <RadzenStack Gap="0px" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                        <RadzenText>
+                            1
+                        </RadzenText>
+                        <RadzenText>
+                            2
+                        </RadzenText>
+                        <RadzenText>
+                            3
+                        </RadzenText>
+                        <RadzenText>
+                            4
+                        </RadzenText>
+                        <RadzenText>
+                            5
+                        </RadzenText>
+                    </RadzenStack>
+                 </RadzenColumn>
+                 <RadzenColumn Style="padding-left:15px; min-width:0px;">
+                    
+                 </RadzenColumn>
+            </RadzenRow>
+            <CriteriaItem Data="Data" HelpText="@HelpText.Step2.Verdienmodel" Key="Verdienmodel" ForceEnabled=false/>
+            <CriteriaItem Data="Data" HelpText="@HelpText.Step2.Kwaliteit" Key="Kwaliteit"/>
+            <CriteriaItem Data="Data" HelpText="@HelpText.Step2.Onderhoud" Key="Onderhoud"/>
+            <CriteriaItem Data="Data" HelpText="@HelpText.Step2.Digitaliseringgraad" Key="Digitaliseringgraad"/>
+            <CriteriaItem Data="Data" HelpText="@HelpText.Step2.Werkomgeving" Key="Werkomgeving"/>
+            <CriteriaItem Data="Data" HelpText="@HelpText.Step2.Flexibiliteit" Key="Flexibiliteit"/>
+        </RadzenCard>
+    </RadzenStack>
+        <RadzenCard Style="width:100%" Variant="Variant.Outlined" class="project-step-notes-container">
+            <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="5px">
+                <RadzenIcon 
+                Icon="info"
+                        class="tooltip_icon"
+                MouseLeave="hts.CloseTooltip"
+                MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step3.Risks))"/>
+                <RadzenText><strong>Risico's</strong></RadzenText>
+            </RadzenStack>
+            <br />
+            <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Risk", Data).Value) Change="@(() => pvs.SaveValue("Risk", Data))" class="project-step-notes">
+            </RadzenTextArea>
+        </RadzenCard>
+        <RadzenCard Style="width:100%" Variant="Variant.Outlined" class="project-step-notes-container">
+            <RadzenText><strong>Notities</strong></RadzenText>
+            <br />
+            <RadzenText>Gebruik dit notitieveld om belangrijke details en overwegingen vast te leggen.</RadzenText>
+            <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Step2Notes", Data).Value) Change="@(() => pvs.SaveValue("Step2Notes", Data))" class="project-step-notes">
+            </RadzenTextArea>
+        </RadzenCard>
+</RadzenStack>
+
+@* <style type="text/css">
+    .rz-rating .rzi-star-o:before {
+      content: "radio_button_unchecked" !important;
+    }
+
+    .rz-rating .rzi-star:before{
+        content: "radio_button_checked" !important;
+    }
+</style> *@
+
+@code {
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    private Dictionary<string, Domain.Entities.ValueModel> Data { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SelectedProjectState.Subscribe(this);
+        ProjectContentUpdatedNotifier.Subscribe(this);
+        Data = await pvs.GetProjectData(SelectedProjectState.Value);
+        await base.OnInitializedAsync();
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(BCT.Domain.Entities.Project p)
+    {
+        InvokeAsync(async () =>
+        {
+            Data = await pvs.GetProjectData(SelectedProjectState.Value);
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent e)
+    {
+        if (SelectedProjectState.Value == null || e.Project.Id != SelectedProjectState.Value.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            Data = await pvs.GetProjectData(SelectedProjectState.Value);
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void Dispose()
+    {
+        SelectedProjectState.Unsubscribe(this);
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+}

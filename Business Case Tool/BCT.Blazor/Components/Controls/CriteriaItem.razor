@@ -1,0 +1,83 @@
+﻿@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+
+@inject IHelpTextService hts
+@inject IProjectValueService pvs
+@inject NavigationManager navigationManager
+
+<RadzenRow AlignItems="AlignItems.Center" Style="padding-bottom:10px">
+    <RadzenColumn Style="min-width:250px" Size="2">
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenIcon Icon="info"
+            Style="padding-top:0px;"
+            MouseLeave="hts.CloseTooltip"
+            MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText))"
+                        class="tooltip_icon" />
+            <RadzenSwitch Disabled=@ForceEnabled Style="align-self:center" @bind-Value=@(pvs.GetValue<BoolValue>($"{Key}Enabled", Data).Value) Change="ToggleEnabled" />
+            <RadzenText Style="align-self:center; width:100%; text-overflow: ellipsis; word-break:break-word; word-wrap:break-word">
+                @PresentationSettings.AdditionalCriteriaLabels[Key]
+            </RadzenText>
+        </RadzenStack>
+    </RadzenColumn>
+    <RadzenColumn Style="min-width:200px" Size="2">
+        @if (_sliderDisabled)
+        {
+            <RadzenSlider Step="1" Max=4 Min=0 TValue="double"
+                          Value=@(pvs.GetValue<DoubleValue>($"{Key}Weight", Data).Value)
+                          Style="width:100%;"
+                          Disabled=true />
+        }
+        else
+        {            
+            <RadzenSlider Step="1" Max=4 Min=0 TValue="double"
+            @bind-Value=@(pvs.GetValue<DoubleValue>($"{Key}Weight", Data).Value)
+            Change="@(() => pvs.SaveValue($"{Key}Weight", Data))"
+            Style="width:100%;"
+            Disabled=false/>
+        }
+    </RadzenColumn>
+    <RadzenColumn Style="min-width:0px;">
+        @if (ForceEnabled)
+        {
+            <RadzenTextBox Disabled=true Style="width:100%" Value="In te vullen in de volgende stap."/>
+        }
+        else
+        {
+            <RadzenTextBox @bind-value=@(pvs.GetValue<StringValue>($"{Key}", Data).Value)
+                           Change="@(() => pvs.SaveValue($"{Key}", Data))" Style="width:100%"
+                           Disabled=_sliderDisabled />
+        }
+    </RadzenColumn>
+</RadzenRow>
+
+
+
+
+@code{
+    [Parameter]
+    public required string Key { get; set; }
+    [Parameter]
+    public required string HelpText { get; set; }
+
+    [Parameter]
+    public required Dictionary<string, Domain.Entities.ValueModel> Data {get; set; }
+
+    [Parameter]
+    public bool ForceEnabled { get; set; } = false;
+
+    private bool _sliderDisabled { get; set; } = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _sliderDisabled = !(ForceEnabled || pvs.GetValue<BoolValue>($"{Key}Enabled", Data).Value);
+        await base.OnParametersSetAsync();
+    }
+
+    public void ToggleEnabled()
+    {
+        pvs.SaveValue($"{Key}Enabled", Data);
+        _sliderDisabled = !(ForceEnabled || pvs.GetValue<BoolValue>($"{Key}Enabled", Data).Value);
+    }
+}

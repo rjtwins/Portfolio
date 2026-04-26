@@ -1,0 +1,13 @@
+@inject IConfiguration Configuration;
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Style="margin-top:2px; margin-bottom:2px; height:40px">
+    @if (Configuration["OtherConfig:ShowLogo"] == "true")
+    {
+        <RadzenImage Path="@(Configuration["OtherConfig:LogoPathWhite"])" Style="height: 60px; margin-top:25px" />
+    }
+    <RadzenText Style="margin:0px; color:white; align-self:start; padding-top: 8px;">
+        <strong>
+            Investeringscalculator
+        </strong>
+    </RadzenText>
+</RadzenStack>

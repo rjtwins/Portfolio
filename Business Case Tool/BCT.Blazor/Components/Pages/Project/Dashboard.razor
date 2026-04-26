@@ -1,0 +1,316 @@
+@page "/project/dashboard/{Token}"
+
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using System.Globalization
+@using UIModels
+@using BCT.Blazor.Components.Layout
+
+@layout EmptyLayout
+
+@inject IJSRuntime JSRuntime
+@inject IConfiguration Configuration
+@inject DialogService DialogService
+
+@inject IHelpTextService hts
+@inject IGetProjectValuesUseCase GetProjectValuesUseCase
+@inject IProjectValueService pvs
+
+<div id="print_wrapper">
+    @if (Printing)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" Style="margin-bottom:20px">
+            @if (Configuration["OtherConfig:ShowLoader"] == "true")
+            {
+                <RadzenImage Path="favicon.png" Style="height:65px;"/>
+            }
+            <RadzenText TextStyle=@TextStyle.H3 Style="font-weight:500" Text="@($"Investeringscalculator: {_projectName}")" />
+        </RadzenStack>
+    }
+    <RadzenRow id="dashboard-row-1" Style="height:40vh;">
+        <RadzenStack Orientation="Orientation.Horizontal" Style="width:100%; height:100%">
+            <RadzenStack Style="@("height:100%; min-width:340px")">
+                <DashboardValueControl Text="@(InterestEnabled ? "Terugverdientijd (NCW)" : "Terugverdientijd")"
+                                       Value="@DashboardData.Payback"
+                                       ScenarioValue="@ScenarioDashboardData?.Payback"
+                                       ScenarioActive="@_scenarioActive"
+                                       BadgeStyle="@(ScenarioDashboardData?.PayBackBadgeStyle)"
+                                       DifValue="@ScenarioDashboardData?.PaybackDiff"
+                                       GoodSign="-"
+                                       BadSign="+"
+                                       Icon="schedule"
+                                       HelpText="@HelpText.Step3.Payback"
+                                       HelpTextOptions="IHelpTextService.RightSide" />
+                <DashboardValueControl Text="@(InterestEnabled ? "Return on investment (ROI)(NCW)" : "Return on investment (ROI)")"
+                                       Value="@(DashboardData.ROI.ToString() + "%")"
+                                       ScenarioValue="@(ScenarioDashboardData?.ROI.ToString() + "%")"
+                                       ScenarioActive="@_scenarioActive"
+                                       BadgeStyle="@(ScenarioDashboardData?.ROIBadgeStyle)"
+                                       DifValue="@((ScenarioDashboardData?.ROI - DashboardData.ROI).ToString()?.TrimStart('-') + "%")"
+                                       Icon="troubleshoot"
+                                       HelpText="@(InterestEnabled ? HelpText.Step4.ROIInterest : HelpText.Step4.ROI)"
+                                       HelpTextOptions="IHelpTextService.RightSide" />
+                <DashboardValueControl Text="@(InterestEnabled ? "Totaal resultaat (NCW)" : "Totaal resultaat")"
+                                       Value="@("€ " + DashboardData.TotalResult.ToString() + "k")"
+                                       ScenarioValue="@("€ " + ScenarioDashboardData?.TotalResult.ToString() + "k")"
+                                       ScenarioActive="@_scenarioActive"
+                                       BadgeStyle="@(ScenarioDashboardData?.TotalResultBadgeStyle)"
+                                       DifValue="@("€ " + (ScenarioDashboardData?.TotalResult - DashboardData.TotalResult).ToString()?.TrimStart('-') + "k")"
+                                       Icon="savings"
+                                       HelpText="@(InterestEnabled ? HelpText.Step4.TotalResultInterest : HelpText.Step4.TotalResult)"
+                                       HelpTextOptions="IHelpTextService.RightSide" />
+            </RadzenStack>
+            <RadzenCard Variant="Variant.Outlined" style="height:100%; width:100%; min-width:335px;">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                    <RadzenText class="rz-text-tertiary-color">
+                        Totale kasstroom
+                    </RadzenText>
+                    <RadzenIcon Icon="info"
+                                class="rz-text-tertiary-color tooltip_icon"
+                                MouseLeave="hts.CloseTooltip"
+                                MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step4.ChartHelpText))" />
+                </RadzenStack>
+                @if ((Mode == 0 || Mode == 1) && ChartLineData.Count > 0 && ChartBarData.Count > 0)
+                {
+                    <ResultChart @ref=@_resultChart
+                                 ChartBarData="ChartBarData"
+                                 ChartLineData="ChartLineData"
+                                 ChartBarDataScenario="ChartBarDataScenario"
+                                 ChartLineDataScenario="ChartLineDataScenario"
+                                 LineName="@LineKassstroomKey"
+                                 BarName="@BarKasstroomKey" />
+                }
+                else
+                {
+                }
+            </RadzenCard>
+            <RadzenStack Style="@("height:100%; min-width:340px")">
+                <DashboardValueControl Text="Totaal investeringen"
+                                       Value="@("€ " + DashboardData.TotalInvestment.ToString() + "k")"
+                                       ScenarioValue="@("€ " + ScenarioDashboardData?.TotalInvestment.ToString() + "k")"
+                                       ScenarioActive="@_scenarioActive"
+                                       BadgeStyle="@(ScenarioDashboardData?.TotalInvestmentBadgeStyle)"
+                                       DifValue="@("€ " + (ScenarioDashboardData?.TotalInvestment - DashboardData.TotalInvestment).ToString()?.TrimStart('-') + "k")"
+                                       GoodSign="-"
+                                       BadSign="+"
+                                       Icon="sell"
+                                       HelpText="@HelpText.Step4.TotalInvestment"
+                                       HelpTextOptions="IHelpTextService.LeftSide" />
+                <DashboardValueControl Text="Totaal kosten"
+                                       Value="@("€ " + DashboardData.TotalCost.ToString() + "k")"
+                                       ScenarioValue="@("€ " + ScenarioDashboardData?.TotalCost.ToString() + "k")"
+                                       ScenarioActive="@_scenarioActive"
+                                       BadgeStyle="@(ScenarioDashboardData?.TotalCostBadgeStyle)"
+                                       DifValue="@("€ " + (ScenarioDashboardData?.TotalCost - DashboardData.TotalCost).ToString()?.TrimStart('-') + "k")"
+                                       GoodSign="-"
+                                       BadSign="+"
+                                       Icon="trending_down"
+                                       HelpText="@HelpText.Step4.TotalCost"
+                                       HelpTextOptions="IHelpTextService.LeftSide" />
+                <DashboardValueControl Text="Totaal inkomsten"
+                                       Value="@("€ " + DashboardData.TotalIncome.ToString() + "k")"
+                                       ScenarioValue="@("€ " + ScenarioDashboardData?.TotalIncome.ToString() + "k")"
+                                       ScenarioActive="@_scenarioActive"
+                                       BadgeStyle="@(ScenarioDashboardData?.TotalIncomeBadgeStyle)"
+                                       DifValue="@("€ " + (ScenarioDashboardData?.TotalIncome - DashboardData.TotalIncome).ToString()?.TrimStart('-') + "k")"
+                                       Icon="trending_up"
+                                       HelpText="@HelpText.Step4.TotalIncome"
+                                       HelpTextOptions="IHelpTextService.LeftSide" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenRow>
+    <br />
+    <RadzenRow id="dashboard-row-2" Style="height:40vh;">
+        <RadzenColumn Size="4" Style="height:100%">
+            <RadzenCard Variant="Variant.Outlined" style="height:100%; overflow-y:scroll">
+                <RadzenText class="rz-text-tertiary-color">
+                    Aanvullende criteria
+                </RadzenText>
+                <br />
+                <RadzenStack JustifyContent="@(AdditionalCriteriaItems.Count > 3 ? JustifyContent.SpaceBetween : JustifyContent.Start)" Style="height:85%" gap="@(AdditionalCriteriaItems.Count > 3 ? "5px" : "30px")">
+                    @foreach (var item in AdditionalCriteriaItems)
+                    {
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Style="width:100%;">
+                            <RadzenImage Path="@($"harveyballs/svg/{PresentationSettings.HarveyBalls[item.Value]}.svg")"
+                                         Style="width: 5rem; filter: invert(49%) sepia(98%) saturate(1602%) hue-rotate(7deg) brightness(104%) contrast(97%);"
+                                         AlternateText="@item.Value.ToString()" />
+                            <RadzenFormField Text="@item.Name" title="@item.Name" Style="width:100%;" AllowFloatingLabel=false>
+                                <RadzenTextBox Value="@item.Text" Disabled=true />
+                            </RadzenFormField>
+                        </RadzenStack>
+                    }
+                </RadzenStack>
+            </RadzenCard>
+        </RadzenColumn>
+        <RadzenColumn Size="4" Style="height:100%; min-width:335px">
+            <RadzenStack Style="height:100%">
+                <RadzenCard Variant="Variant.Outlined" style="height:50%; overflow:hidden">
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                        <RadzenText class="rz-text-tertiary-color">
+                            Beoogde waarde
+                        </RadzenText>
+                        <RadzenIcon Icon="info"
+                                    class="rz-text-tertiary-color tooltip_icon"
+                                    MouseLeave="hts.CloseTooltip"
+                                    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step4.Value))" />
+                    </RadzenStack>
+                    <br />
+                    <div style="width:100%; height:85%; overflow:scroll">
+                        <RadzenText class="rz-text-tertiary-color">
+                            @(pvs.GetValue<StringValue>("Value", Data).Value)
+                        </RadzenText>
+                    </div>
+                </RadzenCard>
+                <RadzenCard Variant="Variant.Outlined" style="height:50%; overflow:hidden">
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                        <RadzenText class="rz-text-tertiary-color">
+                            Evaluatie
+                        </RadzenText>
+                        <RadzenIcon Icon="info"
+                                    class="rz-text-tertiary-color tooltip_icon"
+                                    MouseLeave="hts.CloseTooltip"
+                                    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step4.Evaluation))" />
+                    </RadzenStack>
+                    <div style="width:100%; height:90%; overflow:visible">
+                        <RadzenTextArea @bind-Value=@(pvs.GetValue<StringValue>("Step4Evaluatie", Data).Value)
+                                        Change="@(() => pvs.SaveValue("Step4Evaluatie", Data))"
+                                        Style="height:100%; width:100%; padding:5px; margin:0px; border:none" />
+                    </div>
+                </RadzenCard>
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn Size="4" Style="height:100%">
+            <RadzenStack Style="height:100%">
+                <RadzenCard Variant="Variant.Outlined" style="height:50%; overflow:hidden">
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="5px">
+                        <RadzenText class="rz-text-tertiary-color">
+                            Risico's
+                        </RadzenText>
+                        <RadzenIcon Icon="info"
+                                    class="rz-text-tertiary-color tooltip_icon"
+                                    MouseLeave="hts.CloseTooltip"
+                                    MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.LeftSide, text: HelpText.Step3.Risks))" />
+                    </RadzenStack>
+                    <br />
+                    <div style="width:100%; height:85%; overflow:scroll">
+                        <RadzenText class="rz-text-tertiary-color">
+                            @(pvs.GetValue<StringValue>("Risk", Data).Value)
+                        </RadzenText>
+                    </div>
+                </RadzenCard>
+                <RadzenCard Variant="Variant.Outlined" style="height:50%; overflow:hidden">
+                    <RadzenText class="rz-text-tertiary-color">
+                        Notities
+                    </RadzenText>
+                    <div style="width:100%; height:90%; overflow:visible;">
+                        <RadzenTextArea @bind-Value=@(pvs.GetValue<StringValue>("Step4Notes", Data).Value)
+                                        Change="@(() => pvs.SaveValue("Step4Notes", Data))"
+                                        Style="height:100%; width:100%; padding:5px; margin:0px; border:none" />
+                    </div>
+                </RadzenCard>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+@code {
+    [Parameter]
+    public required DashboardDataModel DashboardData { get; set; }
+    [Parameter]
+    public required DashboardDataModel ScenarioDashboardData { get; set; }
+    [Parameter]
+    public required List<AdditionalCriteriaItem> AdditionalCriteriaItems { get; set; }
+    [Parameter]
+    public required Dictionary<string, Domain.Entities.ValueModel> Data { get; set; }
+
+    [Parameter]
+    public Dictionary<string, Domain.Entities.ValueModel> ScenarioData { get; set; } = new();
+    [Parameter]
+    public required int Mode { get; set; } = 0;
+    [Parameter]
+    public List<DataItem> ChartLineData { get; set; } = new();
+    [Parameter]
+    public List<DataItem> ChartBarData { get; set; } = new();
+    [Parameter]
+    public List<DataItem> ChartLineDataScenario { get; set; } = new();
+    [Parameter]
+    public List<DataItem> ChartBarDataScenario { get; set; } = new();
+    [Parameter]
+    public required string LineKassstroomKey { get; set; }
+    [Parameter]
+    public required string BarKasstroomKey { get; set; }
+
+    private string _projectName = "";
+
+    [Parameter]
+    public bool Printing { get; set; } = false;
+
+    [Parameter]
+    public string? Token { get; set; }
+
+    [Parameter]
+    public required Project Project { get; set; }
+
+    private bool InterestEnabled => Project == null ? _interestEnabled : Project.InterestEnabled;
+    private bool _interestEnabled { get; set; } = false;
+
+
+    private bool _scenarioActive => Mode == 1;
+
+    ResultChart _resultChart { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (string.IsNullOrEmpty(Token))
+            return;
+
+        Printing = true;
+        var dataDict = State.PrintStore.Get(Token);
+        DashboardData = (DashboardDataModel)dataDict["DashboardData"];
+        ScenarioDashboardData = (DashboardDataModel)dataDict["ScenarioDashboardData"];
+        AdditionalCriteriaItems = (List<AdditionalCriteriaItem>)dataDict["AdditionalCriteriaItems"];
+        Data = (Dictionary<string, Domain.Entities.ValueModel>)dataDict["Data"];
+        ScenarioData = (Dictionary<string, Domain.Entities.ValueModel>)dataDict["ScenarioData"];
+        Mode = (int)dataDict["Mode"];
+        ChartLineData = (List<DataItem>)dataDict["ChartLineData"];
+        ChartBarData = (List<DataItem>)dataDict["ChartBarData"];
+        ChartLineDataScenario = (List<DataItem>)dataDict["ChartLineDataScenario"];
+        ChartBarDataScenario = (List<DataItem>)dataDict["ChartBarDataScenario"];
+        LineKassstroomKey = (string)dataDict["LineKassstroomKey"];
+        BarKasstroomKey = (string)dataDict["BarKasstroomKey"];
+        _projectName = (string)dataDict["ProjectName"];
+        _interestEnabled = (bool)dataDict["Interest"];
+
+        StateHasChanged();
+    }
+
+    public async Task UpdateChart(bool animate = false)
+    {
+        await _resultChart.UpdateChart(animate);
+    }
+
+    public async Task SetChartParameters(ParameterView parameters)
+    {
+        await _resultChart.SetParametersAsync(parameters);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (!firstRender)
+            return;
+
+        if (Printing)
+        {
+            await JSRuntime.InvokeVoidAsync("HideScrollBars");
+        }
+    }
+}

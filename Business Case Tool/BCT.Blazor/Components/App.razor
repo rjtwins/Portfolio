@@ -1,0 +1,88 @@
+﻿@using BCT.Application.EventManagement
+@using System.Security.Claims
+@using BCT.Application.ServiceInterfaces
+@using BCT.Application.Services
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Server.Circuits
+
+@implements IDisposable
+
+@inject IConfiguration Configuration
+@inject IGetUserUseCase GetUserUseCase
+@inject IAuthService AuthService
+@inject CircuitHandler CircuitHandler
+@inject IEventLogger EventLogger
+@inject ICurrentUserService CurrentUserService
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="@(_href)" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="BCT.Blazor.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <RadzenTheme Theme="material" />
+    <HeadOutlet @rendermode="@InteractiveServer" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+
+<body>
+    <Routes @rendermode="@InteractiveServer" />
+    <script src="_framework/blazor.web.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/printThis.js"></script>
+    <script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
+</body>
+
+</html>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    [Inject]
+    private ThemeService? ThemeService { get; set; }
+
+    [CascadingParameter]
+    CultureInfo? DefaultCulture { get; set; }
+
+    private string _href => string.IsNullOrEmpty(Configuration["Url:SubSite"]) ? "/" :  $"/{Configuration["Url:SubSite"]}/";//$"/{Configuration["Url:SubSite"] ?? ""}/";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DefaultCulture = CultureInfo.GetCultureInfo("nl-NL");
+
+        await base.OnInitializedAsync();
+
+        if (HttpContext != null)
+        {
+            var theme = HttpContext.Request.Cookies["BCTTheme"];
+
+            if (!string.IsNullOrEmpty(theme) && ThemeService != null)
+            {
+                ThemeService.SetTheme(theme, false);
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        //EventLogger.Dispose();
+    }
+}
