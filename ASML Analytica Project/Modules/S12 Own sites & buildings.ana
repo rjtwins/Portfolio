@@ -1,0 +1,1622 @@
+{ Analytica Model S12_Own_sites_buildi, encoding="UTF-8" }
+SoftwareVersion 6.4.0
+
+{!-60000|Attribute AcpStyles}
+Attribute ExternalType
+Title: ExternalType
+
+
+AskAttribute ExternalType,Function,Yes
+AskAttribute ExternalType,Module,Yes
+AskAttribute ExternalType,Variable,Yes
+
+LinkModule S12_Own_sites_buildi
+Title: S12~
+Own sites & buildings
+Author: Jac Goorden~
+Simbon
+Date: Tue, Jun 6, 2023 4:41 pm
+NodeSize: 64,32
+DiagState: 2,12,5,1886,532,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule S12_Own_sites_buildi,2,2,0,0,Modules\S12 Own sites & buildings.ana
+
+Objective S12_CO2e
+Title: S12 CO2e
+Units: ktonCO2e
+Description: CO2e for S12 Own sites & buildings model per Scenario.
+Definition: S12_CO2e_Ext[S12_Ext_Scenario=Scenario]
+NodeLocation: 1160,608,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,36,42,1608,607,1,MIDM
+Aliases: Alias Al288522003
+ReformDef: [Time,Scenario]
+ReformVal: [Time,Scenario]
+Att__TotalsIndex: [Lever,S12_Geography]
+Att_ResultSliceState: [S12_Geography,0,Scenario,1,Time,1]
+Att_EditSliceState: [Lever,1,Scenario,1,Time,1]
+ExternalType: Output
+
+Text Te145915667
+Title: S12 v1 Scope 1 & 2 Own sites and buildings CO2 impact submodel
+NodeLocation: 444,28,-1
+NodeSize: 436,20
+
+Index S12_Geography
+Att_PrevIndexValue: ['Netherlands','Germany','EU others','San Diego','Wilton','USA others','Taiwan','Korea','China','Asia others']
+Title: S12  Geography
+Description: Location of S12 energy consumption/emissions.
+Definition: ['Netherlands','Germany','EU others','San Diego','Wilton','USA others','Taiwan','Korea','China','Asia others']
+NodeLocation: 1160,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 252,144}
+
+Variable Is_Factory
+Title: Is Factory
+Description: check if it is (or includes ) a factory building
+Definition: Checkbox(0)
+NodeLocation: 256,472,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+TableCellDefault: Checkbox(0)
+
+Index Factory
+Title: Factory
+Description: all factories
+Definition: CopyIndex(Subset(Is_Factory))
+NodeLocation: 96,408,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Text Te787022995
+Title: Buildings and their locations
+NodeLocation: 184,288,-1
+NodeSize: 176,232
+
+Variable Factory_Properties
+Att_PrevIndexValue: ['BL','Size']
+Title: Factory Properties
+Description: descriptive factory properties
+Definition: Table(Factory,Self)(~
+'EUV',100)
+IndexVals: ['BL','Size']
+NodeLocation: 96,472,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+TableCellDefault: ''
+
+Text Te999883923
+Title: Energy
+NodeLocation: 540,288,-1
+NodeSize: 172,232
+
+Text Te945357971
+Title: Emissions
+NodeLocation: 888,288,-1
+NodeSize: 168,232
+
+Index S12_Utility
+Att_PrevIndexValue: ['Gas','Electricity']
+Title: S12 Utility
+Description: Utility type, gas or electricty.
+Definition: ['Gas','Electricity']
+NodeLocation: 1160,200,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize: 237,48}
+
+Variable Energy_Savings
+Title: Energy Savings
+Units: MWh
+Description: Energy savings by energy saving measures.
+Definition: Table(Time,S12_Geography,S12_Utility)(~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+111,2527,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,888.88,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+777.7,5722.2,~
+0,0,~
+0,194.44,~
+0,888.88,~
+0,0,~
+0,1166.66,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+2750,8194.4,~
+0,0,~
+0,944.44,~
+0,1444.44,~
+166.66,0,~
+0,1305.55,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0)
+NodeLocation: 464,144,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,1570,383,0,MIDM
+NodeColor: 52428,65535,62451
+ReformDef: [Time,S12_Geography]
+Att_EditSliceState: [S12_Utility,2,S12_Geography,1,Time,1]
+{!50000|Att_ColumnWidths: [,Time,\([61])]}
+ExternalType: Input
+
+Text Te1515521171
+Title: S12 Interventions
+NodeLocation: 540,636,-1
+NodeSize: 172,108
+
+Variable CRE_Energy_Purchased
+Title: CRE Energy Purchased
+Units: MWh
+Description: CRE energy purchase predictions.
+Definition: Table(Time,S12_Geography,S12_Utility)(~
+44.083K,208.611K,~
+0,0,~
+0,0,~
+12.6944K,45.05K,~
+31.139K,28.333K,~
+0,0,~
+0,10.111K,~
+0,0,~
+0,0,~
+0,0,~
+39.222K,222.778K,~
+0,0,~
+0,0,~
+11.277K,46.333K,~
+31.017K,31.667K,~
+0,0,~
+0,9722,~
+0,0,~
+0,0,~
+0,0,~
+51.111K,245K,~
+0,0,~
+0,0,~
+11.9722K,48.9166K,~
+35.2778K,33K,~
+941,5000,~
+0,22.889K,~
+2185,4000,~
+0,700,~
+0,0,~
+41.43K,233K,~
+0,0,~
+0,0,~
+12.02K,52K,~
+33.549K,36K,~
+1837,9000,~
+0,24.611K,~
+1782,5000,~
+0,700,~
+0,0,~
+48.232K,258K,~
+0,0,~
+0,0,~
+12.02K,52K,~
+42.2218K,36K,~
+1837,9000,~
+0,29K,~
+1782,5000,~
+0,900,~
+0,0,~
+35.915K,317K,~
+6111,23K,~
+483,1000,~
+12.02K,52K,~
+42.2218K,44K,~
+5673,15K,~
+0,30K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+27.799K,451K,~
+6111,23K,~
+483,1000,~
+12.02K,52K,~
+42.2218K,46K,~
+5774,15K,~
+0,30K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+19.594K,543K,~
+6417,24K,~
+507,1000,~
+11.7456K,53K,~
+42.2218K,48K,~
+5880,15K,~
+0,43K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+19.499K,582K,~
+6737,25K,~
+533,1000,~
+11.7456K,55K,~
+42.2218K,48K,~
+5992,16K,~
+0,52K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+19.065K,582K,~
+7074,26K,~
+559,1000,~
+11.7456K,58K,~
+44.3329K,48K,~
+6109,16K,~
+0,55K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+19.013K,582K,~
+7428,28K,~
+587,1000,~
+11.7456K,61K,~
+46.5495K,48K,~
+6232,17K,~
+0,55K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+19.004K,585K,~
+7799,29K,~
+616,1000,~
+11.7456K,64K,~
+48.877K,48K,~
+6362,17K,~
+0,55K,~
+1782,5000,~
+0,4000,~
+3555,1000,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0)
+NodeLocation: 624,384,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+NodeColor: 52427,65535,62258
+ReformDef: [Time,S12_Geography]
+Att_EditSliceState: [S12_Utility,2,S12_Geography,1,Time,1]
+ExternalType: Input
+
+Text Te2120212115
+Title: Manufacturing Efficiency
+NodeLocation: 184,636,-1
+NodeSize: 176,108
+
+Variable Base_Cycle_Time
+Title: Base Cycle Time
+Definition: Table(BL,Factory)(~
+0,~
+0,~
+0,~
+0)
+NodeLocation: 96,648,1
+NodeSize: 64,24
+NodeColor: 52428,65535,62451
+
+Variable Energy_Profile_Value
+Title: Energy Profile Value
+Definition: Table(BL,Factory)(~
+0,~
+0,~
+0,~
+0)
+NodeLocation: 96,712,1
+NodeSize: 64,24
+NodeColor: 52428,65535,62451
+
+Index S12_Interventions
+Att_PrevIndexValue: ['Masteprlan CRE','Taiwan Renewable','Korea Renewable']
+Title: S12 Interventions
+Description: interventions for further reduction of S12 emisions
+Definition: ['Masteprlan CRE','Taiwan Renewable','Korea Renewable']
+NodeLocation: 464,608,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,64}
+
+Variable Energy_Savings_CTR
+Title: Energy Savings CTR
+Definition: Sum(Base_Cycle_Time*Energy_Profile_Value*(if Time < Factory_Start_CTR then 1 else 1-Potential_CTR)*S12_Manufacturing_Vo, Factory)
+NodeLocation: 96,576,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Factory_Start_CTR
+Title: Factory Start CTR
+Description: when do we start to see results of CTR
+Definition: Table(Factory)(Choice(Time,6,0))
+NodeLocation: 248,712,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+NodeColor: 52428,65535,62451
+TableCellDefault: choice(Time,5,0)
+
+Variable Potential_CTR
+Title: Potential CTR
+Description: potential reduction in cycle time %
+Definition: Table(BL,Factory)(~
+0.1,~
+0,~
+0,~
+0.5)
+NodeLocation: 248,648,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+NodeColor: 52428,65535,62451
+NumberFormat: 2,%,4,0,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,,0
+TableCellDefault: 0%
+{!40700|Att_CellFormat: Undefined}
+
+Variable S12_Manufacturing_Vo
+Title: S12 Manufacturing Volume
+Description: Units manufactured
+Definition: 1000
+NodeLocation: 248,584,1
+NodeSize: 64,32
+NodeInfo: 1,,,,,,,0,,,,,,0
+
+Text Te504381075
+Title: TBD 15-9-2023 JG/JV
+Description: - manufacturing eff numbers for sanity check~
+- emission factors and manuf volumes to Common
+NodeLocation: 1432,400,-1
+NodeSize: 168,344
+
+Variable On_site_Renewable_En
+Title: On-site Renewable Energy
+Units: MWh
+Description: Energy generated on site.
+Definition: Table(Time,S12_Geography,S12_Utility)(~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,833,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,833,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,944,~
+0,0,~
+0,2305,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0,~
+0,0)
+NodeLocation: 464,256,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 52428,65535,62451
+ReformDef: [Time,S12_Geography]
+Att_ResultSliceState: [S12_Utility,2,S12_Geography,1,Time,1]
+Att_EditSliceState: [S12_Utility,2,S12_Geography,1,Time,1]
+ExternalType: Input
+
+Variable Total_Energy_Savings
+Title: Total Energy Savings
+Units: MWh
+Description: Total of energy savings and generated energy.
+Definition: Energy_Savings + On_site_Renewable_En
+NodeLocation: 624,144,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,196,202,1406,471,,MIDM
+
+Variable Total_Energy
+Title: Total Energy
+Units: MWh
+Description: CRE Predicted energy purchase - Total predicted savings, indicates the total energy that would have been purchased given no savings where made.
+Definition: CRE_Energy_Purchased + Total_Energy_Savings
+NodeLocation: 624,256,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,67,58,1274,346,,MIDM
+
+Variable Emission_Factors
+Title: Emission Factors
+Units: kg CO2e/kWh
+Description: Emission factor per utility type per emission factor type (local or market).
+Definition: Table(Time,S12_Geography,S12_Utility,EF_Type)(~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.18,0.18,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+0.554,0.554,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.18,0.18,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+0.918,0,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+Null,Null,~
+0.2,0.2,~
+0.494,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.2376,0,~
+0.2,0.2,~
+0.2952,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+Null,0.8,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.554,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.468,0,~
+0.2,0.2,~
+0.468,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+Null,0.8,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+Null,0,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+0.2,0.2,~
+0.556,0,~
+0.2,0.2,~
+0.38,0,~
+0.2,0.2,~
+0.227,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.378,0,~
+0.2,0.2,~
+0.509,0.509,~
+0.2,0.2,~
+0.424,0.424,~
+0.2,0.2,~
+0.581,0.581,~
+0.2,0.2,~
+0.487,0.487,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,,~
+,)
+NodeLocation: 976,256,1
+NodeSize: 64,24
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 52428,65535,62451
+ReformDef: [Time,S12_Geography]
+Att_ResultSliceState: [S12_Utility,2,EF_Type,2,S12_Geography,1,Time,1]
+Att_EditSliceState: [S12_Utility,2,EF_Type,1,S12_Geography,1,Time,1]
+{!50000|Att_ColumnWidths: [,Time,\([,,,66])]}
+ExternalType: Input
+
+Index EF_Type
+Att_PrevIndexValue: ['Location','Market']
+Title: EF Type
+Description: Emission factor type (local or market).
+Definition: ['Location','Market']
+NodeLocation: 1160,112,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,48}
+
+Variable Energy_Savings_Emiss
+Title: Energy Savings Emissions
+Units: ktonCO2e
+Description: Total emisions saved by total energy savings per utility per emissions type.
+Definition: (Total_Energy_Savings * Emission_Factors)/1000
+NodeLocation: 808,144,1
+NodeSize: 64,32
+WindState: 2,968,29,936,350
+ValueState: 2,1094,147,400,300,0,MIDM
+ReformVal: [Time,Undefined]
+Att_ResultSliceState: [S12_Utility,1,EF_Type,1,S12_Geography,1,Time,1]
+{!50000|Att_ColumnWidths: [,Time,\([,,,,,,62])]}
+
+Variable Non_CRE_Emissions
+Title: Non CRE Emissions
+Units: ktonCO2e
+Description: Emissions over non savings predicted energy purchased per utiltiy type per emission factor type.
+Definition: (Total_Energy * Emission_Factors)/1000
+NodeLocation: 808,256,1
+NodeSize: 64,24
+ValueState: 2,40,50,1147,459,0,MIDM
+Att_ResultSliceState: [S12_Utility,2,EF_Type,2,S12_Geography,1,Time,1]
+{!50000|Att_ColumnWidths: [,Time,\([65])]}
+
+Variable CRE_Emissions
+Title: CRE Emissions
+Units: ktonCO2e
+Description: Emissions over CRE predicted energy purchased per utiltiy type per emission factor type.
+Definition: (CRE_Energy_Purchased * Emission_Factors)/1000
+NodeLocation: 808,384,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,2146,52,1641,598,0,MIDM
+Att_ResultSliceState: [S12_Utility,2,EF_Type,1,S12_Geography,1,Time,1]
+
+Module S12_Intervention_Det
+Title: S12 Intervention Details
+Author: jorre Vedder~
+Bicore Services
+Date: Mon, Sep 18, 2023 3:00 pm
+NodeLocation: 616,608,1
+NodeSize: 64,32
+DiagState: 2,2143,16,1321,555,17,10
+
+Alias Al1990004819
+Title: S12 Interventions
+NodeLocation: 112,48,1
+NodeSize: 64,24
+Original: S12_Interventions
+
+Index S12_Ext_Scenario
+Title: S12 Ext Scenario
+Definition: Concat(S12_Interventions, Scenario)
+NodeLocation: 112,128,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Variable S12_Scenario
+Title: S12 Scenario
+Definition: Table(Scenario,S12_Interventions)(~
+Checkbox(0),Checkbox(0),Checkbox(0),~
+Checkbox(1),Checkbox(0),Checkbox(0),~
+Checkbox(1),Checkbox(1),Checkbox(1),~
+Checkbox(1),Checkbox(1),Checkbox(1))
+NodeLocation: 328,48,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo1940195411
+
+Alias Al1161629779
+Title: CRE Emissions Intervention Mod.
+NodeLocation: 576,48,1
+NodeSize: 64,40
+Original: CRE_Emissions_Interv
+
+Variable S12_Ext_Scenario_Com
+Title: S12 Ext Scenario Composition
+Definition: IF @S12_Ext_Scenario<=Size(S12_Interventions)~
+	THEN ~
+		IF Time >= Effect_Start ~
+			THEN S12_Ext_Scenario=S12_Interventions ~
+		ELSE 0~
+ELSE S12_Scenario[Scenario=S12_Ext_Scenario]
+NodeLocation: 328,160,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,372,378,1205,389,,MIDM
+ReformVal: [S12_Interventions,S12_Ext_Scenario]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Time,11,S12_Ext_Scenario,1,S12_Interventions,2]
+
+Variable CRE_vs_non_CRE
+Title: CRE vs non-CRE
+Definition: IF S12_Ext_Scenario_Com[S12_Interventions='Masteprlan CRE']~
+	THEN CRE_Emissions~
+ELSE Non_CRE_Emissions;
+NodeLocation: 576,160,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,148,154,1136,444,,MIDM
+Att__TotalsIndex: []
+Att_ResultSliceState: [S12_Utility,1,EF_Type,1,S12_Ext_Scenario,6,S12_Geography,1,Time,1]
+
+Variable Effect_Start
+Title: Effect Start
+Definition: Table(S12_Interventions)(Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0))
+NodeLocation: 328,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo329582675
+
+Close S12_Intervention_Det
+
+Variable CRE_Emissions_Interv
+Title: CRE Emissions Intervention Mod.
+Units: ktonCO2e
+Description: Emissions per geography per year modified by interventions.
+Definition: IF S12_Ext_Scenario_Com[S12_Interventions='Taiwan Renewable'] AND S12_Geography='Taiwan' AND S12_Utility='Electricity'~
+	THEN 0~
+ELSE IF S12_Geography='Taiwan' AND S12_Utility = 'Electricity'~
+	THEN CRE_vs_non_CRE[EF_Type='Location']~
+~
+ELSE IF S12_Ext_Scenario_Com[S12_Interventions='Korea Renewable'] AND S12_Geography='Korea' AND S12_Utility='Electricity'~
+	THEN 0~
+ELSE IF S12_Geography='Korea' AND S12_Utility = 'Electricity'~
+	THEN CRE_vs_non_CRE[EF_Type='Location']~
+~
+ELSE CRE_vs_non_CRE[EF_Type='Market']
+NodeLocation: 808,608,1
+NodeSize: 64,40
+WindState: 2,0,0,720,350
+ValueState: 2,221,230,1254,375,,MIDM
+Att__TotalsIndex: [S12_Utility]
+Att_ResultSliceState: [S12_Utility,0,S12_Ext_Scenario,6,S12_Geography,1,Time,1]
+
+{!50500|ArrowClass Arrow244518995}
+{!50500|Att_HeadNode: S12_Intervention_Det}
+{!50500|Att_TailNode: CRE_Emissions}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow2123567187}
+{!50500|Att_HeadNode: S12_Intervention_Det}
+{!50500|Att_TailNode: Non_CRE_Emissions}
+{!50500|Att_ArrowProperties: 0}
+
+Objective S12_CO2e_Ext
+Title: S12 CO2e Ext
+Units: ktonCO2e
+Description: CO2e for S12 Own sites & buildings model per Intervention.
+Definition: Sum(CRE_Emissions_Interv, S12_Utility, S12_Geography)
+NodeLocation: 984,608,1
+NodeSize: 64,24
+ValueState: 2,452,70,1265,691,1,MIDM
+Aliases: Alias Al1228083283
+
+Text Te238227539
+Title: Output
+NodeLocation: 988,700,-1
+NodeSize: 268,172
+
+Text Te145952851
+Title: Indices
+NodeLocation: 1160,288,-1
+NodeSize: 96,232
+
+Variable Potential_Saved_Emis
+Title: Potential Saved Emissions
+Units: ktonCO2e
+Description: Potential saved emissions by all energy savings.
+Definition: SUM(Energy_Savings_Emiss[EF_Type='Location'], S12_Geography, S12_Utility)
+NodeLocation: 976,144,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,84,90,1439,432,,MIDM
+ReformVal: [Time,Undefined]
+
+Variable S12_Reductions_per_Y
+Title: S12 Reductions per Year per Intervention
+Units: ktonCO2e
+Definition: S12_CO2e_Ext[S12_Ext_Scenario='Business as usual']-S12_CO2e_Ext
+NodeLocation: 984,704,1
+NodeSize: 72,32
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable S12_Reductions_per_1
+Title: S12 Reductions per Year per Scenario
+Units: ktonCO2e
+Definition: S12_CO2e[Scenario='Business as usual']-S12_CO2e
+NodeLocation: 1160,704,1
+NodeSize: 72,32
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,1,MIDM
+ReformVal: [Time,Scenario]
+
+Variable S12_Reductions_per_I
+Title: S12 Reductions per Intervention
+Units: ktonCO2e
+Definition: SUM(S12_Reductions_per_Y,Time)
+NodeLocation: 984,808,1
+NodeSize: 64,32
+
+Variable S12_Reductions_per_S
+Title: S12 Reductions per Scenario
+Units: ktonCO2e
+Definition: SUM(S12_Reductions_per_1,TIME)
+NodeLocation: 1160,808,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+
+FormNode Fo329582675
+Title: Effect Start
+Definition: 0
+NodeLocation: 480,720,1
+NodeSize: 96,16
+Original: Effect_Start
+
+FormNode Fo1940195411
+Title: S12 Scenario
+Definition: 0
+NodeLocation: 480,680,1
+NodeSize: 96,16
+Original: S12_Scenario
+
+Close S12_Own_sites_buildi
+

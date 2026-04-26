@@ -1,0 +1,128 @@
+{ Analytica Model Import_Export_module, encoding="UTF-8" }
+SoftwareVersion 6.3.6
+
+{!-60000|Attribute AcpStyles}
+
+
+LinkModule Import_Export_module
+Title: Import Export module
+Author: jorre Vedder~
+Bicore Services
+Date: Mon, Jun 19, 2023 10:12 am
+NodeSize: 64,24
+DiagState: 2,167,82,944,480,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule Import_Export_module,2,2,0,0,Import_Export_CMT.ana
+
+Button Export_PBI
+Title: Export PBI
+NodeLocation: 432,160,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Button Export_XLS
+Title: Export XLS
+NodeLocation: 432,88,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Button Import_Actual_Badge_
+Title: Import~
+Actual Badge~
+Swipes
+NodeLocation: 127,100,1
+NodeSize: 64,36
+WindState: 2,131,122,720,350
+Aliases: Alias Al2016937107
+OnClick: {Resets the selected spreadsheet, so when Spreadsheet_Open is called again it will prompt the user for a new spreadsheet}~
+Spreadsheet_Workbook := 0;~
+Spreadsheet_Sheet := 'Actual Badge Swipes!';~
+DEFINITION OF Spreadsheet_Workbook := "SpreadsheetOpen('',True)";~
+{Copies the data}~
+Actual_Badge_Swipes := Spreadsheet_Range[@.Column=@Time];
+
+Button Import_Badge_Swipes_
+Title: Import~
+Badge Swipes~
+Geo Distribution
+NodeLocation: 127,196,1
+NodeSize: 64,44
+WindState: 2,301,139,720,350
+Aliases: Alias Al70780051
+OnClick: {Resets the selected spreadsheet, so when Spreadsheet_Open is called again it will prompt the user for a new spreadsheet}~
+Spreadsheet_Workbook := 0;~
+Spreadsheet_Sheet := 'Badge Swipes Geo Distribution!';~
+DEFINITION OF Spreadsheet_Workbook := "SpreadsheetOpen('',True)";~
+{Copies the data}~
+Badge_Swipe_Geo_Dist := Spreadsheet_Range[@.Row=@Geography];
+
+Button Import_Transport_Mod
+Title: Import~
+Transport Mode Distribution
+NodeLocation: 127,300,1
+NodeSize: 64,44
+WindState: 2,1115,73,720,350
+Aliases: Alias Al1144521875
+OnClick: {Resets the selected spreadsheet, so when Spreadsheet_Open is called again it will prompt the user for a new spreadsheet}~
+Spreadsheet_Workbook := 0;~
+Spreadsheet_Sheet := 'Transport Mode Distribution!';~
+DEFINITION OF Spreadsheet_Workbook := "SpreadsheetOpen('',True)";~
+{Copies the data}~
+Transport_Mode_Distr := Spreadsheet_Range[@.Row=@Geography,@.Column=@Transport_Mode];
+
+Button Import_All
+Title: Import~
+All
+NodeLocation: 255,100,1
+NodeSize: 48,36
+WindState: 2,1155,-5,720,350
+Aliases: Alias Al607650963
+OnClick: {Spreadsheet_Sheet := 'FTEs!';~
+Number_of_FTEs := Spreadsheet_Range[@.Column=@Time];}~
+~
+Spreadsheet_Sheet := 'Actual Badge Swipes!';~
+Actual_Badge_Swipes := Spreadsheet_Range[@.Column=@Time];~
+~
+Spreadsheet_Sheet := 'Badge Swipes Geo Distribution!';~
+Badge_Swipe_Geo_Dist := Spreadsheet_Range[@.Row=@Geography];~
+~
+Spreadsheet_Sheet := 'Transport Mode Distribution!';~
+Transport_Mode_Distr := Spreadsheet_Range[@.Row=@Geography,@.Column=@Transport_Mode];
+
+Text Te2133657747
+Title: Import submodel data
+NodeLocation: 192,236,-1
+NodeSize: 144,212
+Aliases: Alias Al1681392787
+
+Text Te1856833683
+Title: Export submodel results
+NodeLocation: 504,124,-1
+NodeSize: 152,100
+Aliases: Alias Al339215507
+
+Button Json_Export_CMT_CO2e
+Title: Json Export~
+CMT CO2e
+NodeLocation: 576,92,1
+NodeSize: 64,28
+WindState: 2,166,417,720,350
+Aliases: Alias Al1412957331
+OnClick: JsonTempVar := '"data" : ' & MakeJSON(CMT_CO2e, objects:Time,Scenario, flags:24);~
+Generate_Schema(time,Scenario);~
+WriteJson();
+
+Button Json_Export_CMT_Summ
+Title: Json Export~
+CMT Summary
+NodeLocation: 576,164,1
+NodeSize: 64,28
+WindState: 2,166,417,720,350
+Aliases: Alias Al876086419
+OnClick: JsonTempVar := '"data" : ' & MakeJSON(CMT_Summary, objects:Time,Scenario,Geography,Transport_Mode,CMT_Summary, flags:24);~
+Generate_Schema(time,Scenario,Geography,Transport_Mode,CMT_Summary);~
+WriteJson();
+
+Close Import_Export_module
+

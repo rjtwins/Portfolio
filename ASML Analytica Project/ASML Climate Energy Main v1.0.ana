@@ -1,0 +1,1954 @@
+{ Analytica Model ASML_Climate_and_Ene, encoding="UTF-8" }
+SoftwareVersion 6.4.0
+
+
+{ System Variables with non-default values: }
+Time := 2019..2040
+Att_GraphIndexRange Time: 1,0,0,,,,10,2018,2030,0
+WindState Time: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize Time: 227,322}
+SampleSize := 1000
+TypeChecking := 1
+Checking := 5
+SaveOptions := 2
+SaveValues := 0
+Naming := 2
+ShowDescriptionMarks := 1
+Graph_PageBrush := 65281,65281,65281
+Graph_GridColor := 58881,58881,58881
+Graph_FrameColor := 1,1,1
+Graph_AxisTitleColor := 1,1,1
+Graph_AxisLabelColor := 1,1,1
+Graph_KeyTextColor := 1,1,1
+Graph_KeyLabelColor := 1,1,1
+Graph_ColorSeq := Null
+{!40400|Sys_WindowsMaximized := 1}
+{!60300|DisplayInputs Sys_SliderStyles: Object Object, Object Function, Function SetNodeColors}
+
+DisplayOutputs Object: Object Self, Object SysVar, Object Keyword, Object Variable, Keyword Self, SysVar Sys_SliderStyles
+DisplayInputs Object: Object Self, Object Function, Object Keyword, Object Variable, Keyword Self, Function SetNodeColors, Variable System_Annual_Energy
+NodeInfo Function: 1,,,,1
+NodeColor Function: 0x000000ffcc99ff
+{!50400|NodeBorderColor Function: 0x000000ff000000}
+DisplayOutputs Function: Object Object, Object SysVar, SysVar Sys_SliderStyles
+NodeFontColor Function: 0x000000ff000000
+DisplayInputs SysVar: Object Object, Object Function, Function SetNodeColors
+DisplayInputs Keyword: Object Object, Object Variable
+DisplayOutputs Keyword: Object Object, Object Variable
+NodeFontColor Model: 0x000000ff000000
+{!-50299|DiagramColor Model: 65535,65535,65535}
+NodeBorderColor Model: 0x000000ff000000
+{!-50299|DiagramColor Module: 65535,65535,65535}
+NodeBorderColor Module: 0x000000ff000000
+NodeFontColor LinkModule: 0x000000ff000000
+{!-50299|DiagramColor LinkModule: 65535,65535,65535}
+NodeBorderColor LinkModule: 0x000000ff000000
+{!-50299|DiagramColor Library: 65535,65535,65535}
+NodeBorderColor Library: 0x000000ff000000
+NodeFontColor LinkLibrary: 0x000000ff000000
+{!-50299|DiagramColor LinkLibrary: 65535,65535,65535}
+NodeBorderColor LinkLibrary: 0x000000ff000000
+{!-50299|DiagramColor Form: 65535,65535,65535}
+NodeBorderColor Form: 0x000000ff000000
+{!50500|NodeInfo MissingLinkModule: 1,,,,1}
+{!50500|NodeColor MissingLinkModule: 0x000000ff4c83ff}
+{!50500|NodeFontColor MissingLinkModule: 0x000000ff000000}
+{!50500|NodeBorderColor MissingLinkModule: 0x000000ff000000}
+{!50500|NodeInfo MissingLinkLibrary: 1,,,,1}
+{!50500|NodeColor MissingLinkLibrary: 0x000000ff4c83ff}
+{!50500|NodeFontColor MissingLinkLibrary: 0x000000ff000000}
+{!50500|NodeBorderColor MissingLinkLibrary: 0x000000ff000000}
+NodeColor Variable: 0x000000ff4cbcff
+DisplayInputs Variable: Object Object, Object Keyword, Keyword Self, Variable System_Annual_Energy
+{!50400|NodeBorderColor Variable: 0x000000ff000000}
+DisplayOutputs Variable: Object Object, Object Keyword, Keyword Self
+NodeFontColor Variable: 0x000000ff000000
+NodeInfo Variable: 1,,,,1
+NodeColor Decision: 0x000000ff4cffa6
+{!50400|NodeBorderColor Decision: 0x000000ff000000}
+NodeInfo Decision: 1,,,,1
+NodeFontColor Decision: 0x000000ff000000
+NodeColor Chance: 0x000000ff4cffff
+{!50400|NodeBorderColor Chance: 0x000000ff000000}
+NodeFontColor Chance: 0x000000ff000000
+NodeInfo Chance: 1,,,,1
+NodeColor Objective: 0x000000ffff4c97
+{!50400|NodeBorderColor Objective: 0x000000ff000000}
+NodeFontColor Objective: 0x000000ff000000
+NodeInfo Objective: 1,,,,1
+NodeColor Constraint: 0x000000ffffff4c
+{!50400|NodeBorderColor Constraint: 0x000000ff000000}
+NodeInfo Constraint: 1,,,,1
+NodeFontColor Constraint: 0x000000ff000000
+NodeColor GradientClass: 0x000000ffff7bfb
+{!50400|NodeBorderColor GradientClass: 0x000000ff000000}
+NodeFontColor GradientClass: 0x000000ff000000
+NodeInfo GradientClass: 1,,,,1
+NodeColor Index: 0x000000ff8787ff
+NodeFontColor Index: 0x000000ff000000
+NodeInfo Index: 1,,,,1
+{!50400|NodeBorderColor Index: 0x000000ff000000}
+NodeColor Constant: 0x000000ffff794c
+{!50400|NodeBorderColor Constant: 0x000000ff000000}
+NodeFontColor Constant: 0x000000ff000000
+NodeInfo Constant: 1,,,,1
+NodeColor Determ: 0x000000ff4cbcff
+{!50400|NodeBorderColor Determ: 0x000000ff000000}
+NodeFontColor Determ: 0x000000ff000000
+NodeInfo Determ: 1,,,,1
+NodeInfo FormNode: 1,0,0,,0,0,,,,0,,,0
+NodeFontColor FormNode: 0x000000ff000000
+NodeInfo Button: 1,,,,1,,,,1
+NodeColor Button: 0x000000ffa6a6a6
+NodeFontColor Button: 0x000000ff000000
+{!50400|NodeBorderColor Button: 0x000000ff000000}
+NodeInfo Text: 1,0,0,,1,1,,,,,,,0
+NodeColor Text: 0x000000fff3f3f3
+NodeFontColor Text: 0x000000ff000000
+{!50400|NodeBorderColor Text: 0x000000ff000000}
+{!50500|NodeColor ArrowClass: 0x000000ff000000}
+{!50500|NodeBorderColor FrameNode: 0x000000ff000000}
+{!50500|NodeInfo FrameNode: 1,0,0,0,1,1,,,,,,,0}
+{!50500|NodeColor FrameNode: 0x000000fff3f3f3}
+{!50500|NodeFontColor FrameNode: 0x000000ff000000}
+
+{!-60000|Attribute AcpStyles}
+Attribute ExternalType
+Title: ExternalType
+
+
+AskAttribute ExternalType,Function,Yes
+AskAttribute ExternalType,Module,Yes
+AskAttribute Value,Variable,Yes
+AskAttribute TableCellDefault,Variable,Yes
+AskAttribute OnChange,Variable,Yes
+AskAttribute ExternalType,Variable,Yes
+
+Model ASML_Climate_and_Ene
+Title: ASML Climate and Energy Model
+Author: Jorre Vedder~
+Jac Goorden~
+Simbon
+Date: Tue, May 30, 2023 6:04 pm
+DiagState: 2,1,4,1886,776,17,10
+WindState: 2,0,0,720,350
+DiagramColor: 0x000000ffffffff
+FontStyle: Arial,15
+FileInfo: 0,Model ASML_Climate_and_Ene,2,2,0,0,C:\Users\jorre\source\repos\Analytica Repository\ASML Climate Energy Main v1.0.ana
+
+Variable Number_of_FTEs
+Title: Number of FTEs
+Description: worldwide FTE count, as project in latest LTFP.
+Definition: Table(Time)(24.9K,28.073K,30.842K,37.643K,43.187K,46.213K,47.888K,51.019K,52K,52.623K,53.146K,53.732K,Null,Null,Null,Null,Null,Null,Null,Null,Null,Null)
+NodeLocation: 568,328,1
+NodeSize: 64,24
+WindState: 2,358,294,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1462533907, Alias Al1920688531
+NodeColor: 52427,65535,65535
+ReformDef: [Time,Undefined]
+NumberFormat: 2,G,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+{!50000|Att_ColumnWidths: [,Time,\([64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64,64])]}
+ExternalType: Input
+
+Include 0,LinkModule CMT_Employee_Commute,2,2,0,0,Modules\CMT Employee Commute.ana
+
+NodeLocation CMT_Employee_Commute: 336,464,1
+NodeSize CMT_Employee_Commute: 64,32
+
+
+Text Te732725011
+Title: Climate and Energy Main Model
+Description: Scope 1&2, scope 3 incl cat 1,2,4,6,7,11, data and drivers per september 2023~
+
+NodeLocation: 904,72,-1
+NodeSize: 408,56
+
+FormNode Fo946634515
+Title: Current Year
+Definition: 0
+NodeLocation: 912,224,1
+NodeSize: 104,16
+NodeInfo: 1,,,,,,,75,,,,4,,0
+Original: Current_Year
+
+Module Model_Settings
+Title: Model Settings
+Description: Aliases of 
+Author: Jac Goorden~
+Simbon
+Date: Tue, Jun 6, 2023 4:41 pm
+NodeLocation: 1232,200,1
+NodeSize: 56,32
+NodeInfo: 1,0,0
+DiagState: 2,12,95,752,290,17,10
+{!60005|Att_AttsToShow: Object Object, Object Attribute, Attribute BalloonHelp, Attribute TemplateInput, Attribute TemplateOutput, Attribute AcpStyles}
+
+Index Lever
+Title: Lever
+Description: Each lever of Trias Energetica
+Definition: ['Base','Reduce','Renew','Compensate']
+NodeLocation: 104,192,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize: 237,48}
+
+Variable Current_Year
+Title: Current Year
+Definition: Choice(Time,1,0)
+NodeLocation: 568,56,1
+NodeSize: 64,24
+NodeInfo: 1,0,0
+WindState: 2,0,0,720,350
+Aliases: FormNode Fo946634515
+
+Library Color_Themes_Library
+Title: Color Themes Library
+Author: Karen Lee~
+Lumina Decision Systems
+Date: Tue, Jan 3, 2023 11:04 AM
+NodeLocation: 104,328,1
+NodeSize: 64,32
+NodeInfo: 1,,,,,,,0,,,,,,0
+DiagState: 2,45,23,817,788,17,10,4
+DiagramColor: 0x000000ffffffff
+FontStyle: Arial,15
+
+Module Details
+Title: Details
+Author: Karen Lee~
+Lumina Decision Systems
+Date: Thu, Jan 5, 2023 12:49 PM
+NodeLocation: 736,832,1
+NodeSize: 56,24
+NodeInfo: 1,,,,,,,,,,,1
+DiagState: 2,811,142,1001,558,17,10
+DiagramColor: 0x000000ffffffff
+FontStyle: Arial,15
+
+Decision Diagram_Colors
+Title: Diagram colors
+Description: Select a theme to change the node and diagram colors.
+Definition: Choice(Self,3,0)
+NodeLocation: 264,104,1
+NodeSize: 64,24
+WindState: 2,955,199,720,662
+Aliases: FormNode Fo736794339
+{!40300|DomainExpr: Themes}
+OnChange: SetNodeColors();~
+~
+IF Self = 'Monochrome' OR Self = 'Classic'~
+THEN (Include_borders := 1;~
+Use_node_colors_for_ := 0;)~
+ELSE Include_borders := 0;~
+~
+IF Same_diagram_and_gra=1 THEN~
+Graph_theme := Self;
+
+Constant Theme_Node_Colors
+Title: Theme Node Colors
+Definition: Table(Nodes,Themes)(~
+'rgb(92,205,163)','rgb(78,165,133)','rgb(76,255,166)','rgb(255,255,255)','10537,44975,32639','60909,31354,21074',~
+'rgb(74,196,236)','rgb(57,163,198)','rgb(76,188,255)','rgb(255,255,255)','22102,50886,26471','64507,40863,14906',~
+'rgb(80,180,190)','rgb(76,138,145)','rgb(76,255,255)','rgb(255,255,255)','29812,53456,21845','65021,50115,10280',~
+'rgb(223,117,143)','rgb(188,92,116)','rgb(255,76,151)','rgb(255,255,255)','65021,59367,9509','62451,61166,9766',~
+'rgb(248,221,129)','rgb(216,187,94)','rgb(255,255,76)','rgb(255,255,255)','8995,35466,36237','53970,20046,29041',~
+'rgb(255,175,199)','rgb(230,122,154)','rgb(255,123,251)','rgb(255,255,255)','56540,58339,5911','64250,56026,9252',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466',~
+'rgb(146,153,223)','rgb(112,118,189)','rgb(135,135,255)','rgb(255,255,255)','10023,32125,36494','64250,56026,9252',~
+'rgb(238,166,101)','rgb(201,134,75)','rgb(255,121,76)','rgb(255,255,255)','7967,38550,35723','56540,23901,26471',~
+'rgb(181,140,181)','rgb(153,94,134)','rgb(204,153,255)','rgb(255,255,255)','56540,58339,5911','64250,56026,9252',~
+'rgb(150,157,165)','rgb(150,157,165)','rgb(166,166,166)','rgb(200,200,200)','49151,49151,49151','49151,49151,49151',~
+'rgb(74,196,236)','rgb(57,163,198)','rgb(76,188,255)','rgb(255,255,255)','56540,58339,5911','64250,56026,9252',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','42919,9252,38807',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466',~
+'rgb(98,148,222)','rgb(77,121,186)','rgb(76,131,255)','rgb(255,255,255)','12850,25700,36494','47031,12593,35466')
+NodeLocation: 560,48,1
+NodeSize: 72,24
+WindState: 2,256,286,720,350
+DefnState: 2,125,14,1230,614,0,DFNM
+ValueState: 2,212,218,615,390,,MIDM
+ReformDef: [Themes,Nodes]
+ReformVal: [0,Nodes]
+Att_ResultSliceState: [Themes,13,Nodes,1,Node_Attributes,1]
+Att_EditSliceState: [Node_Attributes,1,Nodes,1,Themes,2]
+{!50000|Att_ColumnWidths: [,Themes,[,,158,159,,]]}
+
+Index Nodes
+Att_PrevIndexValue: [Decision,Variable,Chance,Objective,Constraint,GradientClass,Module,Index,Constant,Function,Button,Determ,LinkModule,Library,LinkLibrary,Form,Model,MissingLinkLibrary,MissingLinkModule]
+Title: Nodes
+Definition: [Decision,Variable,Chance,Objective,Constraint,GradientClass,Module,Index,Constant,Function,Button,Determ,LinkModule,Library,LinkLibrary,Form,Model,MissingLinkLibrary,MissingLinkModule]
+NodeLocation: 112,160,1
+NodeSize: 64,24
+WindState: 2,976,79,720,427
+MetaOnly: 1
+{!60005|Att_AttsToShow: Object Object, Object Attribute, Attribute MetaOnly}
+
+Index Themes
+Att_PrevIndexValue: ['2023','2023 Dark','Classic','Monochrome','Viridis','Plasma']
+Title: Themes
+Definition: ['2023','2023 Dark','Classic','Monochrome','Viridis','Plasma']
+IndexVals: ['item 1']
+NodeLocation: 112,48,1
+NodeSize: 64,24
+WindState: 2,1071,150,720,350
+ValueState: 2,914,6,416,303,,MIDM
+{!40300|Att_SlicerPopupSize: 257,176}
+
+Decision Use_node_colors_for_
+Title: Use node colors for borders
+Description: Select this option to use the node colors as node border colors. Otherwise, node borders will all be the same color.
+Definition: Checkbox(0)
+NodeLocation: 264,168,1
+NodeSize: 64,32
+WindState: 2,731,123,720,350
+Aliases: FormNode Fo1005229795
+OnChange: SetNodeColors();
+
+Decision Include_borders
+Title: Include borders
+Description: Select this option to include borders on nodes.
+Definition: Checkbox(1)
+NodeLocation: 264,232,1
+NodeSize: 64,24
+WindState: 2,818,315,720,350
+ValueState: 2,768,0,752,238,,MIDM
+Aliases: FormNode Fo1743427299
+OnChange: SetNodeColors();~
+SetGraphSettings();~
+~
+If Self = 1 THEN ChangeNodeVisibility(Handle(Use_node_colors_for_),'Visible','UserInputs') ELSE ChangeNodeVisibility(Handle(Use_node_colors_for_),'Hidden','UserInputs');
+
+Variable Theme_Info
+Title: Theme Info
+Definition: Table(Themes,Theme_Attributes)(~
+'Segoe UI,'&Node_Font_Size,'rgb(245,245,245)','rgb(30,30,30)','rgb(100,100,100)','rgb(100,100,100)','rgb(30,30,30)','rgb(255,255,255)','rgb(125,125,125)',~
+'Segoe UI,'&Node_Font_Size,'rgb(67,67,67)','rgb(15,15,15)','rgb(177,177,177)','rgb(200,200,200)','rgb(230,230,230)','rgb(85,85,85)','rgb(177,177,177)',~
+'Arial,'&Node_Font_Size,'rgb(255,255,255)','rgb(0,0,0)','rgb(0,0,0)','rgb(0,0,0)','rgb(0,0,0)','62258,62258,62258','rgb(0,0,0)',~
+'Segoe UI,'&Node_Font_Size,'rgb(245,245,245)','rgb(30,30,30)','rgb(125,125,125)','rgb(125,125,125)','rgb(30,30,30)','rgb(255,255,255)','rgb(125,125,125)',~
+'Segoe UI,'&Node_Font_Size,'rgb(245,245,245)','rgb(30,30,30)','rgb(125,125,125)','rgb(125,125,125)','rgb(30,30,30)','rgb(255,255,255)','rgb(125,125,125)',~
+'Segoe UI,'&Node_Font_Size,'rgb(245,245,245)','rgb(30,30,30)','rgb(125,125,125)','rgb(125,125,125)','rgb(30,30,30)','rgb(255,255,255)','rgb(125,125,125)')
+NodeLocation: 408,104,1
+NodeSize: 64,24
+WindState: 2,84,60,720,350
+DefnState: 2,351,357,1294,362,0,DFNM
+ReformDef: [Themes,Theme_Attributes]
+{!50000|Att_ColumnWidths: [,Themes,[,,,,,]]}
+
+Index Theme_Attributes
+Att_PrevIndexValue: ['FontStyle','DiagramColor','NodeFontColor','NodeBorderColor','ArrowBorderColor','TextFontColor','TextColor','TextBorderColor']
+Title: Theme Attributes
+Definition: ['FontStyle','DiagramColor','NodeFontColor','NodeBorderColor','ArrowBorderColor','TextFontColor','TextColor','TextBorderColor']
+NodeLocation: 112,104,1
+NodeSize: 64,24
+WindState: 2,1063,182,718,350
+
+Module Graph_Details
+Title: Graph Details
+Author: Karen Lee~
+Lumina Decision Systems
+Date: Wed, Jan 18, 2023 3:37 PM
+NodeLocation: 264,504,1
+NodeSize: 64,24
+DiagState: 2,631,98,742,435,17,10
+DiagramColor: 0x000000ffffffff
+FontStyle: Arial,15
+
+Index A_to_T
+Title: A to T
+Definition: Sequence('A', 'T')
+NodeLocation: 104,56,1
+NodeSize: 64,24
+
+Decision Num_colors
+Title: Num colors
+Definition: 10
+NodeLocation: 104,224,1
+NodeSize: 64,24
+
+Index Color_key
+Title: Color key
+Definition: Slice(A_to_T, Sequence(1, Num_colors))
+NodeLocation: 104,112,1
+NodeSize: 64,24
+ReformVal: [Undefined,Self]
+{!40300|Att_SlicerPopupSize: 227,168}
+
+Index Index_i
+Title: Index i
+Definition: 1..6
+NodeLocation: 104,168,1
+NodeSize: 64,24
+{!40300|Att_SlicerPopupSize: 237,128}
+
+Variable Bar_graph
+Title: Bar graph
+Definition: 1/(1 + Exp(-(Index_i - @Color_key/5)/@Color_key*5))
+NodeLocation: 272,56,1
+NodeSize: 64,24
+WindState: 2,83,233,720,350
+ValueState: 2,347,348,410,381,1,MIDM
+Aliases: FormNode Fo960655843
+GraphSetup: Flip:8
+ReformVal: [Color_key,Null]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Index_i,1,Color_key,1]
+Att_ColorRole: Color_key
+{!40600|Att_ClusterIndex: Null}
+
+Variable Stacked_bar_graph
+Title: Stacked bar graph
+Definition: 1/(1 + Exp(-(Index_i - @Color_key/5)/@Color_key*5))
+NodeLocation: 272,112,1
+NodeSize: 64,24
+ValueState: 2,347,348,507,398,1,MIDM
+Aliases: FormNode Fo700608995
+GraphSetup: Att_ForceCategorical Graph_Primary_Valdim:1~
+Att_StackedBar Graph_Primary_Valdim:1~
+Att_Stacked_Lines Graph_Primary_Valdim:1
+ReformVal: [Index_i,Color_key]
+{!40600|Att_StackingIndex: Index_i}
+{!40600|Att_ClusterIndex: Null}
+
+Variable Lines
+Title: Lines
+Definition: 1/(1 + Exp(-(Index_i -5)/@Color_key*2))
+NodeLocation: 272,168,1
+NodeSize: 64,24
+ValueState: 2,199,211,644,564,1,MIDM
+Aliases: FormNode Fo35811811
+ReformVal: [Index_i,Color_key]
+
+Variable Stacked_areas
+Title: Stacked areas
+Definition: 1/(1 + Exp(-(Index_i - @Color_key/5)/@Color_key*5))
+NodeLocation: 272,224,1
+NodeSize: 64,24
+ValueState: 2,347,348,409,355,1,MIDM
+Aliases: FormNode Fo820146659
+GraphSetup: {!60200|Att_AreaFillBorder Graph_Primary_Valdim:0}~
+Att_GraphIndexRange Index_i:1,0~
+Att_AreaFill Graph_Primary_Valdim:1~
+Att_Stacked_Lines Graph_Primary_Valdim:1~
+Graph_FillTransparen:0
+ReformVal: [Index_i,Color_key]
+
+Variable Waterfall
+Title: Waterfall
+Definition: 1/(1 + Exp(-(Index_i - @Color_key/5)/@Color_key*5))
+NodeLocation: 432,56,1
+NodeSize: 64,24
+ValueState: 2,372,202,715,479,1,MIDM
+Aliases: FormNode Fo417493475
+GraphSetup: {!40600|Att_WaterfallBar Graph_Primary_Valdim:1}~
+Att_StackedBar Graph_Primary_Valdim:1~
+Att_ForceCategorical Graph_Primary_Valdim:1
+ReformVal: [Index_i,Color_key]
+
+Chance Prob_densities
+Title: Prob densities
+Definition: Normal(@Color_key, 1 + @color_key/3)
+NodeLocation: 432,112,1
+NodeSize: 64,24
+WindState: 2,98,82,721,350
+ValueState: 2,326,277,494,436,1,PDFP
+Aliases: FormNode Fo689074659
+GraphSetup: Att_AreaFill Graph_KDE_Valdim:1~
+Att_CatLineStyle Graph_Primary_Valdim:1~
+Att_AreaFill Graph_Primary_Valdim:1~
+{!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Color_key,Null,Undefined,Undefined,1]
+Att_XRole: -1
+Att_ColorRole: Color_key
+{!40600|Att_ClusterIndex: Null}
+
+Variable Heat_map
+Title: Heat map
+Definition: Floor(1 + 1/(1 + Exp(-(Index_i - 3)/@Color_key*1.5)) *(Num_colors-1))
+NodeLocation: 432,168,1
+NodeSize: 64,24
+ValueState: 2,391,82,668,642,1,MIDM
+Aliases: FormNode Fo1634365923
+GraphSetup: BarOverlap:100~
+{!40600|BarOverlap4ValueKey:100}~
+Att_ForceCategorical Graph_Primary_Valdim:1~
+{!50007|Graph_BarOutline:0}
+ReformVal: [Index_i,Color_key]
+Att_YRole: Color_key
+Att_ColorRole: Self
+Att_OriginRole: Color_key
+{!40600|Att_ClusterIndex: Null}
+
+Close Graph_Details
+
+Function RGB8to16(rgb8)
+Title: RGB8to16
+Description: Converts BGB 8bit text string to 16bit triple string~
+'rgb(r8,g8,b8)' -> 'r16,g16,b16'~
+~
+If not in the correct format, just returns original string.
+Definition: rgb8 := TextReplace(rgb8,' ','',all:True);~
+LocalIndex rgb := ['r','g','b'];~
+Local rgb16 := ParseNumber(FindInText("rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)",rgb8,subpattern:@rgb,return:'S')) * Ratio_of_16bit_to_8b + 1;~
+~
+IF rgb16[@rgb=1]=null THEN rgb8 ELSE~
+JoinText( f"{rgb16:I}", rgb, ',' ) ~
+~
+{~
+IF FindInText('rgb\(.*\)',rgb8,re:1) = 0~
+THEN rgb8~
+ELSE ~
+	Local rgb := NumberToText(ParseNumber(FindInText("\d{1,3}",rgb8,re:1,return:'S',repeat:1))* Ratio_of_16bit_to_8b + 1, 'Integer');~
+	JoinText(rgb, rgb.Repeat, separator:',');~
+~
+}
+NodeLocation: 896,48,1
+NodeSize: 80,24
+WindState: 2,81,157,813,451
+
+Variable Selected_Graph_Color
+Title: Selected Graph Colors
+Definition: local listoftriples;~
+local totalcolor;~
+IF FindInText('rgb', Theme_Node_Colors[Themes=Diagram_Colors]) = 0 ~
+THEN (~
+	listoftriples := Theme_Node_Colors[Themes=Diagram_Colors];~
+	totalcolor := Theme_Node_Colors[Themes=Diagram_Colors,Nodes=Handle(Button)]; )~
+ELSE (~
+	listoftriples := RGB8to16(Theme_Node_Colors[Themes=Diagram_Colors]);~
+	totalcolor := RGB8to16(Theme_Node_Colors[Themes=Diagram_Colors,Nodes=Handle(Button)]);~
+);~
+~
+'['&Jointext(listoftriples[Nodes=Node_Colors_to_Inclu], Node_Colors_to_Inclu, ',')&','&totalcolor&']';
+NodeLocation: 888,376,1
+NodeSize: 64,24
+NodeInfo: 1,0
+WindState: 2,356,187,873,514
+ValueState: 2,373,317,1106,332,,MIDM
+ReformVal: [Null,Node_Colors_to_Inclu]
+
+Constant Ratio_of_16bit_to_8b
+Title: Ratio of 16bit to 8bit
+Definition: 256
+NodeLocation: 560,104,1
+NodeSize: 72,24
+
+Function SetGraphColors(colors: Text)
+Title: SetGraphColors
+Description: Sets graph colors to string of rgb16 triples
+Definition: Graph_colorseq  := colors;
+NodeLocation: 736,104,1
+NodeSize: 80,24
+WindState: 2,1107,498,719,350
+
+Function SetNodeColors()
+Title: SetNodeColors
+Description: Updates the node colors in the current model to the selected theme colors
+Definition: Sys_UseLegacyColors := 0;~
+~
+FOR m:=#FindObjects(class:Model,Module,Library,LinkLibrary,LinkModule) Do DiagramColor of (m) := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='DiagramColor']; ~
+FOR m:=#FindObjects(class:Model,Module,Library,LinkLibrary,LinkModule) Do FontStyle of (m) := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='FontStyle'];~
+~
+{!60300|Sys_SliderStyles := Slider_Defaults[Themes=Diagram_Colors,Border_Options=Include_borders];} ~
+~
+METAVAR v[] = Nodes~
+DO (~
+NodeColor OF v := Theme_Node_Colors[Nodes=v,Themes=Diagram_Colors];~
+~
+NodeFontColor OF v := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='NodeFontColor'];~
+NodeInfo OF v := BorderInfo;~
+~
+IF Use_node_colors_for_ = 0 ~
+THEN NodeBorderColor OF v := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='NodeBorderColor']~
+ELSE NodeBorderColor OF v := ColortoOutlineColor(Theme_Node_Colors[Nodes=v,Themes=Diagram_Colors]);~
+);~
+~
+NodeColor of ArrowClass := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='ArrowBorderColor'];~
+~
+NodeColor OF Text := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextColor'];~
+NodeBorderColor OF Text := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextBorderColor'];~
+NodeFontColor OF Text := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextFontColor'];~
+NodeFontColor OF FormNode := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextFontColor'];~
+NodeInfo::ShowBorder OF Text := Include_borders;~
+NodeInfo::Fill OF Text := 1;~
+~
+NodeColor OF FrameNode := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextColor'];~
+NodeBorderColor OF FrameNode := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextBorderColor'];~
+NodeFontColor OF FrameNode := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextFontColor'];~
+NodeInfo::ShowBorder OF FrameNode := Include_borders;~
+NodeInfo::Fill OF FrameNode := 1;~
+~
+IF Diagram_Colors='Classic' THEN ~
+NodeInfo::showbevel OF Button := 1;
+NodeLocation: 736,48,1
+NodeSize: 80,24
+WindState: 2,88,12,804,749
+DisplayOutputs: Object Object, Object SysVar, SysVar Sys_SliderStyles
+
+Index Node_Colors_to_Inclu
+Title: Node Colors to Include
+Definition: [Decision,Module,Objective,Variable,Index,Chance,Constant,Function,Constraint,GradientClass]
+NodeLocation: 744,376,1
+NodeSize: 64,24
+WindState: 2,1110,69,720,350
+MetaOnly: 1
+{!60005|Att_AttsToShow: Object Object, Object Attribute, Attribute MetaOnly}
+
+Function SaveAnastyle(filename, selectedStyle: Text)
+Title: SaveAnastyle
+Description: Saves the selected style to an anastyle file that can be imported into other models. 
+Definition: Local patch := Mod(AnalyticaVersion,100);~
+Local minor := Mod(AnalyticaVersion/100,100);~
+Local major := Floor(AnalyticaVersion/10k);~
+~
+LocalIndex colorattributes := #SetDifference(\Theme_Attributes,\'FontStyle');~
+Local colorhex := NumberToText(RGB8toA(Theme_Info[Themes=Diagram_Colors,Theme_Attributes=colorattributes]),'Hexadecimal');~
+~
+Local graphattributes := #SetDifference(\Graph_Attributes,\'Graph_BarOutline');~
+~
+Local bordercolors := IF Use_node_colors_for_ = 0 ~
+THEN JoinText('NodeBorderColor '&Nodes&':'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='NodeBorderColor']),Nodes,separator: Chr(13))~
+ELSE JoinText('NodeBorderColor '&Nodes&':'&RGB8to16(ColortoOutlineColor( Theme_Node_Colors[Themes=Diagram_Colors] ) ),Nodes,separator: Chr(13));~
+~
+Local setbevel := IF Diagram_Colors='Classic' THEN ~
+Chr(13)&'(NodeInfo::showbevel OF Button := 1)' ELSE '';~
+~
+WriteTextFile(filename&'.anastyle',~
+~
+'{ Analytica Model '&SelectText(ID_from_title(Diagram_Colors),1,13)&'_anasty, encoding="UTF-8" }'&Chr(13)&~
+'SoftwareVersion '&f"{major}.{minor}.{patch}"~
+&Chr(13)&Chr(13)&~
+~
+'{!60300|Sys_SliderStyles := '&DEFINITION of Sys_SliderStyles&'}'&Chr(13)&~
+'TableFontSize := '&Font_Size&Chr(13)&~
+'AttributeFontSize := '&Font_Size~
+&Chr(13)&Chr(13)&~
+~
+{Graph Settings}~
+'Graph_LineThickness := 4'&Chr(13)&~
+'Graph_ColorSeq := '&Graph_Theme_Colors[Graph_Themes=Graph_theme]&Chr(13)&~
+JoinText(graphattributes&' := '&Graph_Attribute_Valu[Graph_Attributes=graphattributes],graphattributes,separator: Chr(13))&Chr(13)&~
+'{!50007|Graph_BarOutline := '&Graph_Attribute_Valu[Graph_Attributes=Handle(Graph_BarOutline)]&'}'~
+&Chr(13)&Chr(13)&~
+~
+{Arrow Settings}~
+'NodeColor of ArrowClass :'&colorhex[colorattributes='ArrowBorderColor']&Chr(13)&~
+'NodeColor of ArrowClass :'&colorhex[colorattributes='ArrowBorderColor']&Chr(13)&~
+'{!60300|_DynamicArrowColor of ArrowClass :'&colorhex[colorattributes='ArrowBorderColor']&'}'~
+&Chr(13)&Chr(13)&~
+~
+{Node settings}~
+JoinText('NodeColor '&Nodes&':'&RGB8to16(Theme_Node_Colors[Themes=Diagram_Colors]),Nodes,separator: Chr(13))~
+&Chr(13)&Chr(13)&~
+bordercolors&Chr(13)&Chr(13)&~
+JoinText('NodeInfo '&Nodes&':'&BorderInfo,Nodes,separator: Chr(13))~
+&setbevel~
+&Chr(13)&Chr(13)&~
+~
+{Text node settings}~
+'NodeColor Text :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextColor'])&Chr(13)&~
+'NodeBorderColor Text :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextBorderColor'])&Chr(13)&~
+'NodeFontColor Text :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextFontColor'])&Chr(13)&~
+'NodeFontColor FormNode :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextFontColor'])&Chr(13)&~
+'(NodeInfo::ShowBorder OF Text := '&Include_borders&')'&Chr(13)&~
+'(NodeInfo::Fill OF Text := 1)'~
+&Chr(13)&Chr(13)&~
+~
+{Frame node settings}~
+'NodeColor FrameNode :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextColor'])&Chr(13)&~
+'NodeBorderColor FrameNode :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextBorderColor'])&Chr(13)&~
+'NodeFontColor FrameNode :'&RGB8to16(Theme_Info[Themes=Diagram_Colors,Theme_Attributes='TextFontColor'])&Chr(13)&~
+'(NodeInfo::ShowBorder OF FrameNode := '&Include_borders&')'&Chr(13)&~
+'(NodeInfo::Fill OF FrameNode := 1)'~
+&Chr(13)&Chr(13)&~
+~
+{Font styles and backgrounds}~
+'( for m:=#FindObjects(class:Model,Module,LinkLibrary,LinkModule) Do FontStyle of (m) := "'&Theme_Info[Themes=Diagram_Colors,Theme_Attributes='FontStyle']&'" )'&Chr(13)&~
+'( for m:=#FindObjects(class:Model,Module,LinkLibrary,LinkModule) Do DiagramColor of (m) := "'&colorhex[colorattributes='DiagramColor']&'" )'&Chr(13)&~
+'( for m:=ListofHandles('&JoinText(Nodes,Nodes,',')&') Do NodeFontColor of (m) := "'&colorhex[colorattributes='NodeFontColor']&'" )'~
+~
+, showDialog:True)
+NodeLocation: 896,160,1
+NodeSize: 80,24
+WindState: 2,296,203,1074,610
+
+Function ID_from_title(t: Text)
+Title: ID_from_title(t)
+Description: Given a title text, it return a potential identifier, i.e. starts with a letter and contains letters and digits, with space or other chars replaced by underscore, truncated at 20 chars.
+Definition: t:= TextReplace(t, '[^a-z0-9]', '_', re: True, all: True, caseInsensitive: True);~
+IF TextLength(t)>20 THEN t := SelectText(t, 1, 20);~
+t
+NodeLocation: 896,216,1
+NodeSize: 80,24
+
+Function RGB8toA(rgb8: Color)
+Title: RGB8toA
+Description: Converts rgb8 text to Analytica color~
+'rgb(r8,g8,b8)' -> 00xffffff (when output is viewed as Hexadecimal)
+Definition: {~
+Local rgb := ParseNumber(FindInText("\d{1,3}",rgb8,re:1,return:'S',repeat:1), 'General')/256;~
+~
+RGBA(rgb[.Repeat=1],rgb[.Repeat=2],rgb[.Repeat=3]);~
+}~
+~
+rgb8
+NodeLocation: 896,104,1
+NodeSize: 80,24
+WindState: 2,498,315,720,350
+
+Function ColortoOutlineColor(c: Text)
+Title: ColortoOutlineColor
+Description: Converts 8bit rgb color text, e.g., 'rgb(1,2,3),' or 16bit triple text, e.g., '1234,1234,1234,' into a slightly darker color for outlines.
+Definition: c := TextReplace(c,' ','',all:True);~
+~
+LocalIndex rgb := ['r','g','b'];~
+Local rgbval := ParseNumber(FindInText('(\d{1,5}),(\d{1,5}),(\d{1,5})',c,subpattern:@rgb,return:'S'));~
+~
+IF FindInText('rgb\(',c,re:True) THEN (~
+	rgbval:= IF rgbval - 30 <= 0 THEN 0 ELSE rgbval - 30;~
+	'rgb('&JoinText( f"{rgbval:I}", rgb, ',' )&')';~
+)~
+ELSE~
+(~
+	rgbval:= IF rgbval - 10000 <= 0 THEN 0 ELSE rgbval - 10000;~
+	JoinText( f"{rgbval:I}", rgb, ',' );~
+)
+NodeLocation: 736,216,1
+NodeSize: 80,24
+WindState: 2,554,53,718,465
+
+Decision Example_Slider
+Title: Example Slider
+Description: Example slider input
+Definition: Slider(0.36781609058380127)
+NodeLocation: 264,432,1
+NodeSize: 64,24
+WindState: 2,1044,39,720,350
+Aliases: FormNode Fo966438371
+
+Variable BorderInfo
+Title: BorderInfo
+Definition: '1,,,,'&Include_borders;
+NodeLocation: 408,232,1
+NodeSize: 64,24
+
+Decision Graph_theme
+Title: Graph theme
+Definition: Choice(Graph_Themes,5,0)
+NodeLocation: 264,304,1
+NodeSize: 64,24
+WindState: 2,990,33,716,349
+Aliases: FormNode Fo1190998035
+OnChange: SetGraphSettings();~
+~
+IF Self = 'Classic' THEN Graph_colorseq := Null ELSE~
+SetGraphColors(Graph_Theme_Colors[Graph_Themes=Self]);
+
+Index Graph_Themes
+Att_PrevIndexValue: ['2023','2023 Rainbow','2023 Dark','2023 Dark Rainbow','Classic','Monochrome','Viridis','Plasma']
+Title: Graph Themes
+Definition: ['2023','2023 Rainbow','2023 Dark','2023 Dark Rainbow','Classic','Monochrome','Viridis','Plasma']
+IndexVals: ['item 1']
+NodeLocation: 112,304,1
+NodeSize: 64,24
+WindState: 2,588,199,720,350
+
+Constant Graph_Theme_Colors
+Title: Graph Theme Colors
+Definition: Table(Graph_Themes)('[13313,42241,43777,60929,42497,25857,57089,29953,36609,25089,37889,56833,23553,52481,41729,63489,56577,33025,18945,50177,60417,65281,44801,50945,37377,39169,57089,46337,35841,46337,38401,40193,42241]','[13313,42241,43777,18945,50177,60417,37377,39169,57089,57089,29953,36609,62465,47361,30465,61185,58113,36609,23553,52481,41729,21761,43009,60417,46337,35841,46337,65281,44801,50945,38401,40193,42241]','[19457,35329,37121,51457,34305,19201,48129,23553,29697,19713,30977,47617,19969,42241,34049,55297,47873,24065,14593,41729,50689,58881,31233,39425,28673,30209,48385,39169,24065,34305,27393,29441,32001]','[19457,35329,37121,14593,41729,50689,28673,30209,48385,48129,23553,29697,51457,34305,19201,55297,47873,24065,19969,42241,34049,19713,30977,47617,39169,24065,34305,58881,31233,39425,27393,29441,32001]','[20481,46081,48641,18945,50177,60417,37377,39169,57089,57089,29953,36609,62465,47361,30465,61185,58113,36609,23553,52481,41729,21761,43009,60417,46337,35841,46337,65281,44801,50945,38401,40193,42241]','[61441,61441,61441,55553,55553,55553,48385,48385,48385,38401,38401,38401,29441,29441,29441,20993,20993,20993,9473,9473,9473,1,1,1]','[10537,44975,32639,12850,25700,36494,65021,59367,9509,22102,50886,26471,10023,32125,36494,29812,53456,21845,7967,38550,35723,56540,58339,5911,8995,35466,36237,56540,58339,5911,49151,49151,49151]','[60909,31354,21074,64250,56026,9252,64507,40863,14906,50372,16191,32639,65021,50115,10280,56540,23901,26471,62451,61166,9766,64250,56026,9252,53970,20046,29041,64507,58339,22102,49151,49151,49151]')
+NodeLocation: 560,360,1
+NodeSize: 72,24
+DefnState: 2,52,58,887,303,0,DFNM
+
+Constant Slider_Defaults
+Title: Slider Defaults
+Definition: Table(Border_Options,Themes,Sys_SliderStyleItem)(~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(220,220,220)','rgb(220,220,220)','rgb(125,125,125)',0,'rgb(125,125,125)','rgb(125,125,125)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(125,125,125)','rgb(125,125,125)','rgb(220,220,220)',0,'rgb(220,220,220)','rgb(220,220,220)',~
+'Needle','LabelsNone','RoundedEnds',8,'White','Black','rgb(125,125,125)',0,'rgb(125,125,125)','Black',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(220,220,220)','rgb(220,220,220)','rgb(125,125,125)',0,'rgb(125,125,125)','rgb(125,125,125)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(200,200,200)','rgb(200,200,200)','rgb(125,125,125)',0,'rgb(100,100,100)','rgb(100,100,100)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(200,200,200)','rgb(200,200,200)','rgb(125,125,125)',0,'rgb(100,100,100)','rgb(100,100,100)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(220,220,220)','rgb(125,125,125)','rgb(125,125,125)',0,'rgb(125,125,125)','rgb(100,100,100)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(125,125,125)','rgb(177,177,177)','rgb(220,220,220)',0,'rgb(220,220,220)','rgb(177,177,177)',~
+'Needle','LabelsNone','RoundedEnds',8,'White','Black','rgb(125,125,125)',0,'rgb(125,125,125)','Black',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(220,220,220)','rgb(125,125,125)','rgb(125,125,125)',0,'rgb(125,125,125)','rgb(100,100,100)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(220,220,220)','rgb(125,125,125)','rgb(125,125,125)',0,'rgb(125,125,125)','rgb(100,100,100)',~
+'Needle','LabelsNone','RoundedEnds',8,'rgb(220,220,220)','rgb(125,125,125)','rgb(125,125,125)',0,'rgb(125,125,125)','rgb(100,100,100)')
+NodeLocation: 560,416,1
+NodeSize: 72,24
+WindState: 2,774,289,720,350
+DefnState: 2,115,249,1296,582,0,DFNM
+ReformDef: [Themes,Sys_SliderStyleItem]
+{!40300|DomainExpr: LocalAlias I := Handle(Sys_SliderStyleItem);~
+If I='Labels' Then Discrete('LabelsNone','LabelsBelow','LabelsAtEnds',type:'text')~
+Else If I='Thumb shape' Then Discrete('Needle','Circle','Rectangle','Diamond','Block','Line','NoThumb',type:'Text')~
+Else If I='Track style' Then Discrete('RoundedEnds','FlatEnds',type:'Text')~
+Else If I='TrackHeight' Then Continuous(lb:0)~
+Else null}
+Att_EditSliceState: [Border_Options,1,Sys_SliderStyleItem,1,Themes,1]
+{!50000|Att_ColumnWidths: [,Themes,[,,,,,64]]}
+{!60005|Att_AttsToShow: Object Object, Object Attribute, Attribute Domain}
+
+Decision Same_diagram_and_gra
+Title: Same diagram and graph themes
+Description: Check this option to use the same theme colors for both the diagrams and graphs. Uncheck this to manually select a graph theme.
+Definition: Checkbox(1)
+NodeLocation: 264,368,1
+NodeSize: 64,32
+Aliases: FormNode Fo1193035795
+OnChange: If Self = 1 THEN (~
+Graph_theme := Diagram_Colors;~
+ChangeNodeVisibility(Handle(Graph_theme),'Hidden','UserInputs');~
+)~
+ELSE~
+ChangeNodeVisibility(Handle(Graph_theme),'Visible','UserInputs');
+
+Index Border_Options
+Att_PrevIndexValue: [0,1]
+Title: Border Options
+Definition: [0,1]
+NodeLocation: 112,360,1
+NodeSize: 64,24
+
+Function SetGraphSettings()
+Title: SetGraphSettings
+Description: Updates graph settings to match the selected theme.
+Definition: LocalAlias x := Graph_attributes;~
+x := Graph_Attribute_Valu[Graph_Attributes=Handle(x)];
+NodeLocation: 736,160,1
+NodeSize: 80,24
+WindState: 2,681,148,748,350
+
+Index Graph_Attributes
+Att_PrevIndexValue: [Graph_KeyTextColor,Graph_KeyLabelColor,Graph_AxisLabelColor,Graph_GridColor,Graph_AxisTitleColor,Graph_FrameColor,Graph_BarOutline,Graph_PageBrush]
+Title: Graph Attributes
+Description: List of graph attributes to update by theme~
+~
+:65280,65280,65280~~~
+Graph_KeyLabelColor:65280,65280,65280~~~
+Graph_AxisLabelColor:65280,65280,65280~~~
+Graph_AxisTitleColor:65280,65280,65280~~~
+Graph_PageBrush:32768,32768,32768~~~
+Att_StackedBar Graph_Primary_Valdim:1~~~
+Att_ForceCategorical Graph_Primary_Valdim:1~~~
+{!50007|Graph_BarOutline:1}~~~
+Graph_FrameColor:32768,65280,32768~~~
+Graph_GridColor:65280,32768,32768
+Definition: [Graph_KeyTextColor,Graph_KeyLabelColor,Graph_AxisLabelColor,Graph_GridColor,Graph_AxisTitleColor,Graph_FrameColor,Graph_BarOutline,Graph_PageBrush]
+NodeLocation: 112,416,1
+NodeSize: 64,24
+ValueState: 2,68,74,416,303,,MIDM
+MetaOnly: 1
+{!60005|Att_AttsToShow: Object Object, Object Attribute, Attribute MetaOnly}
+
+Variable Graph_Attribute_Valu
+Title: Graph Attribute Values
+Definition: local mappedtheme := Graph_to_Diagram_The[Graph_Themes=Graph_theme]; ~
+~
+Table(Graph_Attributes)(RGB8to16(Theme_Info[Theme_Attributes='TextFontColor',Themes=mappedtheme]),RGB8to16(Theme_Info[Theme_Attributes='TextFontColor',Themes=mappedtheme]),RGB8to16(Theme_Info[Theme_Attributes='TextFontColor',Themes=mappedtheme]),IF mappedtheme = '2023 Dark' THEN RGB8to16('rgb(100,100,100)') ELSE  RGB8to16('rgb(230,230,230)'),RGB8to16(Theme_Info[Theme_Attributes='TextFontColor',Themes=mappedtheme]),RGB8to16(Theme_Info[Theme_Attributes='TextFontColor', Themes=mappedtheme]), Include_borders,~
+IF mappedtheme = 'Classic' THEN RGB8to16('rgb(255,255,255)') ELSE RGB8to16(Theme_Info[Theme_Attributes='TextColor',Themes=mappedtheme]))
+NodeLocation: 408,304,1
+NodeSize: 64,24
+WindState: 2,1097,59,720,489
+DefnState: 2,740,511,1022,303,0,DFNM
+ValueState: 2,33,76,755,450,,MIDM
+ReformVal: [Themes,Graph_Attributes]
+{!40700|Att_CellFormat: CellSpan(Graph_Attributes,CellNumberFormat('Hexadecimal',4,dateFormat:'ABBREV',fullPrecision:0,numbersAsDates:0,datesAsNumbers:0,digits_:4,zeroes_:2,showZeroImPart:0),4,header:0)}
+
+Constant Graph_to_Diagram_The
+Title: Graph to Diagram Theme Map
+Definition: Table(Graph_Themes)('2023','2023','2023 Dark','2023 Dark','Classic','Monochrome','Viridis','Plasma')
+NodeLocation: 560,304,1
+NodeSize: 72,24
+
+Button Actions_on_Load
+Title: Actions on Load
+Description: Displays alert for users of older versions of Analytica that some features may not work in their version.
+NodeLocation: 112,504,1
+NodeSize: 64,24
+WindState: 2,1112,106,720,350
+{!40300|ProactivelyEvaluate: 32}
+OnClick: Local patch := Mod(AnalyticaVersion,100);~
+Local minor := Mod(AnalyticaVersion/100,100);~
+Local major := Floor(AnalyticaVersion/10k);~
+local msg := "You are using Analytica version "&f"{major}.{minor}.{patch}. The following features of this library will not work or display properly:";~
+~
+IF AnalyticaVersion < 60300 THEN (~
+	msg := msg&Chr(13)&Chr(13)&~
+	" • Set all nodes buttom (requires 6.3.0 or newer)"&Chr(13)&~
+	" • Arrow border colors (requires 6.3.0 or newer)"&Chr(13)&~
+	" • Slider bars (requires 6.3.0 or newer)";~
+	ChangeNodeVisibility(Handle(Example_Slider),'Hidden','UserInputs');~
+	ChangeNodeVisibility(Handle(Set_all_nodes_to_def),'Disabled');~
+	IF AnalyticaVersion < 50007 THEN (~
+		msg := msg&Chr(13)&" • Bar graph outlines (requires 5.0.7 or newer)");~
+	MsgBox(msg);~
+);
+
+Text Te1541863443
+Description: Useful for adding new graph themes
+NodeLocation: 816,376,-1
+NodeSize: 152,64
+
+Function SetFontSize(fontsize)
+Title: SetFontSize
+Description: Sets the attribute and table font size to parameter fontsize.
+Definition: TableFontSize := fontsize;~
+AttributeFontSize := fontsize;~
+~
+FOR m:=#FindObjects(class:Model,Module,Library,LinkLibrary,LinkModule) Do FontStyle of (m) := Theme_Info[Themes=Diagram_Colors,Theme_Attributes='FontStyle'];
+NodeLocation: 736,272,1
+NodeSize: 80,24
+
+Decision Font_Size
+Title: Font size
+Description: Select font size for attributes and tables
+Definition: Choice(Self,7,0)
+NodeLocation: 264,48,1
+NodeSize: 64,24
+WindState: 2,409,63,835,406
+Aliases: FormNode Fo1096946963
+{!40300|DomainExpr: Discrete(8,9,10,10.5,11,12,13,14,16,18,20,22,24,type:'number')}
+OnChange: SetFontSize(Self);~
+
+
+Variable Node_Font_Size
+Title: Node Font Size
+Definition: Font_Size + 2
+NodeLocation: 408,48,1
+NodeSize: 64,24
+
+Close Details
+
+FormNode Fo966438371
+Title: Slider testing
+Definition: 0
+NodeLocation: 580,288,1
+NodeSize: 172,16
+NodeInfo: 1,,,,,,,176,,,,1,,0
+Original: Example_Slider
+
+Chance Chance1
+Title: Chance
+Definition: 0
+NodeLocation: 348,152,1
+NodeSize: 56,24
+
+Constraint Constraint1
+Title: Constraint
+Definition: 0
+NodeLocation: 604,152,1
+NodeSize: 56,24
+
+Module Module1
+Title: Module
+Author: Karen Lee~
+Lumina Decision Systems
+Date: Thu, Jan 5, 2023 12:49 PM
+NodeLocation: 84,216,1
+NodeSize: 56,24
+DiagramColor: 0x000000ffffffff
+FontStyle: Arial,15
+
+Close Module1
+
+Constant Constant1
+Title: Constant
+Definition: 0
+NodeLocation: 344,216,1
+NodeSize: 56,24
+
+Button Button1
+Title: Button
+NodeLocation: 604,216,1
+NodeSize: 56,24
+
+FormNode Fo736794339
+Title: Select Theme
+Definition: 0
+NodeLocation: 188,432,1
+NodeSize: 164,16
+NodeInfo: 1,,,,,,,136,,,,,,0
+Original: Diagram_Colors
+
+FormNode Fo1005229795
+Title: Use custom border colors
+Definition: 0
+NodeLocation: 188,496,1
+NodeSize: 164,16
+NodeInfo: 1,,,,,,,,,,,0
+Original: Use_node_colors_for_
+
+FormNode Fo1743427299
+Title: Include borders
+Definition: 0
+NodeLocation: 188,464,1
+NodeSize: 164,16
+Original: Include_borders
+
+Decision Decision1
+Title: Decision
+Definition: 0
+NodeLocation: 84,152,1
+NodeSize: 56,24
+
+Variable Variable1
+Title: Variable
+Definition: 0
+NodeLocation: 216,152,1
+NodeSize: 56,24
+
+Objective Objective1
+Title: Objective
+Definition: 0
+NodeLocation: 476,152,1
+NodeSize: 56,24
+
+Function Function1(param1)
+Title: Function
+Definition: 0
+NodeLocation: 476,216,1
+NodeSize: 56,24
+
+Index Index2
+Title: Index
+Definition: 1
+NodeLocation: 216,216,1
+NodeSize: 56,24
+
+Determ Determ1
+Title: Determ
+Definition: 1
+NodeLocation: 736,216,1
+NodeSize: 56,24
+WindState: 2,98,82,720,350
+
+FormNode Fo960655843
+Title: Bar graph
+Definition: 1
+NodeLocation: 116,624,1
+NodeSize: 92,16
+Original: Bar_graph
+
+FormNode Fo700608995
+Title: Stacked bar graph
+Definition: 1
+NodeLocation: 116,656,1
+NodeSize: 92,16
+Original: Stacked_bar_graph
+
+FormNode Fo35811811
+Title: Lines
+Definition: 1
+NodeLocation: 732,624,1
+NodeSize: 60,16
+Original: Lines
+
+FormNode Fo820146659
+Title: Stacked areas
+Definition: 1
+NodeLocation: 336,624,1
+NodeSize: 80,16
+Original: Stacked_areas
+
+FormNode Fo417493475
+Title: Waterfall
+Definition: 1
+NodeLocation: 336,656,1
+NodeSize: 80,16
+Original: Waterfall
+
+FormNode Fo689074659
+Title: Prob densities
+Definition: 1
+NodeLocation: 544,624,1
+NodeSize: 80,16
+Original: Prob_densities
+
+FormNode Fo1634365923
+Title: Heat map
+Definition: 1
+NodeLocation: 544,656,1
+NodeSize: 80,16
+Original: Heat_map
+
+GradientClass Gradient
+Title: Gradient
+Definition: 1
+NodeLocation: 736,152,1
+NodeSize: 56,24
+NodeInfo: 1,0
+WindState: 2,98,40,720,392
+GradientOf: Decision
+WithRespectTo: Variable1
+
+Button Export_Anastyle
+Title: Export Anastyle
+Description: Click to save the selected diagram and graph styles as an Anastyle file, which you can import into any model to apply those styles. 
+NodeLocation: 736,736,1
+NodeSize: 56,32
+WindState: 2,739,170,720,485
+OnClick: var name := SelectText(ID_from_title(Diagram_Colors),1,13);~
+~
+SaveAnastyle(name, Diagram_Colors)
+
+Text Te1697722387
+Description: Example Diagram
+NodeLocation: 580,436,2
+NodeSize: 172,84
+NodeInfo: 1,,,,0,0,,,,,,,1
+
+FormNode Fo1190998035
+Title: Select graph theme
+Definition: 0
+NodeLocation: 628,576,1
+NodeSize: 164,16
+NodeInfo: 1,,,,,,,184,,,,1,,0
+Original: Graph_theme
+
+Text Te99823635
+NodeLocation: 412,184,3
+NodeSize: 388,64
+NodeInfo: 1,,,,0,0
+
+Text Te1059342355
+Title: Select Diagram Theme
+NodeLocation: 192,432,-1
+NodeSize: 168,88
+
+Text Te1403799571
+Title: Text
+Description: Text
+NodeLocation: 88,288,-1
+NodeSize: 64,32
+
+Text Te174868499
+Title: Graph Examples
+NodeLocation: 412,612,-1
+NodeSize: 388,76
+
+FormNode Fo1193035795
+Title: Same diagram and graph themes
+Definition: 0
+NodeLocation: 188,576,1
+NodeSize: 164,16
+Original: Same_diagram_and_gra
+
+Variable Example
+Title: Example
+Definition: Example6
+NodeLocation: 480,488,1
+NodeSize: 64,24
+
+Objective Example4
+Title: Example
+Definition: Example + Example5
+NodeLocation: 680,488,1
+NodeSize: 64,24
+
+Chance Example5
+Title: Example
+Definition: Example6
+NodeLocation: 680,408,1
+NodeSize: 64,24
+
+Decision Example6
+Title: Example
+Definition: 1
+NodeLocation: 480,408,1
+NodeSize: 64,24
+
+Text Te1466624019
+Title: Color Themes Library
+Description: This library allows you to select preset themes that configure the default visual styles for your model. ~
+Use the Select Color Theme and Graph Examples menus to select themes and options.
+NodeLocation: 412,64,-1
+NodeSize: 388,40
+
+Button Set_all_nodes_to_def
+Title: Set all nodes to default color and border styles
+Description: Click to set all nodes in the parent model to use the default color and border styles. Then they will use whatever theme colors you set in this library. Otherwise, they will retain their existing (non-default) colors. Note that this will ignore any Form Nodes (i.e., input and output nodes).
+NodeLocation: 592,736,1
+NodeSize: 72,32
+NodeInfo: 1,,,,,,,,,,,5
+WindState: 2,899,117,945,697
+OnClick: LocalIndex filedMods := #FindObjects(class:model,linkLibrary,linkModule);~
+Local top := ArgMax( IsIn of (FiledMods) = null, filedMods );~
+Local excludedFiledMods := SetDifference(\filedMods,\top);~
+Local excluded := if size(#excludedFiledMods)=0 then \([]) else FindObjects(withinAny:...#excludedFiledMods);~
+Local nColorChanges := 0, nTextColorChanges:=0, nInfoChanges:=0;~
+Local objNodeInfo := SplitText(nodeInfo of Object,',');~
+~
+Local ignore := \([Handle(Te99823635),Handle(Te1697722387),Handle(Gradient),Handle(Details)]);~
+Local excludedFormNodes := FindObjects(class:FormNode);~
+excluded :=  SetUnion([excluded, ignore]);~
+excluded :=  SetUnion([excluded, excludedFormNodes]);~
+~
+begin~
+	LocalAlias node := #SetDifference( FindObjects(withinAny:top, class:...SysLiChoice_Cls2Rset), excluded);  ~
+	LocalAlias nodeClass := HandleFromIdentifier(class of node);~
+	~
+	if not IsNull(nodeColor of node) then (~
+		nodeColor of Node := Null;~
+		nColorChanges := nColorChanges + 1;~
+	);~
+	if not IsNull(nodeFontColor of node) then (~
+		nodeColor of Node := Null;~
+		nColorChanges := nColorChanges + 1;~
+	);~
+	if not IsNull(nodeInfo of node) then (~
+		nInfoChanges := nInfoChanges + 1;~
+		nodeInfo of node :=null~
+	)~
+~
+end;~
+MsgBox( "# nodes with nodeColor cleared: " & NumberToText(nColorChanges,'Integer') & "~
+# nodes with nodeFontColor cleared: " & NumberToText(nTextColorChanges) & "~
+# nodes with nodeInfo cleared: " & nInfoChanges, title:"Changes made:", buttons:0)
+
+Picture Pi1408902163
+NodeLocation: 260,292,-2
+NodeSize: 36,36
+Pict: (0000000000DB003E01190004BA41000089504E470D0A1A0A0000000D49484452000001F4000001F40806000000CBD6DF8A000000017352474200AECE1CE90000000467414D410000B18F0BFC6105000000097048597300000EC300000EC301C76FA8640000413F49444154785EEDDD07941CC5B9F6712B81C8020C18DB601B0C3636C6380781C8608CB918B0CD778D23CE01078CE3B5951041A09CB5CA396B9513CA39E79CB35639EE4ADAA0F7AB1A4AA66729491BA67BAABAFFCF39BF33E7DE73AFDD3D55AD6767A6BBEA7D841042082184104208212413910EEFABA6D4FCAFB97FBF4A16D4AB0500F0C4CC17AF34FF865731FFB493A4450DFEC794258A00003C36E585B745A4A6F9E79D24296A023CA61C4A9B100000CF541159D34975792A6B953AE69F7912F7A8095055F9B772E6DD090100F04E4E0D918D03DEA9F2F4E428B5CC3FFB248E5113E02A6544DA840000F8A7F32522DBC7BE53DFF6EC51BEABF0BB7ADCA226C09DCAFAB4090100F04FD72B555DCF48B576193242B9C95401F13D6A023CA7E4A74D0800807FBABF5F64FFA277AABAEC39AEFC5EA9666A81F81635F835946669930100E0A75E1F1639BC26D5D015CC1CE54E5311C497A8C1BF41999A361900007EEAF77191635BDFA9E5CAA54869A4F0889B0F5183FF556557DA640000F869D05D22F9FA1EB78C669D725FAA33BEFEBEAFA7CA83B81335F05594DF2885FF9D0800007FE57E55E4D4A1772A388CBCF59B7952A7C6545323C485A881BF44E99E36110000FE1AF99048A1BE9F2DA4746D28EAD3B9C86FEB9C365542B21D35F07A09D7C569130100E0AF71DF16293E699A37C339734624E7DFEF94B9F68787C4D409C966D4C0EB255C0FA64D040080BF26FF48A444DFBB16427499B7FDDBBB654EA1673F6AD0F512AEFFA7B0842B00C4C5CC1755E99698F6CD707499B7F8637A9953E8D98D1A74BD84EBB0B4490000F0DB82BABA75DF29DF4CA744FD91F0D66FDE5BE6147AF6A2069D255C01206E963535CD1B427499BFFE737B996B147AF45183FE3DE544DA240000F8AB635591359D4DF38690926291577E642FF2B328F4E8A206BDBAD2346D120000FCA6B73FDD34D0346F08292E12A9FBFFEC251E44A1471335E82CE10A007173E1ED4F2B97C2D322FF7AD65EE0A551E8E1470DBA5EC27567DA240000F8AD7CDB9F963F85A744FEFAA4BDBC6D28F4F0A2065C2FE1FA6B85255C01204EBA5F5791ED4FCB9E5305222F7DC35EDCE742A1871335E07A09D76E69130000E0BFD4F6A76B4DF3869093F9227F7CD85EDAE743A1673E6AC03FAA2C4A9B000000FFF5BB2D53DB9FDA53705CE477F7D90BFB4228F4CC460DF8A30A4BB80240DCE8ED4F0BF24CF386901347457E5DDB5ED66541A167266AB0F512AEFF5258C21500E226F76BE16E7F7A4CFD67FFFCCBF6A22E2B0ABDF251837DA5929B36F800807818F970B8DB9F1E3920F2D3CFDB4BBA3C28F4CA450DF6A7947569830F008887F14F8B149F32CD1B420EED15F9D15DF6822E2F0ABDE25183FD5D85255C01208E26FF38BCED4F750EEC11F9FEA7ECE55C11147AF9A3065A2FE1FA56DAC00300E223CCED4F75F6ED1479EE767B315714855EBEA881BE5E999C36F00080F80873FB539DBC6D22DFBDD55ECA9541A1973D6AA0BFA2EC481B7800407C2C6B665A37A4ECDE2CF2CC47EC855C5914FA85A306592FE1FA2BE5F47F071D00101FA9ED4FBB98D60D29DBD78B7CFBC3F632CE040AFDFC51035D53E99236F00080F8486D7F3AC8B46E48D9BA46E4C91BED459C2914FAB9A306FA23CAC2B4810700C4476AFBD371A67543CAA615224F5C6F2FE14CA2D0ED5103FD8872206DE00100F111F6F6A73AEB97883C7EADBD80338D424F8F1A64FD7BF93F9492FF0E3A00205E52DB9F2E36AD1B52D62C1079EC6A7BF98681427F376A90F512AE43D3061D00102F616F7FAAB3728EC82357DA8B372C14FA3B5183AC97705D9B36E8008078097BFB539D6533441EBADC5EBA61A2D05365FE1D85255C0120CE067D36DCED4F75164D1679F0527BE1862DC985AE06582FE1FA66DA800300E227ECED4F75E68D17B9BFA6BD6CA390D4425703CC12AE009004A31E11293A615A37A4CC1A2572DF45F6A28D4A120B5D0DF0971596700580B81BFF4CB8DB9FEA4CCB15A953C35EB2514A5AA1AB01FE85C212AE001077537E12EEF6A73A93068ADC5BDD5EB0514B4AA1ABC1D54BB8764E1B6C00403CCDFC43B8DB9FEA8CEF23724F557BB96643120A5D0DEECDCA82B4C10600C4D3827AAA6D43DCFE5467743791DA55ECC59A2D712F7435B80F2B2CE10A0049B0BCB969DC1033ACA3BD50B32DAE85AE0696255C012029F4F6A76BBB9AC60D3183DBD8CBD405712C7435B87A09D72169830D0088A7D4F6A7834DE38698FECDEC45EA8AB815BA1ADC3B943569830D0088A728B63FD5E9F9BABD445D12A7425783FBAC723C6DB00100F1D4F52A913D334DE386943367D47F4F037B81BA260E85AE0696255C012049F4F6A7079698D60D29BACC3BFE9FBD3C5DE47BA1AB81BD4E999436D00080F8EA7D53F8DB9FEA326FF3B2BD385DE573A1AB81FD92B23D6DA00100F1A5B73F3DBECDB46E48D165DEFC0FF6D27499AF85AE0696255C012049A2D8FEB4A444E4CD5FDB0BD375BE15BA1A54BD846BA7B4410600C45BEED7454E1F36AD1B524A8A455E7BC15E963EF0A9D0D5A0B2842B0024CDA847C3DFFEB4B848A4C10FEC45E90B5F0A5D0DEA43CAFEB4410600C4DB8467C3DFFEB4A850E43FCFD94BD227AE17BA1A50BD84EBDF1496700580248962FBD3C2D322FF7CC65E90BE71B9D0D5805EA10C4E1B600040FCCDFAA384BEFD69A1FAE4FFD727EDE5E823570B5D0DE8271596700580A459585FB56DC8DB9F9E2A10F9F363F662F4958B85AE06F41985255C012069A2D8FEB4E084C88B0FDA4BD1672E15BA1A4CBD84EB1B69830B0088BFA8B63FCD3F26F2DB3AF642F49D2B85AE06542FE13A316D800100F117D5F6A7C78F88FCF26BF6328C03170A5D0DE8171596700580A4E97CA9C88EF1A67143CCB143223FFB92BD08E322DB85AE06F467CAA9B4010600C49FDEFE346F9669DC107364BFC84F3E672FC138C956A1ABC1BC58C9491B5C004032F4B83EFCED4F750EED15F9E167EC051837D9287435983729F3D3061700900C7AFBD323EB4CE3869803BB45BE7F87BDFCE228EA425783F9A0B22F6D700100C9D0EFF6F0B73FD5D9BB43E4B9DBECC517575115BA1A48BD84EB5F1596700580248A62FB539D3D5B45BE738BBDF4E22C8A425703A997701D9436B00080E48862FB539D5D9B449EBED95E78711776A1AB81FC84B23A6D600100C911C5F6A73ADBD78B3CF5217BD925419885AE06F269E558DAC0020092238AED4F75B6AC1679F203F6A24B8A300A5D0D6235E5F5B441050024CB949F86BFFDA9CEC6E522DFBCCE5E724992E9425783F87EE5EDB441050024CBAC3F85BFFDA9CEBAC5228F5F6B2FB8A4C964A1AB41FC82B22D6D500100C9B2B0816ADA90B73FD5593D5FE4D15AF6724BA24C15BA1AC4171496700580245BDEC2B46DC859315BE4912BEDC59654952D7435807A09D78E69030A004896D4F6A7DD4CDB869C25D3441EBADC5E6A495699425783A897709D9736A8008064D1DB9F6E1E62DA36E42C9828F2E0A5F6424BBA8A16BA1AC4071496700580248B6AFB539DB9E344EEAF692F3394BFD0D500EA255C5F5658C21500922CAAED4F75668E14B9EF227B91E11DE5297435807A09D78169030A00489ED4F6A74B4DDB869CA94345EAD4B09718DE55D6425703C812AE0080E8B63FD5993440E49E6AF60243BAB214BA1AC06F2B2CE10A004917D5F6A73AE37AA932AF6A2F2FBCD7F90A5D0D9E5EC2F5B5B4C1040024D3A0BB450AF69AB60D39A3BA8AD4AE622F2ED89DABD0D5E0E9255C27A40D2600209986D58E66FB539DDC0EF6C2C2F99DB3D03B56FFA2CCFB578E6C1E5A2C5B7205009060516C7FAA33A895BDAC7061E72C7411F5E7182184101251FA36B11715CAE63C851ED182BC841042129F1EAFDA4B0A65672B74F5D6565576A6DE6442082124AC9C3923D2B99EBDA0503EE72874BE6E278410126E7499B7FFA7BD9C507EE72874BE6E278410125E7499B7FE8BBD985031A50B5DBDCD7CDD4E082124BCE8326FF6A2BD9450719642E7EB76420821E1A4A444A4F12FED8584CAB1143A5FB7134208C97C4A8A451AFDC45E46A8BC60A1ABB79BAFDB092184643EC54522F59FB7171132A354A1F3753B218490CCA6A850E4DFDFB3971032A754A1F3753B218490CCA6CF9BF60242669D2D74F596F3753B218490CCA7535D7B0121B30285CED7ED841042321F0A3D1A8142E7EB76420821990F851E0D5DE8EAEDE6EB76420821E184428F862974BE6E278410124E28F4689842E7EB76420821E184428F862EF445BBF2F62ECFDB2F000068F98585A68D33100A3D1AA99BE2FED3440000386BFECE3DA68D33100A3D1A143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A00A0340ADD43143A7C53A56E13B9B84173B9E6B5367273931CB9A35557F95287DE727FD701F2ADDE43E5FF0D1C253FCB1D2F7F1C3359FEF5F60C796DDA5C693967917459B4423A2F5A2ECD662D94FA9367CB5FC64D955F0C9B20CF0D18298FF71C22B53BF593BBDAF4908F36CD49FD67D7A8DFCCFADF0F240185EE210A1DAED1857D43E376A982FDF190B1F2CAD439D26FF91A59B0334F0EE41748514989F95722FC9C2C2A92BD27F265C3C1C3B268779E4CDDB24346ACDD286DE72D913F8F9D224FF6CE954FB5EA26351BB4B09E0BE02B0ADD43143AB24197F607DFEC2075BAF4971772C7A53E450F5CB94E96ECD92BC74F179A7F05FCC9993322DB8F1C93299BB74BA785CBE565F5E9FFC16E03A5D6ABADADE70FB88E42F710858E285CF7465B79B6DFF0D457DF8B77EF9582C22273A5C73F1BD5A7FBFE2BD6CA5FC74FA3E4E10D0ADD43143AC2F0A1B73AC8FF0E1C251DE62F93D5FB0E9AAB9A9C8DFE0A5F7F92D7BFF75FFF463BEB7B08641385EE210A1D95A5BF3EFF58B34EA9DFBBBB2E5E91FA444ACA97A57BF649D3590B5337E75DFE4A4BEBFB0C448942F710858E8AD09F2A7F3E6CBCF45EB63AF5DB31C95C0A8B4B64DA961DA9BBF03FD234C7FAFE0361A3D03D44A1A3ACF427C71F0C1E2D63D76F91E29233E64A256167DE8E3DA99BECF4E374B67149BA8BEA374F3DBEE89ACB3CFFA68542F710858EF3D1CF623FD16BA8F45DBE46F20BFDBBFB3C6ED1FFC8EA9BEBF44F1CB6F14AA2CFB7EB65DE1DB7A2EF8FB01DAF2F28740F51E8284DFF26FEF54E7D53CF5AEFCF2F305724712D93376F4F2D8AA33FA1DAC6312928F47050E81EA2D071965E71ADD1D4B9B2F9D0117315121FB2EF4481349E315F6E6DDED93AAE7147A1878342F710859E6C57346A257F1A3325F56C38F13F13366E4D3DEF9FA4656B29F47050E81EA2D093E9DAD7DBA6D6333F5470D25C71244ED975EC786A695ADF6FCC2A0B0A3D1C14BA8728F464D1CBAD3699B9404E78B8BC2A297FF4DAF7FF9E3833D6ABD351E8E1A0D03D44A127C32DCD3AA5566D3B5D5C6CAE3092A41C3B755A5E9F3E2F96ABD251E8E1A0D03D44A1C7DBA75B77935E4B57F3DC384945EF1ED76ACE62B9F1CDF6D6F9E2230A3D1C14BA8728F478D2FB83E7AEDE60AE2642D2A37F72F9CFA499726943FF7F63A7D0C341A17B88428F97FBBB0E90B7376E35571121E7CFCEA3C7536BF057ADDBD43A9F7C40A1878342F710851E0F7AA9C9A1ABD79BAB8790F2453FB6F880FA63D036B75C47A1878342F71085EE37FDBCF1DFC64F63595692918C58BB516E6BD1C53AD75C45A1878342F71085EEAFFBBAF49755FB0E982B8690CCE45451B1FC63C2746F16A7A1D0C341A17B8842F7CF0D8DDB49CFA5ABCC95424838D15FC3EBB2B4CD419750E8E1A0D03D44A1FBA35ABDA6F2DB9113E5C8C953E62A2124DCE8C71DDF983E4F2E69D8C23A275D40A1878342F71085EE07FD18DAC25D79E6EA2024DAAC3F7028F5138F6D6E661B851E0E0ADD4314BADBAE7EAD8DB49BB754CEB02E0C7120ADE72E969A0DDCFAB44EA1878342F71085EE2EFD0F82DE1A931097B264CF5EF944CBAED6399B0D147A3828740F51E8EED1BF57E62C5C66AE0442DC8B5E69EE4743C658E76FD428F47050E81EA2D0DD727B8B2EB274CF3E731510E276F4D3169767798B560A3D1C14BA872874773C3760A41C675B53E259D61D382477B7ED699DD351A0D0C341A17B8842CF3E7D9391BEF18D105FA3B7E57D21779C757E878D420F0785EE210A3DBB6E6DDE39B58007217148D3590B53EB25D8E67A5828F47050E81EA2D0B3E7D97EC3E5E8A9D366C613128F8C5EB759AE6CD4CA3AE7C340A1878342F710851EBD8B1B34975673169B994E48FCB272EF01B9A55927EBFCCF340A3D1C14BA8728F4687D4CFD23B760272BBE91F8677F7E81DCDB39FCD5E528F47050E81EA2D0A3F364EF5CD66127894A617189FC64E858EBF59029147A3828740F51E8D1F8C5B00952C2FAAD24A1F9DDA889D6EB221328F47050E81EA2D0C355A56E13F9BF8933CCAC26D988BEF170FB9163B23C6FBF4CDFBA4346ACDD985A10A5EBE2153270E53A19B37EB3CCD8BA33B5A0CFC6838765EF897C29282C32FFDF24537971F424EB355259147A3828740F51E8E1A95AB72937BF85901D478FC9848D5BA5CDDC25527FF26CF9D39829A9AF75BFDD7798DCDF75807CAE5DCFD4BD0A7A639BCA3C42A5FF7FAF7AB5B57CE8AD0EF2C9965DA54E97FEF2F361E3A5C9CC053272ED26D9A0CA9F6F5DCA973F8C9E6C7DAF2B83420F0785EE210A3D1C17D56F2E7D97AF31B3995424DB8E1C95DCD51BE4B56973E58783C7C8173BF4922B227C1CAA2CF4130B9F6AD54D9EEE3B5CFE3161BA745FB252E66CDFCDBD12E789FE03CCF65E5614851E0E0ADD43147AE6E9B5ADC76FD8626632294BF4CD537377EC9666B316CA77FA8F487D2AB6BDB7BED0DFCEDCD5A687BC34764AEA2BFDFC4296F40DE6CFEA7DB1BD6F1541A1878342F710859E59EF7FBDADCCDB91C10B21A6D15F55CFDCB653FEF5F68CD4A34D7A8739DBFB1917FA1B1BFD957DC3297364F6F65D525CC257F5FA8F1DDB7B555E147A3828740F51E8997373931C59BBFFA099C1A474F4CD69FA2634FDF5B9FEC3C7F61E2685FE6DFE7FFAE4A6EEB1587FE0907987929797C74DB5BE3FE541A1878342F710859E19FA77D49D478F9BD94BCE26EF78BEB49CB3481EEA3630F529D5F6DE259D7E12E22B1DFBA4F6C03F96C0A580FF367E9AF57D292B0A3D1C14BA8728F4CAFB5A4E5F395470D2CC5CA277DED29FC4BFD96B8854AFD7CCFA9EC1EEB2575ACA8F878C95695B7698773319F9FB84E9D6F7A32C28F47050E81EA2D02BE7F19E437866D944DFD4F69B916FCB35AFB5B1BE57289FDB5A7491D7A7CF93DDC74E987738DEF9E7DB33ACEFC38550E8E1A0D03D44A1579C5ECAB5A8A4C4CCD86446FF31D376DE12B9A35557EB7B84CAD3DF723CD16BA80C5DBD3EF6CFBDEB9B246DEFC1F950E8E1A0D03D44A157CC3D9DFBC9C9A2E47E32D7BF8DEB15F0AE4DF8CD6D51FB44CBAEA9F50DE2DCEBFF9E38D37AEEE742A1878342F710855E7EFAF9E2A42E1CB26ADF017921779CD46C10EFC7CC5C7767EBEE3278D57A332AF14B799689A5D0C341A17B88422F1FBDA4E89EE3C9F84D3318BDE5ABBEC94DDF916D7B5F901D77B7ED995A9B3E6ED1CFE93FD86DA0F59C4BA3D0C341A17B88422FBB1B1AB74B6DDE91A4E8E7EA9FED379C2277DC973BF696B1EBE3B53AE181FC82D41FD0B6F30DA2D0C341A17B88422F1BBD10C8923D7BCDEC8C7FF406283FCB1DCF63679EA9DDA99F4CDEBCDD8CA2FF5996B72FF5289FED5CCFA2D0C341A17B8842BF30FD7BF19418FD2379BE1C2C38297F193735F64BB1C699FE36E5B9012365DF890233AA7E47AF6970BE6F8828F47050E81EA2D0CF4F7F42D58F0B25211DE62F4B6D396A7B1FE01FFD04428F25ABCCE8FA9DF33DCE46A1878342F710857E6EFA5341A785CBCD8C8C6FF4D79A7AB53BDB7B00FF3DD663B06C3D7CD48CB69FD18FE9E967F16DE747A1878342F710857E6E7A1FEE38E7C4E9C2D48E57FC4E1E7F7A4BDF16B31779FDFCBADEDCE7932DDFBB8011851E0E0ADD4314BA9DDEAF39CEC95DBD416E6AD2D17AEE882FFD4D8C5E4BC0D7AC3B70486ABDDA3AED9C28F47050E81EA2D0DFEBFB83469B5918BFE805717CFF870695737183E6527FF26C292CF673D9E2D1EB364BB57A4DFF7B3E147A3828740F51E8E93ED3A67B6C97749DBE75877CA4698EF5BC913C5FEAD05BB61F396666875FD13F879D3D0F0A3D1C14BA8728F4775DD1A8556A2195B845AFBAA5D7C70E7EAA01B4EBDE682B13376D3333C5AF7C6FC0C8D43950E8E1A0D03D44A1BF43DFD1AE37BD885B361D3A225FE9D8C77ACE80A66F8A7C63FA3C3363FC497E61A17CB66D0F0A3D2414BA8728F477FC6AC40433F3E2937EEA0F14FDAD83ED7C81D29EE9375C8E9F2E34B3C78FE8C7F11EED31D8FC4F6E85420F84428F0685DE443ED7AEA79C2A2A3633CFFFE84793FE31613AEBAFA3DCF463616B3CFBD969DB11379FB1A7D003A1D0A391F442D76BB4C769C315FD09EBC9DEB9D67305CA427FAB3368E53A33A3484543A10742A14723C985AE3FC1C6694F69FD7BF9A75B77B39E2B501EFADA7879DC5429F179259A2C87420F84428F46920BFDC5D193CC6CF33F7A872DBD76B7ED3C818AD27BE0C7F531CEB043A10742A14723A985AEF78FF675618DD2E9B678A5D4A8CFF2AD08C7BD9DFBA7965D25E50B851E08851E8D2416BADE51CCF7CD2ACEA6E59C4552B52ECF97235CFAC6D1B86CC71A5528F44028F46824ADD0F56F83C3D76C34B3CCEF349C32873BD91199DB5B74F17665B96C84420F84428F46D20A5DEF2E1687FC75FC34EBF90161D21BFAC47135C53042A10742A1472349857E4BB34EDEDFE0A36F3AFEF588B7ADE70744E1FA37DAC9E2DD7BCD8C24E70A851E08851E8DA414BAFE6A5AEFD2E4737499FF70F018EBF90151D2EB374CDBB2C3CC4C620B851E08851E8DA414FAD37D879B99E56F7E33924FE670C7250D5BC8A8759BCCEC24A543A10742A1472309857EF92B2D65C751BF6FE6D1BBA5D9CE0DC826FDB8A4EFDF7C85150A3D100A3D1A4928F43767CC37B3CACFB498BD88BBD9E1ACCBD41FCC73B6EF36B3959C0D851E08851E8DB817FA9DADBB4B5189BF0BC8F45CBA8AE7CCE13CBD4AE1EA7DDCFD1E0C851E08851E8D3817BAFE543B7DABBF37EE8C5CBB8915E0E00DFD489BEF3F6D6532147A20147A34E25CE83F1E32D6CC26FFB268779E5CDAB0A5F5BC0057DDD1AAAB1C2C38696671B243A10742A14723AE857ECD6B6D647FBE9F4B55EA25366F6E92633D2FC0755FCDE923F9858566362737147A20147A34E25AE81DE62F3333C9AFE8DFFBEB74E96F3D27C0178FF71CE2F5BD2B9908851E08851E8D3816FA573AF6492DC2E2637E3B72A2F59C00DFFC60F06833AB93190A3D100A3D1A712BF4EAF59A79BB2C65E745CB793C0DB1F2977153CDEC4E5E28F44028F468C4ADD07F397C8299417E453FC77B7183E6D673027CA5FF40EDB77C8D99E5C90A851E08851E8D3815BA7EC46B8B87FB9C1F3B753AF5C88FED9C00DF5DD9A895AC3F70C8CCF6E484420F84428F469C0A5D6F5CE2637E316C82F57C80B8B8BB6D4F3955546C667C3242A10742A147232E85AE5753F371A5AA899BB6F1BB3912416FFB9BA450E88150E8D1884BA13FD3CFBFDDD4F4B3BA1F6BD6C97A3E40DCE83F5CFBAF586B667FFC43A10742A147230E85AEFFA1D02BABF99617474FB29E0F1057FAF7F40D070F9B2B20DEA1D003A1D0A31187427FACC760336BFCC9CC6D3BD9740589F4B9763DE57471FC7F4FA7D003A1D0A31187429FB6C5AF0D584E1615C9ED2DBA58CF054882DF8C8CFFEFE9147A20147A347C2FF47B3AF73333C69FFC75FC34EBB90049A17F261BB8729DB922E2190A3D100A3D1ABE17FA98F59BCD8CF123FA22D1ABD9D9CE0548921B1AB793A3A74E9B2B237EA1D003A1D0A3E173A17FBE5D2F335BFC48617189DCD9BABBF55C8024FAE398C9E6EA885F28F44028F468F85CE8833CFBCAEE3F93665ACF03482AFD6DD5F2BCFDE60A895728F44028F468F85AE877B4EAEAD58E6A4BF7EC4B2D4D6B3B1720C9F476C1710C851E08851E0D5F0BBDCBA21566A6B89FE29233A99F076CE701A089F45EB6DA5C2DF109851E08851E0D1F0BFDB2575ACAF1D38566A6B89F66B3165ACF03C03B6E7CB37D6A93A23885420F84428F868F85FEBFEA42F125FA1FA9F7BFDED67A1E00DEF5D2D829E6AA894728F44028F468F858E8A3D66D32B3C4FDD49F3CDB7A0E00D2E97B4C56EE3D60AE1CFF43A10742A147C3B742BFEE8DB6525452626689DB39587032B576B5ED3C00BCD7FD5D0798ABC7FF50E88150E8D1F0ADD07F376AA29921EEE7E57153ADE700E0DCC6AEDF62AE20BF43A10742A147C3B7429FBD7D9799216E67D7B1E37249C316D67300706E0F761B68AE22BF43A10742A147C3A742BFA55927333BDCCFAF47BC6D3D0700E7A7D7795FB8CBBFED904B87420F84428F864F85AE575AF3213B8E1E938BEA37B79E03800B7B6EC0487335F91B0A3D100A3D1ABE14BAFEAB7DEDFE836676B89D7F4C986E3D070065A39784DD72F8A8B9A2FC0C851E08851E0D5F0AFD0BEDFDD88845EF757E2DCF9D0395F6FB5193CC55E56728F44028F468F852E8CD672F3433C3ED745AB8DC7AFC00CA47AF08A91FFDF435147A20147A347C28F46AF59ACA9EE327CCCC703B9F69C3F6A840A6349C32C75C59FE85420F84428F860F85FE48F7416656B89D499BB6598F1F40C55CFF46BBD4CF583E86420F84428F860F859EB3709999156EE7A93EC3ACC70FA0E2DACF5F6AAE30BF42A10742A147C387425F7FE0909915EE66FB9163A99F066CC70FA0E2BED2B18FB9CAFC0A851E08851E0DD70B5D6FABE8431ACF986F3D7E0095A31F59DD76C4BF47D828F44028F468B85EE8BE2C307177DB9ED6E30750794D67F9F1944B30147A20147A345C2FF476F3DCFFFD6CCDFE83A94F11B6E30750795FCDF1EF6B770A3D100A3D1AAE17BA0FFB23D79D34CB7AEC003243FFC1ACEF53F129147A20147A345C2EF4F7BFDED6CC06B7735B8B2ED6E3079039CD3CFBDA9D420F84428F86CB85FE4CBFE16636B89B053BF3ACC70E20B37CFBDA9D420F84428F86CB85DE62F622331BDCCDCBE3A65A8F1D4066F9F6B53B851E08851E0D970B7DC99EBD6636B89B3B5BB3D42B10159FBE76A7D003A1D0A3E16AA15FFD5A1B3973C64C0647B3FBD809EE6E0722F4B59CBEE6EA733F147A20147A345C2DF46FF51E6A6682BBE9B16495F5D80184A36ADDA6DEECC046A10742A147C3D5427F6BE6023313DCCD0F068FB61E3B80F08C5EB7D95C816E87420F84428F86AB853E6F4706275348F940E3F6D66307109EFF4C9A69AE40B743A10742A147C3C542BFEC9596525CE2F60FE8CBF2F6598F1D40B81EF6643B650A3D100A3D1A2E16BA5E17DDF5E8B5A56DC70E205C57366AE5FC0DB33A147A20147A345C2CF4EFF61F616681BBF95FCF2F56C0672BF6EE3757A2BBA1D003A1D0A3E162A1FFF3ED196616B89BCFB6ED613D7600E1EBB470B9B912DD0D851E08851E0D170BBDCBA2156616B899923367A4668316D6630710BE1772C799ABD1DD50E88150E8D170B1D0A76DD96166819B5977E090F5B80144E353ADBA99ABD1DD50E88150E8D170B1D0771D3B6E66819BC95DBDC17ADC00A2A11798397CF294B922DD0C851E08851E0DD70A5D3FB2E67A1A4D9D6B3D7600D119B7618BB922DD0C851E08851E0DD70AFD336DBA9B19E06EB8C31DC83ED75793A4D003A1D0A3E15AA1FBB0073A77B803D9F7FB5193CC15E96628F44028F468B856E87F1B3FCDCC0037C31DEE801B9EEC9D6BAE4A3743A10742A147C3B542CF59B8CCCC0037C31DEE801B5CFF798E420F84428F866B853E79F3763303DCCCD0D5EBADC70D205A7A09589743A10742A147C3B542DF7EE49899016E863BDC01771C72786F740A3D100A3D1A2E15FA250D5B98D17737DCE10EB863C99EBDE6CA742F147A20147A345C2AF44FB6EC6A46DFDDDCD5863BDC0157E8459E5C0D851E08851E0D970AFDAB397DCCE8BB1BEE7007DCD162F6227365BA170A3D100A3D1A2E15FAC3DD0799D17733274E175A8F1B4076FC79EC147375BA170A3D100A3D1A2E15FA537D8699D1773379C7F3ADC70D203B9EEEEBEE4254147A20147A345C2AF4E7078D36A3EF66361C3C6C3D6E00D9F1C50EBDCCD5E95E28F44028F468B854E8BF1A31C18CBE9B59BC7BAFF5B80164C7ED2DBA98ABD3BD50E88150E8D170A9D05F72F8F7301DBD4FBBEDB80164C787DFEA68AE4EF742A10742A147C3A542AF3B6996197D37336ADD26EB7103C88E6B5E6B63AE4EF742A10742A147C3A5426F3C63BE197D37D37FC55AEB7103C80E9717A3A2D003A1D0A3E152A1B79DB7C48CBE9BE9B470B9F5B801644795BA4DCCD5E95E28F44028F468B854E8DD97AC34A3EF669ACD5A683D6E00D9935F5868AE50B742A10742A147C3A5421FBC6ABD197D37D360CA6CEB7103C89E03F905E60A752B147A20147A345C2AF4B1EBB798D177337F1D3FCD7ADC00B2C7D51D1A29F44028F468B854E833B6EE34A3EF667E3DE26DEB7103C89EB5FB0F9A2BD4AD50E88150E8D170A9D05DDE0A5147AF64673B6E00D9E3EABF1B147A20147A345C2AF4F5070E99D17733FFD327D77ADC00B267D6B65DE60A752B147A20147A345C2AF48D070F9BD177330F761B683D6E00D93371D3367385BA150A3D100A3D1A2E15FAB2BC7D66F4DDCC23DD07598F1B40F64CDEBCDD5CA16E85420F84428F864B85EEEA576767F34CBFE1D6E306903D73B6EF3657A85BA1D003A1D0A3E152A14FD8B8D58CBE9BF9F190B1D6E306903D4BF7B8F9CD1E851E08851E0D970A3D77F50633FA6EE6F7A326598F1B40F6B87A332D851E08851E0D970ABDF7B2D566F4DDCC3FDF9E613D6E00D9B3E3280BCB848142F7904B85DE61FE3233FA6EE6D56973ADC70D207B58FA351C14BA875C2AF4A6B3169AD17733ADE62CB61E3780EC29282C3257A85BA1D003A1D0A3E152A1379C32C78CBE9BE9B678A5F5B8016407DBA7868742F7904B85FEF709D3CDE8BB19BD1B9CEDB80164C755AFB63657A77BA1D003A1D0A3E152A1FF6ED44433FA6E66FC862DD6E306901D9F6AD5CD5C9DEE85420F84428F864B85FE93A163CDE8BB99D9DB77598F1B40763CDA63B0B93ADD0B851E08851E0D970AFDBBFD4798D177332BF6EEB71E3780ECF8E9D071E6EA742F147A20147A345C2AF4C77B0E31A3EF66B61C3E6A3D6E00D9F1EF8933CDD5E95E28F44028F468B854E875BAF437A3EF66F4F3AEB6E306901D2EAF5D41A10742A147C3A542FF42FB5E66F4DDCCE9E262EB7103C88E916B3799ABD3BD50E88150E8D170A9D06F7CB3BD197D7753EBD5D6D6630710BD257BF69A2BD3BD50E88150E8D170A9D0F52211F985856606B899AF77EA6B3D7600D1D2FF5E1C2A3869AE4CF742A10742A147C3A542D796E7ED3733C0CDFC7CD878EB710388D687DEEA60AE4A3743A10742A147C3B542777D0BD5E6B3175A8F1B40B4BED1D3DD67D07528F44028F468B856E84D662E3033C0CDB05A1CE086BF8E9F66AE4A3743A10742A147C3B542FFCDC8B7CD0C70333B8F1EB71E378068F55CBACA5C956E86420F84428F866B85EEF2528E67A33784B01D3B80E82CDDB3CF5C916E86420F84428F866B857E4BB34E6606B89BAFE570A73B904D35EA374BAD0BE17228F44028F468B856E8D5EB3593A29212330BDCCCCF72B9D31DC8269777593B1B0A3D100A3D1AAE15BAB6F1E061330BDC4CD359DCE90E64D3F383469BABD1DD50E88150E8D170B1D0F59DE42E671C77BA0359D57181BB6BB89F0D851E08851E0D170BBDDDBCA56616B899ED478E598F1B4034D6EC3F68AE467743A10742A147C3C542FFCBB8A96616B89B2B1BB5B21E3B8070DDD0B89DB90ADD0E851E08851E0D170BFDDB7D879959E06EBED2B18FF5D80184EBBBFD4798ABD0ED50E88150E8D170B1D0EF6CDDDDCC0277F342EE38EBB1030857EBB98BCD55E87628F44028F468B858E81737682E278B8ACC4C70336DE62EB11E3B8070B9BE81D3D950E88150E8D170B1D0B5695B769899E066D6EE3F683D6E00E1B9F6F5B6E60A743F147A20147A345C2DF44653E79A99E06E6E6AD2D17AEC00C2A14BD29750E88150E8D170B5D01FF3604DF79F0EE57774204AC3D76C34579FFBA1D003A1D0A3E16AA1EBC7C24ACE9C31B3C1CDF459B6DA7AEC0032EFEAD7DA4861B1DBCB420743A10742A147C3D542D716EDCE33B3C1CDEC3D912F55EB36B51E3B80CCD27B28F8140A3D100A3D1A2E177A8BD98BCC6C703777B5E9613D7600993571D33673D5F9110A3D100A3D1A2E17FAB3FD869BD9E06E5E1E37D57AEC0032E7038DDB3BFF135CE950E88150E8D170B9D07D58E271EE8EDDD6630790397F183DD95C71FE84420F84428F86CB85AEAD3B70C8CC0877F3B1669DACC70E2033E66CDF6DAE367F42A10742A147C3F542EFBC68B99911EEE69F6FCFB01E3B80CAD37F30FB180A3D100A3D1AAE17FA8F878C3533C2DD2CCBDB673D760095A7FF60F631147A20147A345C2FF45B3CF9EBFC53ADBA598F1F40E5F8B2767BE950E88150E8D170BDD0ABD46D22BB8E1D37B3C2DD349832DB7AFC002AEED3ADBB992BCCBF50E88150E8D170BDD0B5BECBD79859E16ED61F3894FAE3C376FC002AC6873D1DCE150A3D100A3D1A3E14BA0FCFA3EBD4E9D2DF7AFC00CA4FFF81BCF1E0617375F9170A3D100A3D1A3E14FA250D5BC8B153A7CDCC70378357ADB71E3F80F2FB5287DEE6CAF233147A20147A347C2874ADC792556666B89BE292337273931CEBF103289F9C85CBCC95E56728F44028F468F852E83E6CA7AAF3FAF479D6E3075076FA0F639F7656B385420F84428F862F855EBD5E33D977A2C0CC0E7773B0E064EA2702DB3900289B367397982BCADF50E88150E8D1F0A5D0B5B6F3FCB8C85FC81D673D7E0017F6A1B73AC8E9E2627335F91B0A3D100A3D1A3E15FA3D9DFB99D9E17696EED9C7236C4005F9B06D725942A10742A147C3A742AF5AB7A96C3F72CCCC10B7A37FF3B79D038073D3DBA49E2C2A325791DFA1D003A1D0A3E153A16B6FCE986F6688DB59B0338F4FE94039BD357381B982FC0F851E08851E0DDF0AFDEEB63DCD0C713F4FF71D6E3D0700EF75DD1B6D25BFB0D05C3DFE87420F84428F866F85AE3FF5AED97FD0CC12B7B372EF01A956AFA9F53C00A47B6D9ABFCBBCDA42A10742A147C3B742D7EA4E9A656689FB797ED068EB390078D735AFB591E3A7E3F3E95C87420F84428F868F857E5B8B2E6696B81FBD16758DFACDACE701E01D0DA7CC31574C7C42A10742A147C3C742D7E6EDC8E0640B39BF1C3EC17A0E009A48AD575BCB9193A7CCD5129F50E88150E8D1F0B5D09F1B30D2CC14F7A3F773BFB2512BEB790049F79F4933CD9512AF50E88150E8D1F0B5D0F552B03E6DADD86ACE62EB790049A6FFD03D5470D25C25F10A851E08851E0D5F0B5DFBD5880966B6B89F336724B51DA4ED3C80A46A34355E77B60743A10742A147C3E742AFD9A085E41DCF3733C6FD2CD9B337F5CD82ED5C80A4F964CBAEDEEFA876BE50E88150E8D1F0B9D0B57F4C986E668C1F7969EC14EB790049A2D79398B4699BB92AE2190A3D100A3D1ABE17FA55AFB696A3A74E9B59E37EF44A581F699A633D172029BE3F68B4B922E21B0A3D100A3D1ABE17BAF6C6F47966D6F89151EB36B1CE3B124BFF11EED34F65150D851E08851E8D3814FA8D6FB69753457EED9FCC9EE948AAD673179BAB20DEA1D003A1D0A3118742D73ACC5F66668E1F29282C924FB7EE663D1720AEBED8A19794E8473E12100A3D100A3D1A7129F48F37EFECDD3F14ABF71D94CB5E69693D1F206E2E6DD852D67AB2B1522642A10742A147232E85AE0D58B1D6CC1E7FD26DF14AEBB90071D37EFE5233EB93110A3D100A3D1A712AF4CFB7EB65668F5FF9D19031D6F301E2E2C9DEB966B62727147A20147A34E254E8DAF80D5BCC0CF227FA51B63B5A75B59E0FE0BB1B1AB7937D270ACC6C4F4E28F44028F468C4ADD0BFD0BE576A9955DFA27F4FD7BB4ED9CE09F0957E3C73F4BACD6696272B147A20147A347EF2F9D5B12A74CDD7DFEA266FDE2E17D56F6E3D27C047BF1F35C9CCEEE485420F84420FDFA3B54EC96357DF14BB42BFE6B5367220DFCFAFF87A2D5DCDA23388857B3AF78BF55AED170A851E08851EAE7BAB9F91EF7DFC91F7A562194CDFFD7CD8783393FC8BDE81CA764E802F6E6E9293C8DFCD83A1D003A1D0C3F5FD3BFEF54E99EB5806D37755EB3695793B32382123CE2F864DB09E17E03AFDBCF9E2DD7BCD4C4E6E28F44028F4F03C77FB48D3E42696C18C03BD2A95AF8B5215979C91C77B0EB19E17E02AFD73517F0FD7830823147A20147A389EBE69B37ABDC834B9896530E3C2B7256183D18FB3DDD7A5BFF5BC0017F9B69D7198A1D003A1D033EFD15AF9F2C0A5379A160FC432987171EDEB6DBDBD414E47AFF9FE60B781D673035CF2549F61DE7E23164628F44028F4CCBAB7C61979F2C67B4C83978A6530E344FF1EED734E1615C923DD0759CF0D70C143EA8F4EDF763C0C3B147A20147A667DEFE37F32ED6D896530E3C4F71BE474F43F96DFE839D87A7E40367D35A78F9C385D68662A391B0A3D100A3D73BE734B7FD3DCE7886530E3C6E71BE4CEE67471B17CB31737CAC11D77B5E921874F9E3233940443A10742A167C6531F5EA35E6B98E63E472C8319471D17F87B83DCD9E8853ABED37F84F5FC8028DDD6A28BE41DCF373393940E851E08855E798F5D7D4CBD5E675AFB3CB10C661CE91BE4F67B7C835C300DA7CC49FD94603B4F206C3735E928DB8E1C35B391D842A10742A157CE7D1797C823577ED134F6056219CCB87AA2D75033C3FCCF88B51BE5CA46ADACE70984E5E3CD3BCB96C394F98542A10742A157CED337FFD2B475196219CC387B6BE60233CBFC8FDEA5EDF6165DACE70964DA67DBF6E06BF63286420F8442AFB8673EDACD3475196319CC38AB51BF99CCDDB1DBCC34FF73E4E429569543E8EEEDDC3F35D748D942A10742A157CC93372E51AFD54D53973196C18CBB8F36CD89D5DDB9FA0E7EBD4A173BB5210CFAA72ABD1E02297B28F44028F4F2FBC63587D4EB35A6A5CB11CB6026C1D37D879BD9169FE875B42F7BA5A5F57C818A787ED068292A49EE36A8150D851E08855E3EF75D5C24756ADC651ABA9CB10C6652B49AB3D8CCB8F864E99E7DA96F206CE70B94957E8AA2FEE4D9665691F286420F84422F9F27AE7FDEB473056219CCA4B8B8417359B43BCFCCBAF844AF5FFF40D701D673062E443F3D317CCD46339B484542A10742A197DD531F6A639AB982B10C6692E8C7708E9D3A6D665E7CA2B7607D71F4247E5747B97CA2655759B3FFA09945A4A2A1D003A1D0CBE65B1F98A35EAB9966AE602C839934CF0D1869665EFC3270E53AB9A1713BEB7903414FF6CE95A331FCE3361BA1D003A1D02FECB1ABF7AAD75AA6952B11CB602691CF7BA75F28870A4ECA8F878CE5D33AACAAD56B2A7527CD32B3856422147A2014FAF9DD5FB350EA5CF429D3C8958C653093E892862D6479DE7E3303E399091BB7CAC79A75B29E3F9249DF40397DEB0E3343FC8BAB3BBD51E88150E8E7F7C855CF9A36CE402C8399549F6CD935F65B41E61716CA4B63A7A43E95D9DE032483FEB6E62743C77A7DFFC8DE13F9F23D477F2EA3D003A1D0CFED89EBDF344D9CA1580633C9F4AA6B4978EE565FB07AFB4BDB7B8078BBEE8DB692BB7A8399097E46FF21F2B9763DE5F3ED7A99FF8D5BA1D003A1D0EDBE79DD14F55AD53471866219CCA4FBD190316626C63BFA0F9757A7CD959A0D5A58DF07C4CFB77A0F4D7DB2F539A78A8AE57EF35826851E0E0A3D648FD6DAA95EAF302D9CC15806134DE46FE3A799D918FFAC3B7048EA74E96F7D1F100F37BED95E7A2D5D6D46DCDF949C39935AE5F1EC7951E8E1A0D043F4C025A7D4EBC74D03673896C1C43BBF31369FBDD0CCC864A4FDFCA572D5ABADADEF07FC54BD5E33F9D39829B1596BE1E7C3C6A79D1F851E0E0A3D2C5544EEBBE89BA67D43886530F10EBDFC65DFE56BCCAC4C46761D3B9EBAD1489FBBED3D813FF4B72E2BF6C6E7C90DBD0151E973A4D0C341A187E4B1ABEB9BE60D2996C1C4BB2EAADF3CF5B857D2A2D7847FAACF309E5DF790FE7ABDF732FFBF5E0FA6D9AC85D6B948A18783420FC1E3D78E55AF554CF38614CB6022DD158D5AC9C25DF15BF3BD2C59B0332F75E73FC5EEBEF7BFDE565E993A27764B19F75CBAEA9CDF1851E8E1A0D033ECD15A5BD4EB65A675438C6530F15ED7BFD14E361E3C6C6668F2327BFB2E79A8DB408ADD411F7CB343EA13AC5E63206E19B56E93D4A8DFCC7ADE1A851E0E0A3D831EB8A440BD7ECC346EC8B10C26EC6E6DDE59F28EFBFDC84F65336DCB0EEE8877845EF54F2F597CBAB8D88C4EBC326BDB2EB9B4E1F9F7F7A7D0C341A1674A9533724FB5874DDB4610CB60E2DCF4621671DC9DADBC797BE356F96A4E1FEB7B8470DDD1AA6BEA6B68BDA35E5CA36FE6BBFAB536D6F30FA2D0C341A167C84397FFDD346D44B10C26CEEFC16E03A5B038FEABC99525A3D76D962FB4EF657D9F9059FA8FC9C1ABD6CB99F8F6782A5B0F1F4DFD8C607B0F4AA3D0C341A167C0A3B586A8D7906F822B1DCB60E2C29EED379C520F64F89A8DA99BE7F473CFB6F70B1557BB533F19B37EB379A7E39D7D270AE4B6165DACEF830D851E0E0ABD921EBE72AD7ABDC4B46C84B10C26CAE6B11E836379235265A2EF31D00BF2E87F68B981AEE2F45DDD7A7E4DDDE2EF4E68E58D5E03E1336DBA5BDF8F73A1D0C341A157C203971C57AF3799868D3896C144D97D2DA76F6ABF71F2DEACDA7720B518C84D4D3A5ADF3BBCD79DADBB4BE319F365C7D163E65D4C4656EF3B283737C9B1BE27E743A1878342AFA0DA554BD46B1DD3AE59886530513EFA1FE1DDC74E98D94B4A47FFE63B65F3767921779C5CD9A895F53D4C32BD10CC5FC64D95257BF69A772C59D177B35F53861BE06C28F47050E815F4C0257F30CD9AA5580613E5A71F214AF273EA65CDC9A222E9BF62AD3CD16BE8799F2F8E33FD5384FE23F06555E293D51F3A7AC391A4466FE37A49C38AEFF647A1878342AF8087AFE8A35E23BE09AE742C83898AF940E3F6A9255349D9A26F80EAB86059EA1F3FFD29D5F69EC685FE66E2997EC32567E132D97E24595FA79F2BEDE62D956AF52AB76700851E0E0ABD9C1EBE62B97ABDD8B46A1663194C545CAD575BCB8CAD3BCD4C26E589DEC65517DEF7078D960FBD55B6C7965CA33F7DEB63FF46CFC1A94FE03D96AC9245BBF3527BCF9377F37F136764E4A6490A3D1C147A39DC5FF3B07AFDA069D42CC73298A81CBDBA955EB292542EFA93AC7ECE5DDF24F683C1A3E5EEB63DA566838A7F3D9B697AE1937B3BF797DF8E9C98FAB4A9FF903B7CF294397A628B5E0C47DF4B617B3F2B82420F07855E46F7542B56AF5F336DEA402C8389CAD3BF0FF75A1AAF1DAF5C882E8435FB0FCAB0351B5225FAEF89335305A19F81FF6CDB1E72DD1B6D2BB4F5ABFEB478F92B2D535FFDEBE7A07551DCD7A5BF7CABF7D0D43FCEBF1836415E1A3B459ACC5C20E3366C493D6245CA17FD88A7BE77C2F6FE5714851E0E0ABD8CEEADF14BD3A48EC43298C80C5D2C2DE72C32B39A44155DFA7A795EFD1BBDFE94BFFEC0215996B74FE6EDD8935A8B5E3FDBADBF06D75FF1EBA7138E9F2E8CFDEA6BD9CEFEFC02F972C7DED6EBA43228F47050E865F0C0259D4C8B3A14CB602273F427BFFF4C9A69663621C9CBE64347E4F672ACFE561E147A3828F40B78F0B205EAF522D3A20EC53298C8BCEF0D1899FA24484892B278F7DED4D31FB66B221328F47050E8E7717FCDFDEAF506D3A08EC532980887FE94B23C6FBF99E584C43B13366E952B425E4888420F07857E0EF7542B52AF5F34EDE9602C8389F0E83BE0BB2D5E69663A21F18BBE87413F9656D967CCCB82420F07857E0EF754FDB1694E4763194C844FDF99AD574D23244ED1BF9747B94F3E851E0E0ADDE2BE8B5A9BD6743896C14434F463561B582E96C424FA31CDA8D7EAA7D0C341A197F2E0A5B3D46B75D39A0EC73298888EFE0770D0CA7566E613E25FF42382CF0F1A6D9DDF61A3D0C341A107DC5F738F7A7DBF694CC763194C444B3FDAF687D193591E94789739DB77CB2DCD3A59E7751428F47050E8C6BDD50BD5EB674D5B7A10CB60223BF46F8F6CDC417C88DE21AEE1943959DF318F420F0785FE5FCF99A6F42496C144F65CFB7A5B19BB7E8BB91208712FFA8FCE3A5DFA5BE76FD428F47050E8CA3DD5DE342DE9512C8389ECD24BC6FE6AC40436FA20CE45DFEFA137A5B1CDDB6CA0D0C391F842BFBFE664F55ACDB4A447B10C26DC7043E3766CF0429C88DE58453F6A99892D4F3389420F47A20BFDFE8B77A8D7AB4D437A16CB60C22D0F761B286BF71F34570721D146FFE31ED65AEC9545A18723B1857E6FF553EAF5D3A61D3D8C6530E19E8B1B344FADBEC5623424AAEC387A4C7E38784C85B6A38D0A851E8E047F427FC634A3A7B10C26DC756BF3CEDC344742CD89D385A97DE6F532C5B639E8120A3D1C892CF4DA555E31ADE8712C8309B7E9DF31BFD37F84EC3A76DC5C3184543EFA51B49C85CB42DD1D2DD328F47024AED0EBD418A35EAB9A56F43896C1841FF42A73CD672F4CFD434C4865A27746FB4C9BEED679E6320A3D1C892AF4FB2EDAA45EAF348DE8792C8309BF7CAE5DCFD48A5D849437ABF61D90C77B0E71EEEEF5B2A2D0C3919842BFB77ABE7AFD8469C318C43298F08FFE07F9B11E8365FAD61DE62A22E4DCD977A2407E3DE26DA95E2FBB2BBD5516851E8E8414FA19E509D38431896530E137BD8AD7F80DDC3847DE9B5345C5F2DAB4B991EF8A16160A3D1C8928F4DA55FF6D5A3046B10C26E2E14B1D7A4BEEEA0DE6AA22498EBECDA2EFF235F291A639D6B9E22B0A3D1CB12FF47BABE7AAD72AA6056314CB60225EF4CD4EFA1F736E9E4B5E0E169C943767CCCFEA8E6861A2D0C311EB42AF5363AD7ABDDC3460CC62194CC4D36D2DBA48E745CBA5B0986D5AE39E793BF6C88F868C914B1AB6B0CE85B8A0D0C311DB42BFB7FA71F57AAB69BF18C6329888B79B9BE448EBB98B59752E66D1E3D975F10AF962875ED6718F230A3D1CF12CF42AFA26B8474DF3C53496C144325CFF463BF9E398C999BD7849E4D978F0B0FC65DC54B9C6A15DD0A242A18723A69FD05F36AD17E3580613C9F389965DA5E19439B2F9D01173151297A36F8718B176A37CA3E760A7D75A0F1B851E8ED815FA3DD5FAABD718DE04573A96C14472E9E7D9BFDEA9AFB49DB7440EE417982B92B892FD6A4C5E9F3E4F3E1AB3BBD52B8A420F47AC0AFDDEEA2BD4EBA5A6F1621ECB6002DA45F59BCB93BD7365C08AB5FCDE9EC5E85DCFF41AEB4FF71D2E351BC4FB26B7F2FA74EB6EA99F1C5CF3ADDE43ADC7EB8BD814FABDD50FABD78F98B64B402C83099476D5ABADE5A743C7C9A44DDB525FF792F0A29F42D0EFF3CBE3A6A60ACBD76559E1AF78147A9512F5FA8069BA84C43298C0F9E89BE9F46E6FFA4EF9E579FBCD554B2A93AD878F4AFBF94BE57FFAE4CAE5AFB8BF6D29E22D269FD0FF605A2E41B10C26501ED7BEDE56BEDD77586AE7B7C5BBF7F209BE0CD14BB0EAE579FF3C768A7CB265573E85C329DE177AED2A3DD46B026E822B1DCB60029551EBD5D6A9DF10DF9AB920F50F4371090DAF0B7C59DE3E693377893CD16BA85CC6A77038CCEB42BFA7DA22F55AD3345CC262194C2093AE68D42AF578D5ABD3E6A6D6965FB1777F6C6FB23B71BA5016ECCC931E4B56C9DF274C4F7D85FEF1E69DA55ABDE43E5A06FF785BE8F754DBAF5E3F6CDA2D81B10C261036FDECF487DFEA28F7771D20BF1836411ACF982F4356AD4FFD265F50E87ED91F39794A666FDF955A4AF7A5B153527FB0E88D4F92FC4C38E2C3CF42AF52A45E6B9B664B682C83096493FE3DF9836F7690FBBAF4979FE58E4F3D77AD1F9D1BBB7E8BCCD8BA5396ECD92BEB0F1C92DDC74EC8B153A72BBDE94C5149496A13137D639AFE8362D6B65DA9FFAE812BD74997452B52F706E845775E1C3D491EEE3E28756CFCE68D38F3F413FAAF4CAB253896C1047CA2CB556F4272DD1B6D530BAEDCD9BABB7C35A78F3CD46DA03CD567983C3F68746AA10FFDDBF5BD9DFBCBDD6D7BCAADCD3BA7FEEFF573DD943390CEC342EF681A2DE1B10C260020B9BC2AF4DA55E7A8D78B4DA3253C96C10400249737857E4FB53CF57AA36933621B4C004072F951E8550AD5EB574C9391542C830900482E4F3EA1FFD4B418F96F2C830900482E0F0ABDB569309216CB60020092CBE942AF5D659A7AAD611A8CA4C532980080E472B6D06B57DDA15EAF33ED45DE13CB60020092CBCD42AF724ABD7EDE3417B1C632980080E472F413FAF3A6B5C83963194C0040723958E84D4C6391F3C632980080E472AAD06B5799A85EAB9BC622E78D65300100C9E54CA1D7AEBA55BD5E6BDA8A5C3096C1040024971B855EA540BDDE659A8A942996C104002497239FD0BF6B5A8A943996C1040024970385FEAA692852AE58061300905C592EF4D14A35D350A45CB10C260020B9B257E85536A8D75AA69D48B963194C00407265A7D0AB1C57AF77986622158A65300100C995A54FE84F995622158E65300100C9958542AF671A89542A96C104002457C4853E4CA96A1A89542A96C1040024578485BE5AB9D2B411A9742C83090048AE680ABDCA51F57ABB6922929158061300905C1114FA19E571D3422463B10C260020B92228F47F980622198D65300100C91572A10F54AA980622198D65300100C91562A12F572E33ED43321ECB600200922B9C42AF7248BDDE629A878412CB600200922BA385DEFE1FF9AAC84B94874DEB90D062194C00407265B0D067CB776F6DA7CAFC25D33824D458061300905C1928F443CACF95AAAACCEF56B8092E9258061300905C952CF46ECA75A66148A4B10C260020B92A58E8AB943AA659485662194C00407295B3D00B94BF2B17995621598B65300100C9558E421FA97CD4B409C97A2C83090048AE3214FA76E5DB0A37BB3915CB60020092EB3C855EACBCA55C6E1A843815CB60020092EB1C853E4BB9CB3407713296C104002457A9423FA8FC4CA96A5A83381BCB600200922B50E83C53EE552C83090048AEE95B766C5645CE33E5BEA5DEE459B5000008A86E2A82104208218410420821849423EF7BDFFF078B63A623CFA829370000000049454E44AE426082)
+
+FormNode Fo1096946963
+Title: Font Size
+Definition: 0
+NodeLocation: 188,400,1
+NodeSize: 164,16
+NodeInfo: 1,,,,,,,136,,,,,,0
+Original: Font_Size
+
+Close Color_Themes_Library
+
+Text Te448560915
+Title: Model Housekeeping variables and settings
+NodeLocation: 256,60,-1
+NodeSize: 208,28
+
+Include 0,LinkLibrary Utils,2,2,0,0,Libraries\Utils.ana
+
+NodeLocation Utils: 104,400,1
+NodeSize Utils: 64,32
+
+
+Variable Systems_per_BL2
+Title: Systems per BL
+Definition: Table(System)(Choice(BL,1,0),Choice(BL,1,0),Choice(BL,2,0),Choice(BL,2,0),Choice(BL,2,0),Choice(BL,3,0),Choice(BL,3,0),Choice(BL,3,0),Choice(BL,3,0),Choice(BL,3,0),Choice(BL,3,0),Choice(BL,3,0))
+NodeLocation: 288,192,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo416429459
+ReformDef: [Null,System]
+{!40300|DomainExpr: Discrete('item 1',type:'Text')}
+
+Variable Systems_per_BL_inde2
+Title: Systems per BL index matrix
+Definition: Systems_per_BL2 = BL
+NodeLocation: 288,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,292,298,1031,321,,MIDM
+{!50000|Att_ColumnWidths: [,System,\([,,,64,,,,,,,,])]}
+
+Close Model_Settings
+
+Index Scenario
+Title: Scenario
+Description: Do nothing ’ (/’Business as usual’): predicted business growth, while ‘doing everything the same as we do~
+Business improvements: things that will be changed anyway, for reasons outside ESG (for example: cost)~
+ESG Sustainability: roadmap: currently foreseen improvement programs, initiated for ESG sustainability reasons~
+Radical options: beyond current ideas/plans (typically requiring ‘out of the box’ or more difficult/expensive ideas)
+Definition: ['Business as usual','Business Improvement','ESG','Radical']
+NodeLocation: 1576,264,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+Aliases: FormNode Fo1956987027
+{!40300|Att_SlicerPopupSize: 312,96}
+
+Index BL
+Att_PrevIndexValue: ['EUV','DUV','APPS','OTHER']
+Title: BL
+Description: Business lines.
+Definition: ['EUV','DUV','APPS','OTHER']
+NodeLocation: 1576,200,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize: 357,96}
+
+Index System
+Att_PrevIndexValue: ['EXE','NXE','NXTi','NXTd','XT','YS5xx','YS3xx','SBI','MBI','Brion','HMI','MPS']
+Title: System
+Description: System types.
+Definition: ['EXE','NXE','NXTi','NXTd','XT','YS5xx','YS3xx','SBI','MBI','Brion','HMI','MPS']
+NodeLocation: 1416,328,1
+NodeSize: 64,24
+WindState: 2,2210,159,449,379
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 267,160}
+
+Include 0,LinkModule S12_Own_sites_buildi,2,2,0,0,Modules\S12 Own sites & buildings.ana
+
+NodeLocation S12_Own_sites_buildi: 485,464,1
+NodeSize S12_Own_sites_buildi: 64,32
+
+
+Include 0,LinkModule SSC_Sourcing_and_Sup,2,2,0,0,Modules\SSC Sourcing and Supply Chain.ana
+
+NodeLocation SSC_Sourcing_and_Sup: 634,464,1
+NodeSize SSC_Sourcing_and_Sup: 64,32
+
+
+Include 0,LinkModule CAP_Capital_Goods,2,2,0,0,Modules\CAP Capital Goods.ana
+
+NodeLocation CAP_Capital_Goods: 783,464,1
+NodeSize CAP_Capital_Goods: 64,32
+
+
+Include 0,LinkModule LOG_Upstream_Logisti,2,2,0,0,Modules\LOG Upstream Logistics.ana
+
+NodeLocation LOG_Upstream_Logisti: 932,464,1
+NodeSize LOG_Upstream_Logisti: 64,32
+
+
+Include 0,LinkModule BIZ_Business_Travel,2,2,0,0,Modules\BIZ Business TravelV2.ana
+
+NodeLocation BIZ_Business_Travel: 1080,464,1
+NodeSize BIZ_Business_Travel: 64,32
+
+
+Include 0,LinkModule S3_USE_of_Sold_Produ,2,2,0,0,Modules\USE of Sold Products.ana
+
+NodeLocation S3_USE_of_Sold_Produ: 1232,464,1
+NodeSize S3_USE_of_Sold_Produ: 64,32
+
+
+Index Customer
+Att_PrevIndexValue: ['Hynix','Intel','Micron','TSMC','Samsung','Europe','Japan','Korea','Taiwan','USA','China','Rest Asia']
+Title: Customer
+Description: ASML Customers.
+Definition: ['Hynix','Intel','Micron','TSMC','Samsung','Europe','Japan','Korea','Taiwan','USA','China','Rest Asia']
+NodeLocation: 1416,200,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize: 242,80}
+
+Index System_Generation
+Att_PrevIndexValue: [2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040]
+Title: System~
+Generation
+Description: System Generation indicated by introduction year.
+Definition: Sequence( 2019, 2040 )
+NodeLocation: 1416,264,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Sales_Volume
+Title: Sales~
+Volume
+Units: Systems
+Description: Systems sales per year.
+Definition: Table(Time,System)(~
+0,26,82,0,100,0,94,20,0,4.260416108755034M,22,18,~
+0,29,69,2,142,0,102,35,0,5.02729100833094M,36,16,~
+0,44,84,4,166,0,152,44,0,5.932203389830509M,50,16,~
+0,40,81,12,212,1,150,67,0,7M,65,16,~
+0,49,89,43.64814814814815,234.0185185185185,12,143,80,4,8.26M,85,16,~
+2,58,97,75.2962962962963,256.037037037037,160,92,69,15,9.7468M,71,16,~
+5,80,105,106.94444444444444,278.05555555555554,195,50,66,18,11.501224M,86,16,~
+10,80,107,120.97222222222223,272.02777777777777,214,40,60,25,13.571444319999998M,83,16,~
+15,80,109,135,266,232,30,66,24,16.014304297599997M,90,16,~
+20,80,111,149.02777777777777,259.97222222222223,251,20,71,28,18.896879071167994M,99,16,~
+25,80,113,163.05555555555554,253.94444444444446,269,10,65,26,22.29831730397823M,91,16,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,26.31201441869431M,95,16,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,31.048177014059283M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,36.636848876589954M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,43.231481674376145M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,51.01314837576385M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,60.19551508340134M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,71.03070779841357M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,83.81623520212801M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,98.90315753851104M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,116.70572589544302M,Null,Null,~
+30,80,115,177.08333333333334,247.91666666666669,288,0,68,27,137.71275655662277M,Null,Null)
+NodeLocation: 776,328,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,1213,436,0,MIDM
+NodeColor: 52427,65535,65535
+ReformDef: [Time,System]
+Att__TotalsIndex: []
+{!50000|Att_ColumnWidths: [,Time,\([,,,,,,,,,,,,,61])]}
+ExternalType: Input
+
+Objective ASML_CO2e_by_scope_c
+Title: ASML CO2e by scope cat
+Units: KTon CO2e
+Description: CO2e emissions per scope/cat (submodel)
+Definition: [CMT_CO2e,S12_CO2e,SSC_CO2e,CAP_CO2e,LOG_CO2e,USE_CO2e,BIZ_CO2e]
+NodeLocation: 783,872,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+DefnState: 2,388,394,746,303,0,DFNM
+ValueState: 2,36,42,989,490,1,MIDM
+GraphSetup: Att_StackedBar Graph_Primary_Valdim:0~
+Att_ForceCategorical Graph_Primary_Valdim:~
+{!50007|Graph_BarOutline:0}
+ReformDef: [Time,Lever]
+ReformVal: [Time,Scenario]
+Att__TotalsIndex: [Lever,Scenario,S12_Geography,Self]
+Att_ResultSliceState: [Self,0,Scenario,-1,Time,2]
+Att_EditSliceState: [Lever,1,Scenario,1,Time,1]
+{!40300|Att_SlicerPopupSize: 257,128}
+{!40600|Att_StackingIndex: Scenario}
+{!40600|Att_ClusterIndex: Scenario}
+
+Text Te1024622355
+Title: Shared drivers
+NodeLocation: 784,320,-1
+NodeSize: 528,56
+
+Text Te479362835
+Title: Dashboard
+NodeLocation: 904,196,-1
+NodeSize: 408,60
+
+Objective ASML_CO2e1
+Title: ASML CO2e
+Units: kTon CO2e
+Description: Total CO2e emissions
+Definition: sum(ASML_CO2e_by_scope_c,ASML_CO2e_by_scope_c)
+NodeLocation: 976,872,1
+NodeSize: 72,32
+WindState: 2,0,0,720,350
+ValueState: 2,308,120,1192,526,1,MIDM
+Aliases: FormNode Fo1506967315
+GraphSetup: Att_StackedBar Graph_Primary_Valdim:1
+ReformVal: [Time,Scenario]
+Att__TotalsIndex: [Scenario,S12_Geography]
+Att_ResultSliceState: [S12_Geography,0,Scenario,-1,Time,1]
+{!40600|Att_StackingIndex: Lever}
+{!40600|Att_ClusterIndex: Null}
+
+FormNode Fo1506967315
+Title: ASML CO2e
+Definition: 1
+NodeLocation: 648,224,1
+NodeSize: 144,16
+Original: ASML_CO2e1
+
+Alias Al288522003
+Title: S12 CO2e
+Definition: 1
+NodeLocation: 485,728,1
+NodeSize: 64,32
+Original: S12_CO2e
+
+Alias Al1362263827
+Title: CMT CO2e
+Definition: 1
+NodeLocation: 336,728,1
+NodeSize: 64,32
+Original: CMT_CO2e
+
+Alias Al825392915
+Title: SSC CO2e
+Definition: 1
+NodeLocation: 634,728,1
+NodeSize: 64,32
+Original: SSC_CO2e
+
+Alias Al1899134739
+Title: CAP CO2e
+Definition: 1
+NodeLocation: 783,728,1
+NodeSize: 64,32
+Original: CAP_CO2e
+
+Alias Al154304275
+Title: LOG CO2e
+Definition: 1
+NodeLocation: 932,728,1
+NodeSize: 64,32
+Original: LOG_CO2e
+
+Alias Al691175187
+Title: USE CO2e
+Definition: 1
+NodeLocation: 1232,592,1
+NodeSize: 64,24
+Original: USE_CO2e_Ext
+
+Objective ASML_CO2e_reduction_
+Title: ASML CO2e reduction by lever
+Units: KTon CO2e
+Description: CO2e emissions per lever to be calculated based on deltas between scenarios/interventions, calculate compnesation based on target gap
+Definition: ASML_CO2e_by_scope_c[@Scenario=1]-ASML_CO2e_by_scope_c
+NodeLocation: 592,872,1
+NodeSize: 72,32
+DefnState: 2,388,394,746,303,0,DFNM
+ValueState: 2,36,42,989,490,1,MIDM
+GraphSetup: Att_GraphIndexRange Time:1,0,,,,,10~
+Att_ForceCategorical Graph_Primary_Valdim:~
+Att_StackedBar Graph_Primary_Valdim:1
+ReformDef: [Time,Lever]
+ReformVal: [Time,Scenario]
+Att__TotalsIndex: [Self,Lever,Scenario,ASML_CO2e_by_scope_c,S12_Geography]
+Att_ResultSliceState: [ASML_CO2e_by_scope_c,0,Scenario,-1,Time,1]
+Att_EditSliceState: [Lever,1,Scenario,1,Time,1]
+{!40300|Att_SlicerPopupSize: 227,128}
+{!40600|Att_StackingIndex: Scenario}
+{!40600|Att_ClusterIndex: Null}
+
+FormNode Fo1956987027
+Title: Scenario
+Definition: 0
+NodeLocation: 648,184,1
+NodeSize: 144,16
+NodeInfo: 1,,,,,,,72,,,,,,0
+Original: Scenario
+
+Picture Pi1188575379
+NodeLocation: 388,72,-2
+NodeSize: 116,56
+Pict: (000000000000007B00F60004CA0E000089504E470D0A1A0A0000000D49484452000000F60000007B0806000000473C7DCE000000017352474200AECE1CE90000000467414D410000B18F0BFC6105000000097048597300000EC300000EC301C76FA86400000E4F49444154785EED9D3FA8654911875F22262206068B81202E662A281A186820E8826060229A6CA68899082FF2E180AC2E0E0683E88A28CA1AE8262E28B220A291C262B2C8A28889220A266EA088D1B5BF3AB7C73E6DFFA9BEEFBD71A6EEEF83C29D7BCFE9D3A74FFDAAAABBCF7D5E1C8410E190B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C27E44F8FB2BFF3AFCF92FAF1C5EFEED5FCD7EFF87BFD9BFF95C881A09FB2105C13EF7DC8B874F7FE687870F7DE45B87F7BDFF99C33BDEFBF5C33BDF7DEFBEF1D9134F7CE3F0D18F7DD78E7BFEC7BF91D08571D6C2BEF7B55F1C2E2EBE70B878C3D37E4BC73F7DF7A7C7166E1644F993175E3EBCE703CFA4EB5C25BB73B878FD97ECBAAF7AE397CD5EF3A6FF5AFECCFAF5DA2F6EC7A7F3103C41E11FFFFCF7B1651FCF3EFB4BBBBFDDFDF6ECB1AD4F5EE8CB672F9FF7B79F8EFBE4A7BE7F3C7BCE4B2FFDC9EEBDD95669A95D82E0EAD83C6A9CADB011118E73F1EAA7EE0BC463088DCC79D38EF1E2AFFF78F8E087BF9D1C6F13F3EBDE7CF764B3607071696DAE90035DEBBE6B3391247123280F4C1B2C60A5BEB5DAAB8DE308505E3661DF69B6551AF7478091B083C23CF5F1B7DCB587DD1247CFC894381073DC9B0007A30230315E53D0A5D147B2BF17FAF1B9AB1F59A06BB5D732FA4B96F7C078212AC6AFD5566D3C97B7BDFD2BC7B3E76461B7DA2A8DCA46C20E0CF3511CADF5F067C67964B7EB8273313F5E7178AFE1E494E35EA8603EFEE4F796820BC7120C3C6CE33D175E36C683C04BA6F72061EF395B613FF9891FD8436E3DFC995186528E5F976DCEE977F61523587CF33BBF3A5E690E02A2F4E5DE5AEDB58C529C60E059B0635EBB520D206CCC3B9D90B0F79CA5B079A8D7C9929C47B6F266931696C11A81C5DA4E82A17F9BB12096EDF859FA7ED6778E5BA92A2895396F656AC2B1ACCE7BE6D98FBDF5DE52D0C8E3C0387990B0F79CA5B0C902ACA0B61EBCD770909552B784806025F8B1ECCD81220B9745264A5CDA679E9C8D0C8C536EABE647A1A7F310582DF45561B3E6E011466D5C67369727A3D3F62C18D5C6BD79AB0E097BCF590ADBCAC246B65C319C8E764E012120086B27F583B9242BF43FFBF9EF8E47F820401100AC842630A40C77BF7FA9FD95529C6B9F2AEC5900D9E6D7EB8194B1F9FC532F1C5B192361EF394B61B3DA3A2A39C92CAD2C581A6525DB53ABE5380E95579F1105C161348F24DB210C326ACF1929A3599DDEB6CBB629064EEE5DB10682C049C24E4261BD62241484B432BFCE46B0E25C0F12F69EB313B695E14994B3B290C5B1D6E7D94C3C2943AE66591C6A13E0956D738D1C8C529C7E206C8F231204B6BD68CAF4AB69895C4266CC55C48AE500390A70367558985F6743D8040DCFE29C84BDE7EC846D7BC6E9E1B61E3A86601F7FD7572D83B13034CCDA4908AB6FA16DF3CDF979365DB8B83CC909C9EE94E7DE1565B0609384D4BACF99114410560B044F85340BA42D5BA98A24EC3D67256C4435DBABCDCE44798B3846253B199B633D19258393F27EF7E89C9C3DB19572BA84EB780491E17E46F73A32FAD99B67536DCCA6353DE33C2A1602D50C097BCF59099B874F161E8A35893E2F8A59102816A45A8653AFBC8586D8468B4D64594480312FF52E1E5D079C9CFB38457C1863C60F555AD8D46050218DCCC6C039DD91B0F79C95B0B7D5D9F13C92079FCBE46DBE3A393E39D3CAEA330ED52B91F9AE9CEB9A63A7FF5E29A94F619B1E9CBEFD97FB59C3FD5C770782763D6B0512F69EB311360F92073A723273D0548A1300607396B1C393519893AFD0732A0446E9592E34515DE0B038F74AC9BF0281C323EC5146A78F75E5C2BF9976F416CE46ED6543D89EE98884BDE76C844D09CCDB4FA3321C47634F393B280FDFE3F01C73138E421F296B6B87B780931C9CA901D5C14AE9EF61AB64C6A2B0B14901AC377EF4AFAE5C08181CDF12706EAFFEBC36DA1D4D5D3212F69EB311B6E7050C9C903978F9D071BE5EC6C946BB39CB5F879EB0311377FA0EC724AB53E2AE6EB5F5B09D8224A0FA9AA5E5B5078263AB7F7C5FFF7E9AEDBA56BB59D46C65D5DFD5C6FD72DD991025EC3D67236C9BEB4D5E92C039C98A259EFD5DCEC349AF0BA5B66D3B4D16ECAC3C47E4C9917346238B9FEAACB39D028CEB9091EDC7338D63E953B9DA4F5F6CEAD31873EE8F76E837FF6E058A6C1CEBD97990B0F79C8DB071CC91036138465D4E6EAF7FCE333D5974657BA987277B96662247E0496CBCD18683AF329A0767E31A6460C6A7D53FC696FD6ACA6F4038BD6A0771D157CF5618DF532548D86B9C85B0BD3F7060AE5CEF99DAB9493423E7E33B1C70E54DAF1E08833669AFBECEC8E8038243046442AFE372DC6CBF1E63FCB83FFAD75A77B0EBA771CA3F8CB169453AA7356E888B3E22C699B031EE6B163425EC3D67216CCB8293323C0BA37EE03894BD1239298F697FF6369997D5AC5D1A42A12FB3976032DCDF6C6F1F4334887A28D8620C7A950EE7712DB2356DE5CFEAE34A6B05DC1A097BCF59089B9727A6A566CA36CCE56A7080FCA38DD679D9389F9F62CE328B17FB7B6C278A1BA3BF94C2337123567602E6E2DAB6B368AF17E81803E6EB8C99CDAF9388EA63B80E253B42A52DEFB5678B9312F69EF0C2E681FB3252FFFDEDDEBCB2349C93E0C1F56E029CDEC4919C75D6F79E21EE99139359E9FB485C766FE9FEF3029DF5AB11E8E8670E26BD31E7334A7FDAC13CEF9173EDD9969784BD27BCB06DCB253DCCB9F3DCE96E1FE1FC38A4C701F31CF326C0F9F29611B62A701364CAA2A36D315EFEE098D6F9D968876BE76A64B480C658DBBE780A72ADF1E2F3F2F55397B0539BB33F452C61EF092D6C1E9E6597F4305B0F395B166DEFC50F3E67D57B26AC5E397F5DB80FB6DD10C14C84B571EF6C2DF51CD9B3FE8018CB557F7B2720B5DB122463C4B13DB1D6D9D7554D1DAF3F42C2DE135AD838220E8163B41E7236BE67DEC87C1311D786D320D89903E2CC38EE6C5E7B2ACC4B6D1F7912A84AB33EA5E37B737F5B3F98B4C77C9AF1C96DD08F912047E384F818E78CE7B7DAB4C7312324EC3DA1858D03B54AC6DA707EB68998FBF5CCB3C883E15C37B1EDD503874454B355FAD2E853AB1C2700D922DDA40AE07B160673C042E0F637DB16FA908D15EE32C8785E8EC901732446097B4F68615B3672081BC379C80C3DF3881ACB22B84DAC14763871368EAD5FBC0104663B06B3ADBC2486FAB54E9BE22C4E0B1847DA2AF13E23EE81EAA98784BD27B4B071589CA9F5806FCB080064F7DB2AC701A76CBD24D2331CBEB5AA4C49CDBC7D3646CCC111602906DA5B1536A2AA17C13C3B0E18C78C160125EC3D61854D745F71FE9B322B1BD37CB0E78438F275454FA65D13767BBBC8C490FA3AAB4638BFDE0AB4AA21054E6F2583D14E5D39E455FFD6F1A5B5CE2D91B0F78415B6651487C3DC86E13CBDBF7CC2221C73F6720169156F96CB86C3B7E6FD5B49EF13551D18082E2B53148C7ED4F7DD7B43AD36C694AAA18784BD27ACB03DABADB76564B2DE5B6836A74D4221E3B2C24D39BCE2649B03FB456D15442AA55B7D59C996ADFD794F199F8DE358A0ACFBC1FD7BAA0FC694F1EA2161EF09296CCA70EF2A36C65C91073E35E79C1227E6FAADAC6CC23EB683E0689785295E14A1DF3D8743101CE3F97D78695CA3E7C8DE77D27BC2B6AD37E798701C2BE0F534C43B65CAC1B2373E6E61A7B1E31950F5309EAB369A0E3C4C8414360F0047683DD8DA388E078D93CECCB33593AD278652D8986554824612207BEE382F42A494477818C2A77CE7BC15515BDBE9F8DE7CDF7EA39EAEDD3A375BEE5FEB5DED9529416B010E08585E418E7E97ED1536465BF4FB34BB3C5EF1E1269CB0711C8FC366235B78A16D1398236870FDFC8388925AD8A591E9CDE910F051ECF6BFE97AABF3598CF37B737DFAD5FB314769F99AADE0E02DA33144D10A74F483EF66F7C6FDB37FCF355BAC08FB54B32097AEF128104ED89476263E4766C3A967AF2A96E084645304D36AAFB4CD09FEF777C42361DFA471ED51E9BA2A288453E36D237FDFAB1CB806569F571A6D3047EF2D3A3E08616312F6FF89BCD23B73368CE37A19AD8795F9E9BC567BB591CD6A677E10C2A67F0437825C8FAD049E675B0447F0EB654ACAE359D6A78D517F3CEB063C4F8EE9FD7C53C2DE134ED8DE05218C87D4CB223D9602472AA3999B97DCA6B011107DE39A75A550E3150262E28F36F4DA2330CEC61BE18FAA070B0E8E31E13A04D61612F69E50C2C671EC471F930C825906488E3213404D2EF567A523B65D63EF08B600973EA38F9EE0E031BB4E9A1EB012DF7A11A5857BFF38091B51F616AD3CED205AA6303D6C4DC431BDE179F5EE4FC2DE134AD8DBD689EFE1E2B02C1EADBE05C6F1ABABE365558003E29CB67095FACAF79E20D1B21C9C3084D39B7FB6706F75A500D45A04CC704DC67214A410ED689BC893F5312AA0DED69D84BD2794B03707B94C76E5B0D3FE9F2CC132CCC27538BE860081286C312E0589EDD824F42402C48458107C697CB61D8B98B7E3699B80B67A1F5BE5E0B987CB6119CDB5A914DAE766BB1C061DFF73BBB4B2BD55656DC2F63E93EB98B6BB1E388865C54E1135705EABBD91CDE0181686707244C75C9CB96D361C1A81317F26FBF516B3BCD4FD1BD96C9C3CE33162753C7BB48EBD0D7B1408B7781689D2E167E212A244C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B888048D8420444C216222012B6100191B0850888842D4440246C210222610B1110095B88701C0EFF01BC7E7F43F005EE200000000049454E44AE426082)
+
+Picture Pi339228819
+NodeLocation: 388,188,-2
+NodeSize: 44,52
+Pict: (00000017000B008200770004F90F000089504E470D0A1A0A0000000D49484452000000820000008208060000008A0310FD000000017352474200AECE1CE90000000467414D410000B18F0BFC6105000000097048597300000EC300000EC301C76FA86400000F7E49444154785EEDDDCFEB7EDB1407F0EF1F6068AC0C0C0C94122992224919DC8C18DC124AA410DD64704B4A48C98024A5284A7740EA9618500C646020C39B91189890C935F8E8B579DFF6DDF6F93C3FCE3EE7F33CCF67AF7ADFE739E7ECB3F7DA6BBDD7DA6B9FCF79BEF7C947BEF2F4DDBB3EFB96BB773FF3B6478BF77EFE9DABF0BE67DF73363EF085A756E1835F7AFF2AF03F4C223C30D8FE1230893051308930513089305130893051F044E5388930318930513089305130893051701611B47FFBA7DFF81296EE77EDAD9F7CFDDD9B3EF1DAF2E9F81D9F7973B7ED7DC878E9A33E57F7579F83FA7AAD73F4ADCFB5C741DD578D8C792B3899088CE0D1E6B79EFBC6DD97BFFFC502C7751FDA70DAD77FF4D5BB9FFCEAB9BB5FFEEEE7053F78FE7B771FFBDA87EF5EF7D157BDACCFFBC0091EE3BA575FFA442C8F679D7BF63B9F7BC959FAFEEE4FBF5D1E99FA4E47D7E9A3BD6BCEF94E5F9F8EC15899578D67BEF9A982FA9C399B5FABEB35E324223036E3FDEDEF7FBDAB25CED0868118EE9FFFFAC7FFAEFEBFFCE60FBF2ECE39665CFDA5AF17FFFD62F944004E23BFFFD3EF4A1BE068E21369C89FFFF242B9C6791124E99D338F5642E25ACCFF14325F034E22824864D856EAA8148DC7C8F3BFFD5971466F9C00596400C21948881474A03741AA9608A23644D0DEFC724C4204848A18C798F4CF1C11DA98218236EE8510FF567034115EFDA15714A3F7244410257F7AE18FFF3B7B580E8D5D3B8B73F52F1A21843B4404C29932478423DFF0F1D7BC6C3EDAEB03D93387CC2944400C6D8E0D9C6BC25144A81DD293ACC3D275BB24700A123162527BC4357DF7C6847A5C4EE624C7700A1144B228CFF888C0C1740DB1381F39F41322D0C1B910C17DE6F22889E09A36F70922302067D7C2F808A21F86AFA392581E38B71D3368891087BBE71822703C276B136713F7D2877072CE3BA79F1C9B7B4D047D98535B1CDF028E22428CBE242182CF5A1265FAA90D1A719CEB3DE8334448F6A04F5D8B1CCA08C64008D18F78C49C436ED92204455AFD2C1101095CB3D43C4A22C4680CCA706DFA3F9608F59A4C4E2582B689CA6389405F42F75C371F6D08A7FEF8173F2CDFE96F8C25222493DC1A09E02011EAE8B3466A9FB5361222D4DB31728808A72C0D1CCA092142C8798808742674495F527BAB0B4108632C11C1D277ECB6F7DA70544660CC442452F488C040A24BDBA0EE9B81DB1A81E139B01D33702D918B34CE19BB258271216D6B22E41EC7897C73E06C99CDB9B4D5D77D44304F24BAC91AE19849B99E48582242F6D53E038E14F18C699CF63E64C97D4BD04724F78B6CFDD5225364194084D403AF7CFA4971B86B717876301CCEF1E646F4E17B4B84648F8C8F88EEEBE97BAD388A0801A71D2242C0811CC6B8D0CAA16C10D0CD2366ED39D7F2136271AC315CE37CBA39876074725E5B24904172CE77EDF4C5F1C6B1ACE8CBF76414DF5DD7CE71A0ED31BA5F133623824C90A86C85A14F8928FA313CC471F5B99CA783EF3EF35D5BD7B4AFAFE79E8CE138EDEBEFB93FE7A0BEEF56B02911B2B6B62243D4D138F1F0389908D2EE3144E064E7934E7BCB0352B5F72D413B687575CE58215522BF85F3DAE4FE1CD7E7D21FD47DE5DA2D632811F4538391934E156D8AAC5A1461D6F0DE5835F4630C590479A2AF7B9DB76627C3988FEF35E8EC3EB582EBDAA93B2C51A066A0A39D87F6F99B42EA0A6D5B9D6E0DC388C0B80CC97881E3DA69EDDEFDD8EADBBDC928B24BC8A5F0AB45B54FBF566C5BDD47E86ACEF54331F3E1FCDCEB1871F35CC2F95BCF0CC388A0265075BBC6C83E1D73987BCF2502DD6AC77176A2D73910ED7946A12D1D937D443852D60F8552C4D22F5B4EFDD6F58F3E648B7C9F44A87088086D848A42E7DD7B2E118CA9FF08C7EB9373499E05646CCE749C6701D2BAE31081FEB966EE21948CA3CFCC4D7F21C92442835389E0782D112C3952B431B33CD083DE84538D21F26505E78D156773B4E32522408F08749B4458C0431021F77154D679E99D8309A7220B686B2E6B884072DDD24126111A1C22420C17B11673827B39BCFD5BC33144F0220827698B00C438523E0911E8A676184184D406C634D7498406F7118113A4E75A18982354E075DA8D204688B2044420B2827E88FB6A22E823D9A8AD11CE218279A4CD244207F7114154C6A8ADF4CE1106775F6F2C301EC7B62252EB34CEF1A38990EC3689D0C17D4470CDF210831F12CEEC8D514396499A96052C359C16E7F8E440ED32AEF91C22426A953C3BD00F7D42BAFC918A4C22741022B41222A44D9CB0249CC741878C5B138B9EF59BD4F448CD918CC369DAB86F89089C4F5FA27DEEB533C9DC902F7FBE268F82080CD5BBD003C27088EABD8648AAC92422199BF13944B4F9E444D176EC9BC08CCF41C650135846A46DFD726896048470CE5CF4AB9DFB9C739F8C615CC7744514F7D3C7BDAEE94B1648DFDA382F0B9D122CD78A9388000CC2B0357AD1C219B9E61E9F8EEFAB097A483F7184634ECA98D1A16E93F3DAE5B8BD2FFD4274CADCDA3675BFB78A938930719B9844982898449828984498289844982898449828984498289844982898449828984498289844982898449828984498289844982878E2EFF5BD0B138F0B93081305930813058F8208DE30026F1E41FD76127873A93E066DD23EF7F7FABE15DC2411388F33BDB4EABB82D8FB88DE57F43EA2F71EBDA0EA9575EF3CD6F0AEA36BDEB9F4D2AA7BBCB3C84EFA0C696E8D18374184383EE0400EF572AA9766BD35ED8DE57325BF7BD097975B1105B9EA31E9D0D3ED5A709544108D52B788F7F6B12817CD79857D2F412E63CA2CC84797FA05D96BC255110101389FCE52B7885F13E9A345E6F0FA3B62CA1248712D4BC8551041F483759EA1A5E9118244F9910B8C2495DF72C814EA8B6B583A2E9A089CEFC730222CBF6A5A2B48844C7EBCA25FE4020E4B31991FB6E4974E6B04B9D415FAB7745C222170E0228990F55F752FB2D60A87AA21A4E9FC24CE189CE25CE0185CD3465B0EF44BAB11D9423D81689746888B2302E32080F57F0401388F13B30DE484537FC7A86DD67A641A4108D92D3FBDEB8DB9372E8A08D6515BB2FCC87584C804EDD6D17763205C4F8F252002C7594646EC4E4252D9077A63EE858B2082889382EDFB4744DB3122DBF8B5734F9F4388BED6FD1182AC592E90AD37E6D678702224C246ED0238F8D8F55C41786A56A8C171C83B4A6429FD3E44762844E85DD81A49B39ED08DCA02C8A44F86ACFB1471592244B10234A95D2DB2C6F0C6CBBFAC3242921DF4DB1B6F2B3C081152108EAC0508039A90ACC0A0A2D5B9FCAD807145B1820F2938B0A7DFA9D8622E74A3EF5E4BC5EE444841386A29A8A58EFC3CD5433A11EF181918585630F191518760A3E76467B117197625824949C59C355AD4198A3F5B4362FD37390E32362731AC63A4186D5C84937D460BBDCD83CEBD7147613722489F9CB3C5AEC0134055BC4F92ACC0F152B6EF0AC89119A0872D9608623E96B72DC9B00B11384081B69520411CE0D398221F2C07B2C4D61105B202876D210268CB796C4E045132728BD58A68C91348516F79E0908C6F09A88FB706D28FFA9B484FB622C3A6444082915BAB9EC800F957D6184961982DE19A6DE1B930E696D98F6C4186CD8840D1AD0D221B98401C6EBC64076400114A975E71E8BE91D92263186F4BB14C588246127D13223004D6EE211E0CC9066D118A10CE2B207DDAB2B664703ECF17D6EE221832A49409476F255B1104C65DAB77309C080C612BB7C5EEA027A25E51A86044403B93DE1F8438BC361A3D4356B505A29C9B1DF4251B99B32DA4A7A57B08B221DD083298FF302244A1ADA32122DAEB2DA1F1918163A44E4F1013F571B236F9AE2DC771A008BBCFA0C6A9C7AA9171D38FE2D8E71EA2465AD2EB140C25C256FBE825E1444EEFE9C2D99CC348350910A4BECFF59041542F1935CB4C3B5E3D4E0260CFAC408C45875AAF53318C080C224DEF29527B9C7C0C104176E0F4FA018D2D27028BE22C3549B9F53DED98C93CF55F3BD526EEDFBA506E851E74ADE77B0A8666040648D5BE879C4A04A0636A08C673DC7BE299378890A52642FDFC5F81D5BB4FBDA2CFBDC498A7DAA1C550225086D1F65A1F45EFD2D2B0844478D2F8523DE3BC2C21CD5B1622E6A618366E0AD3FA0192FB906BAFA5813E087951440011B4D712A1283B676DE44413AF1DDC4A9E52F67620AE713692B82E73D4E2FCD60FD222B2E2A9C1D0C3702280D4B9476A14B1D6F29E0E8720333C79EABFFF7FA8730419DC4F0764701C9115EA2CB195B0F152717B2A3621025070EBA860F07389209370DE9A658CB36525FDC80AEA85A5A566B4B0EDB973EF6133220032DC977ED70AC373405DC51FB35622014372E0A8EA9E2EEA82BAFED84A6C63CF5912EFC3A64480ADC9C0F822C39ACDA91C7168CD6444E99C6E6B52B83E104A4D8480FAA5C796CF52F46D8CDEBCD66073220047D56BE84891DA91A18EC26CFB7ABA806B08A0183C47389F33405F6D16DA2A23C804B6A6F558A3B00B11604B32B4C2C92AF7DE32A148B4FD63D473960535C1D2DA8C145B15C91E978F2A0C7BD88D08B04701191195BD276D9C8500C872EAB220FB58767AFD826B5B648391BB8325EC4A04104D7B3C674821593BCD770F5FCE75969A60A9FE302F513B5AD86A29038DC4EE440051B9C621C78A08AED754E3AE796D0EB9F4835035C190237FD21E251ED5730E9D33CE9678102280F59B31B7ACB05B22882C51BD46D41EFAB13BF1296533E29AE711ADD865B14FAFC6D902FC603E0F4204A000436EF5973A112CA280D3468CA3AEE02884F269C732EA0F6DC8A41EB01BA933CED678702204497F6BA3B527D66D04D832F38C10FAD5B6D813174304A08CA8551C6D5D3B44100F5144A1DA813396A25BB48A7E8EB2DC8C2A0CCDD5722333EE99056A5C14110286A618438F5C776BD12FE31B8B037C0222D2C17306C4E024CB4B0A3704F0E91984F36B840EB6D299736D83BD71914408529031FA689175EEDB97330CE758AB91425BDF396E0439CDC9AEE921B3408D8B26025010216CCF186F54865033708408E7600EA9E19C6BDA8CAA2FE82ECBD90998D3251020B8782204144DFA1C55A54BED9C935D80C7DF901D816B6BD33FA12B9D91D91C2E8900C1D51021082118D51A3F324B8C143A2155DE1E7AE81AE010AE8E083592620129A4DDBD761B3D31361DB20380BD1E08ADC55513A10683A7B803C5A08894F6B720873EF56D0C8E4746E3D2E15A9C5FE36688D022E918147CB67CFE00A5F053F9AB0338522D600DEFC1B5D40FEE71AF3EF4A54F63887A9F3D1DAE09374B841A2609C91AC08189629F49E54BD79CE7707DA4BFDE58D78A47418489C3984498289844982840044F5027111E392611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A2611260A10C1FB9893088F1C930813052F11C1974B404FC989EDC1F68508FE030A8635F002E41AF8CDC0B9F05B8335E819E8B1E0BF4478FAEE3F4C86B2CFE7991EDF0000000049454E44AE426082)
+
+Include 0,LinkModule Installed_Systems,2,2,0,0,Modules\Installed Systems.ana
+
+NodeLocation Installed_Systems: 1232,328,1
+NodeSize Installed_Systems: 64,32
+
+
+Variable Installed_Base_per_G
+Title: Installed Base per Generation
+Units: Systems
+Description: Installed base per System Generation
+Definition: Table(Time,System,System_Generation)(~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+604,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+1346,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+390,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 968,328,1
+NodeSize: 64,24
+NodeColor: 52427,65535,65535
+ReformDef: [Time,System_Generation]
+Att_EditSliceState: [System,11,System_Generation,1,Time,1]
+{!50000|Att_ColumnWidths: [,Time,\([,,,,61,,,,,,,,,,,,,,,,,])]}
+ExternalType: Input
+
+{!50500|ArrowClass Arrow503461267}
+{!50500|Att_HeadNode: Installed_Systems}
+{!50500|Att_TailNode: S3_USE_of_Sold_Produ}
+{!50500|Att_ArrowWayPoints: [Null,Null,0,0.5384615384615384]}
+{!50500|Att_ArrowProperties: 1}
+
+FormNode Fo416429459
+Title: Systems per BL
+Definition: 0
+NodeLocation: 912,184,1
+NodeSize: 104,16
+Original: Systems_per_BL2
+
+Alias Al738602387
+Title: BIZ CO2e
+NodeLocation: 1080,728,1
+NodeSize: 64,32
+Original: BIZ_CO2e
+
+{!50500|ArrowClass Arrow458063251}
+{!50500|Att_HeadNode: LOG_Upstream_Logisti}
+{!50500|Att_TailNode: Installed_Systems}
+{!50500|Att_ArrowProperties: 0}
+
+Alias Al1587973011
+Title: BIZ CO2e Ext
+NodeLocation: 1080,592,1
+NodeSize: 64,24
+Original: BIZ_CO2e_Ext
+
+Alias Al417762195
+Title: USE CO2e
+NodeLocation: 1232,728,1
+NodeSize: 64,32
+Original: USE_CO2e
+
+Alias Al333876115
+Title: LOG CO2e Ext
+NodeLocation: 932,592,1
+NodeSize: 64,24
+Original: LOG_CO2e_Ext
+
+Alias Al1163299731
+Title: CMT CO2e Extended
+NodeLocation: 336,592,1
+NodeSize: 64,24
+Original: CMT_CO2e_Ext
+
+Text Te1513387923
+Title: Models over Catagories
+NodeLocation: 784,456,-1
+NodeSize: 528,64
+
+Text Te853309331
+Title: CO2e Emissions per Year per Intervention
+NodeLocation: 784,588,-1
+NodeSize: 528,52
+
+Text Te1440511891
+Title: CO2e Emissions per Year per Scenario
+NodeLocation: 784,720,-1
+NodeSize: 528,64
+
+{!50500|ArrowClass Arrow876771219}
+{!50500|Att_HeadNode: S3_USE_of_Sold_Produ}
+{!50500|Att_TailNode: Sales_Volume}
+{!50500|Att_ArrowProperties: 0}
+
+Text Te936540051
+Title: Scenarios and Intervetions
+Description: ~
+Interventions are unique levers per sub-model. For example the CMT Employee Commute model has the intervention, Work from home. ~
+~
+Scenarios represent bundles (compositions) of interventions. Scenarios are consistent over the whole model. In the CMT Employee Commute sub-model the intervention Work from home is bundled under the ESG scenario.
+NodeLocation: 1508,660,-1
+NodeSize: 180,124
+
+Text Te932511827
+Title: Global Indices
+NodeLocation: 1520,256,-1
+NodeSize: 192,120
+
+Text Te201433171
+Title: Legend
+NodeLocation: 128,524,-1
+NodeSize: 112,260
+
+Module Mo1
+Title: (Sub)Module
+Description: Containse a model, modules can be in seporate files.
+Author: jorre Vedder~
+Bicore Services
+Date: Fri, Sep 15, 2023 1:27 pm
+NodeLocation: 128,368,1
+NodeSize: 64,24
+DiagState: 2,0,0,944,480,17,10
+
+Close Mo1
+
+Variable Input_Variable
+Title: Input Variable
+Description: External input.
+Definition: "-"
+NodeLocation: 128,440,1
+NodeSize: 64,24
+NodeColor: 52427,65535,65535
+
+Variable Variable2
+Title: Variable
+Description: Intermediate step variable.~
+These nodes ofthen contain a calculation step in their definition.
+Definition: "-"
+NodeLocation: 128,512,1
+NodeSize: 64,24
+
+Objective Output_Variable
+Title: Output Variable
+Description: Output (objective) variable.
+Definition: "-"
+NodeLocation: 128,584,1
+NodeSize: 64,24
+
+Constant Constant2
+Title: Constant
+Description: Constant variable.
+Definition: "-"
+NodeLocation: 128,656,1
+NodeSize: 64,24
+
+Index Index1
+Title: Index
+Description: Index, result contains a list of elements.
+Definition: ['Example1','Example2','Example3','Example4','Example5','Example6']
+NodeLocation: 128,728,1
+NodeSize: 64,24
+
+Alias Al1228083283
+Title: S12 CO2e Ext
+NodeLocation: 485,592,1
+NodeSize: 64,24
+Original: S12_CO2e_Ext
+
+Close ASML_Climate_and_Ene
+

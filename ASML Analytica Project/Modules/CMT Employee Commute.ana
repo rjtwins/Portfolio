@@ -1,0 +1,630 @@
+{ Analytica Model CMT_Employee_Commute, encoding="UTF-8" }
+SoftwareVersion 6.3.6
+
+{!-60000|Attribute AcpStyles}
+Attribute ExternalType
+Title: ExternalType
+
+
+AskAttribute ExternalType,Function,Yes
+AskAttribute ExternalType,Module,Yes
+AskAttribute ExternalType,Variable,Yes
+
+LinkModule CMT_Employee_Commute
+Title: CMT~
+Employee Commute
+Author: Jac Goorden~
+Simbon
+Date: Tue, Jun 6, 2023 4:41 pm
+NodeSize: 64,32
+DiagState: 2,0,6,1890,774,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule CMT_Employee_Commute,2,2,0,0,Modules\CMT Employee Commute.ana
+
+Decision FTE_Growth
+Title: FTE Growth
+Description: Predicted FTE growth.
+Definition: [0,0.1]
+NodeLocation: 104,128,1
+NodeSize: 64,24
+
+Variable EV_Car_Share
+Title: EV Car Share
+Description: Percentage of cars that are EVs.
+Definition: DetermTable(EV_Adoption)(0)
+NodeLocation: 984,200,1
+NodeSize: 64,24
+
+Index Transport_Mode
+Att_PrevIndexValue: ['Car','Public Transport','Bike','Other']
+Title: Transport Mode
+Description: Mode of transport.
+Definition: ['Car','Public Transport','Bike','Other']
+NodeLocation: 640,128,1
+NodeSize: 64,24
+{!40300|Att_SlicerPopupSize: 242,96}
+
+Variable Transport_Mode_Distr
+Title: Transport Mode Distribution
+Description: Percentage of Commutes per Transport Mode
+Definition: Table(Transport_Mode,Geography)(~
+NL_2019_Car_Commuter,1,~
+0,0,~
+0,0,~
+1-NL_2019_Car_Commuter,0)
+NodeLocation: 640,200,1
+NodeSize: 64,32
+WindState: 2,600,97,720,350
+DefnState: 2,212,218,611,303,0,DFNM
+ValueState: 2,228,234,447,303,,MIDM
+NodeColor: 52427,63897,65535
+NumberFormat: 2,%,4,0,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+Att__TotalsIndex: [Transport_Mode]
+ExternalType: Input
+
+Variable Avg_Commute_Distance
+Title: Avg Commute Distance
+Units: km/commute
+Description: Average commute distance (roundtrip), based on NL measurement
+Definition: Table(Transport_Mode)(77,0,0,0)
+NodeLocation: 800,272,1
+NodeSize: 64,24
+
+Variable Total_Number_of_Comm
+Title: Total Number of Commutes
+Units: per year
+Description: Number of commutes per year
+Definition: Projected_Badge_Swip*Badge_Swipe_Geo_Dist*Office_Days*Scen_Adj_Vol
+NodeLocation: 448,344,1
+NodeSize: 64,24
+WindState: 2,86,386,720,350
+ValueState: 2,100,106,1020,303,1,MIDM
+GraphSetup: Att_GraphIndexRange Time:1,0,,,,,10~
+Att_ForceCategorical Graph_Primary_Valdim:~
+Att_StackedBar Graph_Primary_Valdim:1
+Att__TotalsIndex: [Geography]
+Att_ResultSliceState: [Geography,0,Scenario,1,Time,1]
+
+Constant Constructed_Office_d
+Title: Constructed Office days
+Description: This percentage is not measured but constructed as follows:~
+A year has 260 'accessible work days', minus ~5 public holidays, -~5% sickness leave, - ~40 holidays+ADV, ~
+this gives about (260 -5)*0.95 - 40 = 202 days divided by 260 = 78%, minus an estimated 10% Working From Home pre-covid = 70%.~
+This percentage is then kept constant (in 'do nothing') and multiplied with projected FTE to arrive at constructed # of badge swipes"
+Definition: ((260-5)*0.95-40)/260 - 10%
+NodeLocation: 184,424,1
+NodeSize: 64,24
+ValueState: 2,844,267,416,303,,MIDM
+NumberFormat: 2,%,4,1,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+
+Constant NL_2019_Car_Commuter
+Title: NL 2019 Car Commuter %
+Description: Based on data of 2019, obtained as 'unique license plate swipes / unique badge swipes'. in VHV
+Definition: 69%
+NodeLocation: 800,200,1
+NodeSize: 64,24
+NumberFormat: 2,%,4,0,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+
+Constant ICE_Emission_Factor_
+Title: ICE Emission Factor per KM
+Units: KTon Co2e
+Description: Values for fossil cars used (probably from DEFRA database)
+Definition: 0.169/1M
+NodeLocation: 1144,272,1
+NodeSize: 64,24
+WindState: 2,208,294,821,193
+
+Index Geography
+Att_PrevIndexValue: ['NL','non-NL']
+Title: Geography
+Description: Geography split, allow refinements
+Definition: ['NL','non-NL']
+NodeLocation: 448,128,1
+NodeSize: 64,24
+WindState: 2,105,260,720,350
+{!40300|Att_SlicerPopupSize: 257,64}
+
+Variable Commutes_by_Transpor
+Title: Commutes by Transport Mode
+Units: per year
+Description: commutes per year
+Definition: Total_Number_of_Comm*Transport_Mode_Distr
+NodeLocation: 640,344,1
+NodeSize: 64,32
+ValueState: 2,313,376,934,303,1,MIDM
+GraphSetup: Graph_KeyLabelColor:0,0,0~
+Graph_KeyTextColor:0,0,0~
+Graph_AxisLabelColor:65280,65280,65280~
+Graph_AxisTitleColor:65280,65280,65280~
+Graph_PageBrush:0,0,40960~
+Graph_PlotAreaBrush:65280,65280,65280~
+Grid:2~
+Frame:2~
+Graph_TickDir:2~
+Graph_KeyAreaBrush:65280,65280,65280~
+Graph_OutlineKey:1~
+Att_StackedBar Graph_Primary_Valdim:1~
+Att_ForceCategorical Graph_Primary_Valdim:1
+ReformVal: [Time,Geography]
+NumberFormat: 2,D,4,0,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+Att__TotalsIndex: []
+Att_GraphValueRange: 1,,,,,,10
+Att_ResultSliceState: [Transport_Mode,1,Geography,2,Geography,1,Time,1]
+Att_ColorRole: Null
+{!40600|Att_ClusterIndex: Null}
+
+Variable Car_Commute_KM
+Title: Car Commute KM
+Description: Car commute km per geography.
+Definition: Commute_Distance_by_[Transport_Mode='Car']
+NodeLocation: 984,344,1
+NodeSize: 64,24
+ValueState: 2,356,362,947,303,,MIDM
+Att__TotalsIndex: [Geography]
+Att_ResultSliceState: [Geography,0,CMT_Ext_Scenario,1,Time,1]
+
+Variable Commute_Distance_by_
+Title: Commute Distance by Mode
+Units: km/year
+Description: Total  commute km per year
+Definition: Commutes_by_Transpor*(Avg_Commute_Distance-Scen_Adj_Dist)
+NodeLocation: 800,344,1
+NodeSize: 64,32
+ValueState: 2,228,123,962,303,0,MIDM
+ReformVal: [Time,Transport_Mode]
+Att__TotalsIndex: [Geography]
+Att_ResultSliceState: [Geography,0,CMT_Ext_Scenario,1,Transport_Mode,1,Time,1]
+
+Variable Car_Commute_Emission
+Title: Car Commute Emission
+Units: KTon Co2e
+Description: Emissions fro car commutes, assumoing zero for EVs
+Definition: Car_Commute_KM*(1-EV_Car_Share)*ICE_Emission_Factor_
+NodeLocation: 984,272,1
+NodeSize: 64,24
+WindState: 2,98,82,720,350
+ValueState: 2,658,79,726,544,1,MIDM
+GraphSetup: Att_StackedBar Graph_Primary_Valdim:1~
+Att_ForceCategorical Graph_Primary_Valdim:~
+Att_GraphIndexRange Time:1,0~
+Att_ContLineStyle Graph_Primary_Valdim:1
+ReformVal: [Time,CMT_Intervention]
+Att__TotalsIndex: [Geography]
+Att_ResultSliceState: [Geography,0,CMT_Intervention,6,CMT_Intervention,5,Time,1]
+{!40600|Att_StackingIndex: CMT_Intervention}
+{!40600|Att_ClusterIndex: Null}
+
+Variable Actual_Badge_Swipes
+Title: Actual Badge Swipes
+Units: swipes/workday
+Description: Now: worldwide average of unique badge swipes per day = average numbers of daily commutes
+Definition: Table(Time)(17.43K,7667,8394,17.533K,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 104,272,1
+NodeSize: 64,24
+DefnState: 2,356,362,647,303,0,DFNM
+NodeColor: 52427,63897,65535
+ReformDef: [Time,Undefined]
+ReformVal: [Time,Undefined]
+NumberFormat: 2,G,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+ExternalType: Input
+
+Variable Projected_Badge_Swip
+Title: Projected Badge Swipes
+Units: swipes/workday
+Description: Projection of badge swipes over the horizon.
+Definition: if Time<Current_Year then Actual_Badge_Swipes else Number_of_FTEs*NL_2019_Badge_Swipe_
+NodeLocation: 280,344,1
+NodeSize: 64,24
+ValueState: 2,36,42,1186,303,1,MIDM
+ReformVal: [Time,Undefined]
+NumberFormat: 2,G,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+
+Variable Actual_Badge_Swipe_S
+Title: Actual Badge Swipe Share
+Description: Recorded badge swipes.
+Definition: Actual_Badge_Swipes/Number_of_FTEs
+NodeLocation: 280,200,1
+NodeSize: 64,24
+ValueState: 2,132,138,868,303,,MIDM
+ReformVal: [Time,Undefined]
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+
+Variable Badge_Swipe_Geo_Dist
+Title: Badge Swipe Geo Distribution
+Description: Distribution of badge swipes over geo locations.
+Definition: Table(Geography)(0.59,0.41)
+NodeLocation: 448,200,1
+NodeSize: 72,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 52427,63897,65535
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,
+ExternalType: Input
+
+Decision EV_Adoption
+Att_PrevIndexValue: ['No EV']
+Title: EV Adoption
+Definition: Choice( Self, 1 )
+NodeLocation: 984,128,1
+NodeSize: 64,24
+{!40300|DomainExpr: Discrete('No EV')}
+
+Constant NL_2019_Badge_Swipe_
+Title: NL 2019 Badge Swipe Share
+Description: Share of badge swipes done in the netherlands.
+Definition: Actual_Badge_Swipe_S[Time=2019]
+NodeLocation: 280,272,1
+NodeSize: 64,24
+
+Constant Office_Days
+Title: Office Days
+Description: Tolal offiice days (365-weekends) per year
+Definition: 260
+NodeLocation: 336,424,1
+NodeSize: 64,24
+
+Objective CMT_Summary
+Title: CMT Summary
+Definition: [0,Commutes_by_Transpor,Commute_Distance_by_,Car_Commute_KM,Car_Commute_Emission]
+NodeLocation: 1320,344,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,100,106,1047,303,1,MIDM
+NodeColor: 65535,52427,57888
+ReformVal: [Time,Self]
+Att__TotalsIndex: [Transport_Mode,Geography]
+Att_ResultSliceState: [Transport_Mode,0,Geography,0,CMT_Ext_Scenario,4,Self,1,Time,2]
+{!40300|Att_SlicerPopupSize: 227,112}
+{!40600|Att_ClusterIndex: CMT_Summary}
+
+Text Te1143766803
+Title: CMT v1 Employee Commute CO2 impact submodel
+NodeLocation: 620,40,-1
+NodeSize: 596,16
+
+Alias Al1462533907
+Title: Number of FTEs
+Definition: 1
+NodeLocation: 280,128,1
+NodeSize: 64,24
+NodeColor: 52427,65535,62258
+Original: Number_of_FTEs
+
+Text Te2122088211
+Title: Number of commutes
+NodeLocation: 284,276,-1
+NodeSize: 260,212
+
+Text Te1601994515
+Title: Commute distance
+NodeLocation: 712,276,-1
+NodeSize: 160,212
+
+Text Te872185619
+Title: Commute emissions
+NodeLocation: 1048,276,-1
+NodeSize: 168,212
+
+Objective CMT_CO2e
+Title: CMT CO2e
+Units: KtCO2e/Year
+Description: CO2e for CMT Employee Commute model per Scenario.
+Definition: CMT_CO2e_Ext[CMT_Ext_Scenario=Scenario]
+NodeLocation: 1136,616,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,292,298,1001,303,1,MIDM
+Aliases: Alias Al1362263827
+GraphSetup: Att_ContLineStyle Graph_Primary_Valdim:1~
+Att_GraphIndexRange Time:1,0,,,,,10~
+Att_StackedBar Graph_Primary_Valdim:0~
+Att_GraphValueRange CMT_CO2e:1,,,,,,10~
+Att_GraphIndexRange Scenario:1,,,,,,10~
+Att_CatLineStyle Graph_Primary_Valdim:9~
+Att_ForceCategorical Graph_Primary_Valdim:~
+Att__BarOrigin CMT_CO2e:~
+BarOverlap:0
+ReformVal: [Time,CMT_Ext_Scenario]
+Att_ResultSliceState: [CMT_Ext_Scenario,7,Time,1]
+Att_OriginRole: Slice(Scenario,Scenario,1)
+{!40600|Att_ClusterIndex: Scenario}
+ExternalType: Output
+
+Text Te228753171
+Title: Commute interventions
+NodeLocation: 332,664,-1
+NodeSize: 308,120
+
+FormNode Fo901480211
+Title: CMT Effect Start
+Definition: 0
+NodeLocation: 204,634,1
+NodeSize: 140,16
+Original: CMT_Effect_Start
+
+FormNode Fo1975222035
+Title: Distance Reduction
+Definition: 0
+NodeLocation: 204,672,1
+NodeSize: 140,16
+Original: Distance_Reduction
+
+Module CMT_Intervention_Det
+Title: CMT Intervention Details
+Author: Jac Goorden~
+Simbon
+Date: Mon, Jun 12, 2023 2:25 pm
+NodeLocation: 504,624,1
+NodeSize: 96,48
+DiagState: 2,2410,85,1002,322,17,10
+
+Variable Scen_Adj_Dist
+Title: Scen Adj Dist
+Units: KM
+Description: Adjustment to distance(s) for each scenario, assuming additivity
+Definition: sum(Int_Adj_Dist*CMT_Ext_Scenario_Com,CMT_Intervention)
+NodeLocation: 768,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,228,234,1093,303,,MIDM
+Aliases: Alias Al622082195
+NodeColor: 1,32767,52427
+Att_ResultSliceState: [Transport_Mode,1,CMT_Ext_Scenario,1,Time,1]
+
+Variable Distance_Reduction
+Title: Distance Reduction
+Units: KM
+Description: Reduction in KM of avergae commute distance epxected from each intervention
+Definition: Table(CMT_Intervention)(0,0,0,7,5,0,0)
+NodeLocation: 144,288,1
+NodeSize: 80,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo1975222035
+TableCellDefault: 0
+
+Variable Int_Adj_Dist
+Title: Int Adj Dist
+Description: Adjustment to
+Definition: if Transport_mode<>'Car' ~
+	then 0 ~
+else if (Time<CMT_Effect_Start) ~
+	then 0 ~
+else Distance_Reduction
+NodeLocation: 376,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,228,234,1093,303,,MIDM
+NodeColor: 1,32767,52427
+Att_ResultSliceState: [Transport_Mode,1,CMT_Intervention,1,Time,1]
+
+Index CMT_Intervention
+Att_PrevIndexValue: ['Work from home','Company shuttles','A&M program','Satellite office 1','Satellite office 2','Facilitate E-cars','More holidays']
+Title: CMT Intervention
+Description: Lis tof CMT interventions
+Definition: ['Work from home','Company shuttles','A&M program','Satellite office 1','Satellite office 2','Facilitate E-cars','More holidays']
+NodeLocation: 152,112,1
+NodeSize: 64,24
+WindState: 2,2580,172,720,350
+
+Variable CMT_Scenario_Composi
+Title: CMT Scenario Composition
+Description: Whcih interventions in which scenarios
+Definition: @Scenario>=@[Scenario=CMT_Scenario]
+NodeLocation: 584,112,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,1131,322,0,MIDM
+ReformDef: [Scenario,CMT_Intervention]
+ReformVal: [Scenario,CMT_Intervention]
+TableCellDefault: Checkbox(0)
+
+Variable CMT_Effect_Start
+Title: CMT Effect Start
+Description: Start year the intervention has its effect
+Definition: Table(CMT_Intervention)(Choice(Time,5,0),Choice(Time,5,0),Choice(Time,5,0),Choice(Time,5,0),Choice(Time,8,0),Choice(Time,5,0),Choice(Time,7,0))
+NodeLocation: 376,176,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo901480211
+TableCellDefault: Choice(Time,5,0)
+
+Variable Commute_Reduction
+Title: Commute Reduction
+Units: %
+Description: Reduction in commute volume expected from each intervention
+Definition: Table(CMT_Intervention)(0.2,0,0,0,0,0,0.1)
+NodeLocation: 144,360,1
+NodeSize: 80,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo348928147
+NumberFormat: 2,%,4,0,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,,0
+TableCellDefault: 0
+
+Variable Scen_Adj_Vol
+Title: Scen Adj Vol
+Units: %
+Description: Adjustment to commute volumes, assuming multiplication
+Definition: Product(~
+	if CMT_Ext_Scenario_Com ~
+		then Int_Adj_Vol ~
+	else 1,CMT_Intervention~
+)
+NodeLocation: 768,360,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,228,234,1093,303,,MIDM
+Aliases: Alias Al51656851
+NodeColor: 1,32767,52427
+NumberFormat: 2,%,4,0,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,,0
+
+Variable CMT_Scenario
+Title: CMT Scenario
+Description: Choice of first scenario level wehre this intervnetion applies
+Definition: Table(CMT_Intervention)(Choice(Scenario,3,0),Choice(Scenario,2,0),Choice(Scenario,2,0),Choice(Scenario,2,0),Choice(Scenario,3,0),Choice(Scenario,3,0),Choice(Scenario,4,0))
+NodeLocation: 376,112,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: FormNode Fo1635268755
+ReformVal: [Null,CMT_Intervention]
+Att__TotalsIndex: []
+TableCellDefault: Choice(Scenario,1,0)
+
+Variable CMT_Ext_Scenario_Com
+Title: CMT Ext Scenario Composition
+Description: switch on just one intervention at a time
+Definition: if @CMT_Ext_Scenario<=Size(CMT_Intervention) ~
+	then CMT_Ext_Scenario=CMT_Intervention ~
+else CMT_Scenario_Composi[Scenario=CMT_Ext_Scenario]
+NodeLocation: 768,112,1
+NodeSize: 80,24
+WindState: 2,0,0,720,350
+ValueState: 2,2247,185,918,411,,MIDM
+ReformVal: [CMT_Intervention,CMT_Ext_Scenario]
+
+Variable Int_Adj_Vol
+Title: Int Adj Vol
+Units: %
+Description: Adjustment to volume
+Definition: if (Time<CMT_Effect_Start) ~
+	then 1 ~
+else (1-Commute_Reduction)
+NodeLocation: 376,360,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,228,234,1093,303,,MIDM
+NodeColor: 1,32767,52427
+Att_ResultSliceState: [Transport_Mode,1,CMT_Intervention,1,Time,1]
+
+Index CMT_Ext_Scenario
+Title: CMT Ext Scenario
+Description: basic scenarios and the single interventions
+Definition: concat(CMT_Intervention,Scenario)
+NodeLocation: 144,176,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [Null,Self]
+{!40300|Att_SlicerPopupSize: 232,182}
+
+Text Te510048403
+Title: Generic Intervention & Scenario Logic
+NodeLocation: 480,120,-1
+NodeSize: 424,96
+
+Text Te1298577555
+Title: CMT specific intervention effects
+NodeLocation: 480,328,-1
+NodeSize: 424,96
+
+Close CMT_Intervention_Det
+
+FormNode Fo1635268755
+Title: CMT Scenario
+Definition: 0
+NodeLocation: 204,596,1
+NodeSize: 140,16
+Original: CMT_Scenario
+
+Variable CMT_CO2e_Target
+Title: CMT CO2e Target
+Units: KTon CO2e
+Description: Emissions target per year in this submodel
+Definition: Table(Time)(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 1136,736,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+NodeColor: 52427,63897,65535
+ReformDef: [Time,Undefined]
+ExternalType: Input
+
+Alias Al622082195
+Title: Scen Adj Dist
+NodeLocation: 800,488,1
+NodeSize: 40,24
+NodeColor: 1,32767,52427
+Original: Scen_Adj_Dist
+
+Alias Al51656851
+Title: Scen~
+Adj Vol
+NodeLocation: 448,488,1
+NodeSize: 40,24
+NodeColor: 1,32767,52427
+Original: Scen_Adj_Vol
+
+FormNode Fo348928147
+Title: Commute Volume Reduction
+Definition: 0
+NodeLocation: 204,712,1
+NodeSize: 140,16
+NodeInfo: 1,,,,,,,64,,,,,,0
+Original: Commute_Reduction
+
+Text Te1180088467
+Title: Commute Results
+NodeLocation: 984,664,-1
+NodeSize: 232,120
+
+Objective CMT_CO2e_Ext
+Title: CMT CO2e Ext
+Units: KTon CO2e
+Description: CO2e for CMT Employee Commute model per Intervention.
+Definition: sum(Car_Commute_Emission,Geography)
+NodeLocation: 984,616,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,292,298,1001,303,1,MIDM
+Aliases: Alias Al1163299731
+GraphSetup: Att_ContLineStyle Graph_Primary_Valdim:1~
+Att_GraphIndexRange Time:1,0,,,,,10~
+Att_StackedBar Graph_Primary_Valdim:0~
+Att_GraphValueRange CMT_CO2e_Ext:1,,,,,,10~
+Att_GraphIndexRange Scenario:1,,,,,,10~
+Att_CatLineStyle Graph_Primary_Valdim:9~
+Att_ForceCategorical Graph_Primary_Valdim:~
+Att__BarOrigin CMT_CO2e_Ext:~
+BarOverlap:0
+ReformVal: [Time,CMT_Ext_Scenario]
+Att__TotalsIndex: []
+Att_ResultSliceState: [CMT_Ext_Scenario,7,Time,1]
+Att_OriginRole: Slice(Scenario,Scenario,1)
+{!40600|Att_ClusterIndex: Scenario}
+{!50000|Att_ColumnWidths: [,Time,\([66,66,66,66,66,66,66,66,66,66,66,66,,,,,,,,,,])]}
+{!60005|Att_AttsToShow: Attribute Check, Attribute Att_AxisOrKeyTitle}
+ExternalType: Output
+
+Variable CMT_CO2e_Reductions
+Title: CMT CO2e Reductions
+Units: KTon CO2e
+Description: reduction versus base case (business as ususal) scenario
+Definition: -Uncumulate(CMT_CO2e[Scenario='Business as usual']-CMT_CO2e,Scenario)
+NodeLocation: 1136,680,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,1,MIDM
+GraphSetup: Att_StackedBar Graph_Primary_Valdim:1~
+Att_ForceCategorical Graph_Primary_Valdim:1~
+Att_GraphValueRange CMT_CO2e_Reductions:1,,,,,,10~
+Att_GraphIndexRange Scenario:1,,,,,,10~
+{!50007|Graph_BarOutline:0}
+ReformVal: [Time,Scenario]
+Att_ResultSliceState: [CMT_Ext_Scenario,10,Scenario,1,Time,1]
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Scenario}
+
+Variable CMT_Total_Reduction
+Title: CMT Total Reduction
+Definition: Sum(CMT_CO2e_Ext[CMT_Ext_Scenario='Business as usual']-CMT_CO2e_Ext,Time)
+NodeLocation: 984,680,1
+NodeSize: 64,24
+ValueState: 2,40,50,1168,567,1,MIDM
+GraphSetup: Att_GraphValueRange CMT_Total_Reduction:1,,,,,,10~
+Att_GraphIndexRange CMT_Ext_Scenario:1,,,,,,10~
+Flip:8
+
+Close CMT_Employee_Commute
+
