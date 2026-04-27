@@ -1,0 +1,432 @@
+[gd_scene load_steps=13 format=3 uid="uid://b8sx0uo7cl84a"]
+
+[ext_resource type="Texture2D" uid="uid://xn21d4fi0miq" path="res://Resources/LineUI/SwiningElement2.png" id="1_ipotl"]
+[ext_resource type="Texture2D" uid="uid://dk876lbk7mcgb" path="res://Resources/Stolen/5d814a2da59d1655db52dba583114772.jpg" id="2_6axpn"]
+[ext_resource type="Script" uid="uid://bthwdwup5fd1r" path="res://Scenes/OverWorld/SettlementDetails.cs" id="2_b3gv3"]
+[ext_resource type="Texture2D" uid="uid://ci4b52if4vitj" path="res://Resources/Stolen/Things.png" id="3_n53u5"]
+[ext_resource type="Script" uid="uid://bdmyn1vtedw5x" path="res://Scenes/OverWorld/ShipBuildingPanel.cs" id="5_38nfb"]
+[ext_resource type="PackedScene" uid="uid://cc63inqpfm68i" path="res://Libraries/UIArea2d.tscn" id="6_4x0xy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_48vad"]
+font_size = 30
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_ehs3a"]
+default_font_size = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kiukd"]
+atlas = ExtResource("3_n53u5")
+region = Rect2(2985, 2080, 1950, 1307)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_5wdjv"]
+
+[sub_resource type="Theme" id="Theme_4x0xy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4x0xy"]
+size = Vector2(868, 899)
+
+[node name="TextureRect" type="TextureRect" node_paths=PackedStringArray("NameLabel", "FundsP", "ManpowerP", "MetalP", "VolatileP", "MunitionsP", "SelectedBuildingName", "SelectedBuildingLevel", "MetalExtractorButton", "FuelRefineryButton", "MunitionsFactoryButton", "AcademyButton", "BuildButton", "StopBuildingButton", "ManageFleetButton", "MetalExtractorProgress", "MunitionsFactoryProgress", "AcademyProgress", "RefineryProgress", "BuildingBuildQueue", "ShipBuildingPanel") groups=["UISettlementElements"]]
+offset_right = 651.0
+offset_bottom = 941.0
+texture = ExtResource("1_ipotl")
+script = ExtResource("2_b3gv3")
+NameLabel = NodePath("VBoxContainer/Name")
+FundsP = NodePath("GridContainer/TaxProduction")
+ManpowerP = NodePath("GridContainer/ManpowerProduction")
+MetalP = NodePath("GridContainer/MetalProduction")
+VolatileP = NodePath("GridContainer/OilProduction")
+MunitionsP = NodePath("GridContainer/MunitionsProduction")
+SelectedBuildingName = NodePath("SelectedBuildingName")
+SelectedBuildingLevel = NodePath("SelectedBuildingLevel")
+MetalExtractorButton = NodePath("TextureRect/MetalExtractor")
+FuelRefineryButton = NodePath("TextureRect/FuelRefinery")
+MunitionsFactoryButton = NodePath("TextureRect/MunitionsFactory")
+AcademyButton = NodePath("TextureRect/Acadamy")
+BuildButton = NodePath("BuildButton")
+StopBuildingButton = NodePath("ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue/RemoveButton")
+ManageFleetButton = NodePath("MangeFleetButton")
+MetalExtractorProgress = NodePath("TextureRect/MetalExtractorProgress")
+MunitionsFactoryProgress = NodePath("TextureRect/MunitionsFactoryProgress")
+AcademyProgress = NodePath("TextureRect/AcademyProgress")
+RefineryProgress = NodePath("TextureRect/RefineryProgress")
+BuildingBuildQueue = NodePath("TextureRect/BuildingQueue")
+ShipBuildingPanel = NodePath("ShipBuildingPanel")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(0, 44.585)
+layout_mode = 0
+offset_right = 656.0
+offset_bottom = 960.0
+texture = ExtResource("2_6axpn")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_right = 528.0
+offset_bottom = 48.0
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "High Horothgar"
+label_settings = SubResource("LabelSettings_48vad")
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 82.0
+offset_right = 294.0
+offset_bottom = 229.0
+scale = Vector2(2.055, 2.055)
+size_flags_vertical = 3
+theme = SubResource("Theme_ehs3a")
+columns = 2
+
+[node name="Label" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+
+[node name="Production" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Production"
+
+[node name="Tax" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Tax"
+
+[node name="TaxProduction" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Metal"
+
+[node name="Manpower" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Manpower"
+
+[node name="ManpowerProduction" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Manpower"
+
+[node name="Metal" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Metal"
+
+[node name="MetalProduction" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Metal"
+
+[node name="Oil" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Volatiles"
+
+[node name="OilProduction" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Metal"
+
+[node name="Munitions" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Munitions"
+
+[node name="MunitionsProduction" type="Label" parent="GridContainer"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+text = "Metal"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 456.0
+offset_right = 576.0
+offset_bottom = 744.0
+texture = SubResource("AtlasTexture_kiukd")
+expand_mode = 2
+
+[node name="Acadamy" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 138.0
+offset_top = 225.0
+offset_right = 150.0
+offset_bottom = 237.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_5wdjv")
+metadata/building = "Academy"
+
+[node name="MetalExtractor" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 165.0
+offset_right = 66.0
+offset_bottom = 177.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_5wdjv")
+metadata/Building = "MetalExtractor"
+
+[node name="FuelRefinery" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 271.0
+offset_top = 157.0
+offset_right = 283.0
+offset_bottom = 169.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_5wdjv")
+metadata/Building = "FuelRefinery"
+
+[node name="MunitionsFactory" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 165.0
+offset_right = 140.0
+offset_bottom = 177.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_5wdjv")
+metadata/Building = "MunitionsFactory"
+
+[node name="Label" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 152.0
+offset_right = 92.0
+offset_bottom = 161.0
+theme_override_font_sizes/font_size = 10
+text = "Ore Mine"
+
+[node name="Label2" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 142.0
+offset_top = 182.0
+offset_right = 279.0
+offset_bottom = 191.0
+theme_override_font_sizes/font_size = 10
+text = "Munitions Factory"
+
+[node name="Label3" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 155.0
+offset_top = 246.0
+offset_right = 218.0
+offset_bottom = 255.0
+theme = SubResource("Theme_4x0xy")
+theme_override_font_sizes/font_size = 10
+text = "Academy"
+
+[node name="Label4" type="Label" parent="TextureRect"]
+layout_mode = 0
+offset_left = 282.0
+offset_top = 140.0
+offset_right = 347.0
+offset_bottom = 149.0
+theme_override_font_sizes/font_size = 10
+text = "Refinery"
+
+[node name="MetalExtractorProgress" type="ProgressBar" parent="TextureRect"]
+visible = false
+layout_mode = 0
+offset_left = 14.0
+offset_top = 137.0
+offset_right = 106.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 10
+
+[node name="MunitionsFactoryProgress" type="ProgressBar" parent="TextureRect"]
+visible = false
+layout_mode = 0
+offset_left = 165.0
+offset_top = 195.0
+offset_right = 257.0
+offset_bottom = 208.0
+theme_override_font_sizes/font_size = 10
+
+[node name="AcademyProgress" type="ProgressBar" parent="TextureRect"]
+visible = false
+layout_mode = 0
+offset_left = 142.0
+offset_top = 257.0
+offset_right = 234.0
+offset_bottom = 270.0
+theme_override_font_sizes/font_size = 10
+
+[node name="RefineryProgress" type="ProgressBar" parent="TextureRect"]
+visible = false
+layout_mode = 0
+offset_left = 271.0
+offset_top = 124.0
+offset_right = 361.0
+offset_bottom = 137.0
+theme_override_font_sizes/font_size = 10
+
+[node name="BuildingQueue" type="ItemList" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -182.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+allow_search = false
+
+[node name="BuildButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 396.0
+offset_top = 768.0
+offset_right = 466.0
+offset_bottom = 810.0
+text = "Build"
+
+[node name="RemoveFromQueue" type="Button" parent="."]
+layout_mode = 0
+offset_left = 502.0
+offset_top = 768.0
+offset_right = 572.0
+offset_bottom = 810.0
+text = "Stop"
+
+[node name="MangeFleetButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 392.0
+offset_right = 191.0
+offset_bottom = 434.0
+text = "Manage Fleet"
+
+[node name="Build Ships" type="Button" parent="."]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 392.0
+offset_right = 574.0
+offset_bottom = 434.0
+text = "Ship Building"
+
+[node name="SelectedBuildingLevel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 768.0
+offset_right = 385.0
+offset_bottom = 810.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0"
+
+[node name="SelectedBuildingName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 768.0
+offset_right = 321.0
+offset_bottom = 795.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Mine"
+clip_text = true
+
+[node name="ShipBuildingPanel" type="Panel" parent="." node_paths=PackedStringArray("BlueprintList", "BuildingQueue", "ShipInfo", "AddButton", "RemoveButton", "ToggleButton", "CloseButton", "UIArea2D")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 214.0
+offset_bottom = -39.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_38nfb")
+BlueprintList = NodePath("HBoxContainer/MarginContainer/VBoxContainer/Blueprints")
+BuildingQueue = NodePath("HBoxContainer/MarginContainer/VBoxContainer/BuildQueue")
+ShipInfo = NodePath("HBoxContainer/MarginContainer2/VBoxContainer/ShipInfo")
+AddButton = NodePath("HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue/AddButton")
+RemoveButton = NodePath("HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue/RemoveButton")
+ToggleButton = NodePath("../Build Ships")
+CloseButton = NodePath("HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue/Close")
+UIArea2D = NodePath("UIArea2D")
+
+[node name="UIArea2D" parent="ShipBuildingPanel" instance=ExtResource("6_4x0xy")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipBuildingPanel/UIArea2D"]
+position = Vector2(436, 450.5)
+shape = SubResource("RectangleShape2D_4x0xy")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShipBuildingPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ShipBuildingPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShipBuildingPanel/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ShipBuildingPanel/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprints"
+
+[node name="Blueprints" type="ItemList" parent="ShipBuildingPanel/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="ShipBuildingPanel/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "BuildQueue"
+
+[node name="BuildQueue" type="ItemList" parent="ShipBuildingPanel/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="ShipBuildingPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Ship Info"
+
+[node name="ShipInfo" type="ItemList" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="BuildQueue" type="GridContainer" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = 25
+
+[node name="AddButton" type="Button" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue"]
+layout_mode = 2
+text = "Add to Queue"
+
+[node name="RemoveButton" type="Button" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue"]
+layout_mode = 2
+text = "Remove from Queue"
+
+[node name="Close" type="Button" parent="ShipBuildingPanel/HBoxContainer/MarginContainer2/VBoxContainer/BuildQueue"]
+layout_mode = 2
+text = "Close"

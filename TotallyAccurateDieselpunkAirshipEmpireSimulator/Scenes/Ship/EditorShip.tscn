@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx1pysbdnky20"]
+
+[ext_resource type="Script" uid="uid://lgnesw820si4" path="res://Scenes/Ship/EditorShip.cs" id="1_f8k53"]
+
+[node name="EditorShip" type="Node3D"]
+script = ExtResource("1_f8k53")

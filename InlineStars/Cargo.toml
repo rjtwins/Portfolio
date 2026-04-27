@@ -1,0 +1,26 @@
+[package]
+name = "rust_tui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+crossterm = "0.29.0"
+ratatui = "0.30.0"
+color-eyre = "0.6.3"
+tokio = { version = "1.50.0", features = ["full"] }
+uuid ={ version = "1.23.0", features = ["v4", "serde"] }
+async-trait = "0.1.89"
+rand = "0.10.0"
+tachyonfx = "0.25.0"
+tui-widgets = "0.7.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rayon = "1.11.0"
+tui-tree-widget = { path = "tui-rs-tree-widget-main"}
+tui-menu = { path = "tui-menu-main"}
+
+[profile.release]
+codegen-units = 1 # Allows compiler to perform better optimization.
+lto = true # Enables Link-time Optimization.
+opt-level = "s" # Prioritizes small binary size. Use `3` if you prefer speed.
+strip = true # Ensures debug symbols are removed.

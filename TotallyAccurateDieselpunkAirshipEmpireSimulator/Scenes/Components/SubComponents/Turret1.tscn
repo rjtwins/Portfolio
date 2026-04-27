@@ -1,0 +1,205 @@
+[gd_scene load_steps=8 format=3 uid="uid://dnr81y7nrwpck"]
+
+[ext_resource type="Texture2D" uid="uid://eyfkxo8psqqa" path="res://Resources/NotStolen/TurretBase.png" id="2_xhpff"]
+[ext_resource type="Texture2D" uid="uid://f6gu6k2glm6g" path="res://Resources/NotStolen/ground_shaker_asset/Blue/Weapons/turret_01_mk5.png" id="3_6tudj"]
+[ext_resource type="Script" uid="uid://kleh657ubwjc" path="res://Scenes/Components/ComponentScripts/TurretComponent.cs" id="4_20nxn"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_pfh31"]
+script/source = "using Godot;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public partial class SubComponentRoot : Node2D, IComponent
+{
+	public bool InEditor {get; set;}
+	public bool InEditorOnMouse {get; set;}
+	[Export] public int ForcedZLevel {get; set;}
+	[Export] public bool RotatedDown {get; set; }= false;
+	[Export] public int ZLevel {get; set; }
+	[Export] public Area2D EditorCollision {get; set;}
+	[Export] public Area2D[] HardPoints {get; set;}	
+	[Export] public bool IsMounted {get; set;} = false;
+	[Export] public bool CanRotateDownFlag {get; set;} = false;
+	[Export] Sprite2D SideSprite {get; set;}
+	[Export] Sprite2D DownSprite {get; set;}
+	[Export] public bool HalfSnap {get; set;}
+	[Export] public string GUID {get; set;}
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		if(string.IsNullOrEmpty(GUID))
+			GUID = Guid.NewGuid().ToString();
+			
+		if(InEditor && InEditorOnMouse)
+		{
+			ZLevel = 0;
+			GlobalPosition = GetGlobalMousePosition().Snapped(Vector2.One * 45);
+		}
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		if(!OnHardPoint())
+			IsMounted = false;
+		else
+			IsMounted = true;
+		
+		if(IsMounted)
+			ZIndex = GetMountedOn().Min(x => x.ZLevel) + 1;
+		
+		if(InEditor && InEditorOnMouse)
+		{
+			var snap = HalfSnap ? 22.5f : 45f;
+			ZLevel = 0;
+			GlobalPosition = GetGlobalMousePosition().Snapped(Vector2.One * snap);
+		}
+	}
+	
+	public List<IComponent> GetMountedOn()
+	{		
+		return HardPoints
+			.Select(x => x.GetOverlappingAreas().FirstOrDefault())
+			.Where(x => x != null)
+			.Select(x => x.GetParent() as IComponent)
+			.Distinct()
+			.ToList();
+	}
+
+	public bool IsEditorColliding()
+	{
+		return EditorCollision.HasOverlappingAreas();
+	}
+	
+	public bool CanPlaceDown()
+	{
+		if(IsEditorColliding())
+			return false;
+		
+		// if(!OnHardPoint())
+		// 	return false;
+		
+		return true;
+	}
+	
+	public bool OnHardPoint()
+	{
+		if(!HardPoints.All(x => x.HasOverlappingAreas()))
+			return false;
+		
+		var structureHardPoints = HardPoints.Select(x => x.GetOverlappingAreas().FirstOrDefault()).ToList();
+		
+		if(structureHardPoints?.Any(x => x.GetOverlappingAreas()?.Count > 1) ?? false)
+			return false;
+			
+		if(structureHardPoints.Select(x => x.GetParent()).OfType<IComponent>().DistinctBy(x => x.ZLevel).Count() > 1)
+			return false;
+		
+		return true;
+	}
+
+	public virtual void OnShipLoaded()
+	{
+		//GetComponent().OnShipLoaded();
+	}
+}
+
+public interface IComponent
+{
+	public bool InEditor {get; set;}
+	public bool InEditorOnMouse {get; set;}
+	
+	[Export] public string GUID {get; set;}
+	[Export] public Area2D EditorCollision {get; set;}
+	[Export] public bool RotatedDown {get; set;}
+	[Export] public int ZLevel {get; set;}
+	[Export] public int ForcedZLevel {get; set;}
+	
+	Vector2 GlobalPosition {get; set;}
+	public bool CanPlaceDown();
+	public void OnShipLoaded();
+}
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_peo6r"]
+atlas = ExtResource("2_xhpff")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cwql7"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0du1j"]
+radius = 76.0592
+
+[node name="SubComponentRoot" type="Node2D" node_paths=PackedStringArray("EditorCollision", "HardPoints")]
+script = SubResource("CSharpScript_pfh31")
+EditorCollision = NodePath("EditorCollision")
+HardPoints = [NodePath("HardPoint")]
+
+[node name="BG" type="Sprite2D" parent="."]
+scale = Vector2(1.205, 1.205)
+texture = SubResource("AtlasTexture_peo6r")
+
+[node name="FG" type="Sprite2D" parent="."]
+visible = false
+rotation = 1.5708
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("3_6tudj")
+offset = Vector2(0, -1.95)
+
+[node name="HardPoint" type="Area2D" parent="."]
+position = Vector2(45, 45)
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HardPoint"]
+shape = SubResource("CircleShape2D_cwql7")
+
+[node name="HardPoint2" type="Area2D" parent="."]
+position = Vector2(45, -45)
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HardPoint2"]
+shape = SubResource("CircleShape2D_cwql7")
+
+[node name="HardPoint3" type="Area2D" parent="."]
+position = Vector2(-45, 45)
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HardPoint3"]
+shape = SubResource("CircleShape2D_cwql7")
+
+[node name="HardPoint4" type="Area2D" parent="."]
+position = Vector2(-45, -45)
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HardPoint4"]
+shape = SubResource("CircleShape2D_cwql7")
+
+[node name="EditorCollision" type="Area2D" parent="."]
+visible = false
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EditorCollision"]
+shape = SubResource("CircleShape2D_0du1j")
+
+[node name="Component" type="Node2D" parent="."]
+script = ExtResource("4_20nxn")
+
+[node name="Turret" parent="."]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+script = null

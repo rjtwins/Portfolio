@@ -1,0 +1,289 @@
+[
+  {
+    "id": "colony_module",
+    "name": "Colony Module",
+    "health": 50.0,
+    "mass": 500.0,
+    "power_consumption": 0.5,
+    "power_output": 0.0,
+    "fuel_storage": 0.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 20.0,
+      "heavy_metals": 5.0,
+      "rare_elements": 0.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 10.0
+    },
+    "subsystem_type": "ColonyModule",
+    "science_tech_required": null,
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "storage_small",
+    "name": "Small Cargo Bay",
+    "health": 50.0,
+    "mass": 500.0,
+    "power_consumption": 0.5,
+    "power_output": 0.0,
+    "fuel_storage": 0.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 20.0,
+      "heavy_metals": 5.0,
+      "rare_elements": 0.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 10.0
+    },
+    "subsystem_type": {
+      "Storage": {
+        "human_rated": false,
+        "capacity": 5000.0
+      }
+    },
+    "science_tech_required": null,
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "storage_medium",
+    "name": "Medium Cargo Bay",
+    "health": 120.0,
+    "mass": 2000.0,
+    "power_consumption": 1.5,
+    "power_output": 0.0,
+    "fuel_storage": 0.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 80.0,
+      "heavy_metals": 20.0,
+      "rare_elements": 5.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 40.0
+    },
+    "subsystem_type": {
+      "Storage": {
+        "human_rated": false,
+        "capacity": 20000.0
+      }
+    },
+    "science_tech_required": "industrial_logistics",
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "storage_large",
+    "name": "Large Cargo Bay",
+    "health": 300.0,
+    "mass": 8000.0,
+    "power_consumption": 4.0,
+    "power_output": 0.0,
+    "fuel_storage": 0.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 300.0,
+      "heavy_metals": 80.0,
+      "rare_elements": 20.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 150.0
+    },
+    "subsystem_type": {
+      "Storage": {
+        "human_rated": false,
+        "capacity": 80000.0
+      }
+    },
+    "science_tech_required": "advanced_storage",
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "reactor_nuclear_basic",
+    "name": "Basic Nuclear Reactor",
+    "health": 80.0,
+    "mass": 3000.0,
+    "power_consumption": 0.0,
+    "power_output": 50.0,
+    "fuel_storage": 0.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 50.0,
+      "heavy_metals": 80.0,
+      "rare_elements": 20.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 60.0
+    },
+    "subsystem_type": "Reactor",
+    "science_tech_required": null,
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "engines_chemical",
+    "name": "Chemical Engines",
+    "health": 60.0,
+    "mass": 2000.0,
+    "power_consumption": 5.0,
+    "power_output": 0.0,
+    "fuel_storage": 1000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 40.0,
+      "heavy_metals": 20.0,
+      "rare_elements": 0.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 30.0
+    },
+    "subsystem_type": {
+      "Engines": {
+        "engine_tech_id": "chemical_propulsion"
+      }
+    },
+    "science_tech_required": null,
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "engines_ion",
+    "name": "Ion Engines",
+    "health": 50.0,
+    "mass": 1200.0,
+    "power_consumption": 20.0,
+    "power_output": 0.0,
+    "fuel_storage": 2000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 30.0,
+      "heavy_metals": 40.0,
+      "rare_elements": 10.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 50.0
+    },
+    "subsystem_type": {
+      "Engines": {
+        "engine_tech_id": "ion_drives"
+      }
+    },
+    "science_tech_required": "ion_drives",
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "fuel_tank_small",
+    "name": "Small Fuel Tank",
+    "health": 30.0,
+    "mass": 250.0,
+    "power_consumption": 0.0,
+    "power_output": 0.0,
+    "fuel_storage": 5000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 15.0,
+      "heavy_metals": 5.0,
+      "rare_elements": 0.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 8.0
+    },
+    "subsystem_type": "Misc",
+    "science_tech_required": null,
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "fuel_tank_medium",
+    "name": "Medium Fuel Tank",
+    "health": 60.0,
+    "mass": 800.0,
+    "power_consumption": 0.0,
+    "power_output": 0.0,
+    "fuel_storage": 20000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 50.0,
+      "heavy_metals": 15.0,
+      "rare_elements": 0.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 25.0
+    },
+    "subsystem_type": "Misc",
+    "science_tech_required": null,
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "fuel_tank_large",
+    "name": "Large Fuel Tank",
+    "health": 120.0,
+    "mass": 2500.0,
+    "power_consumption": 0.0,
+    "power_output": 0.0,
+    "fuel_storage": 80000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 150.0,
+      "heavy_metals": 50.0,
+      "rare_elements": 5.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 80.0
+    },
+    "subsystem_type": "Misc",
+    "science_tech_required": "heavy_industry",
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "fuel_tank_xlarge",
+    "name": "XLarge Fuel Tank",
+    "health": 250.0,
+    "mass": 8000.0,
+    "power_consumption": 0.0,
+    "power_output": 0.0,
+    "fuel_storage": 300000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 500.0,
+      "heavy_metals": 180.0,
+      "rare_elements": 30.0,
+      "super_elements": 0.0,
+      "fuel": 0.0,
+      "ic": 250.0
+    },
+    "subsystem_type": "Misc",
+    "science_tech_required": "orbital_shipyard",
+    "locked": true,
+    "obsolete": false
+  },
+  {
+    "id": "fuel_tank_massive",
+    "name": "Massive Fuel Tank",
+    "health": 500.0,
+    "mass": 25000.0,
+    "power_consumption": 0.0,
+    "power_output": 0.0,
+    "fuel_storage": 1200000.0,
+    "power_storage": 0.0,
+    "cost": {
+      "light_metals": 1800.0,
+      "heavy_metals": 600.0,
+      "rare_elements": 120.0,
+      "super_elements": 10.0,
+      "fuel": 0.0,
+      "ic": 900.0
+    },
+    "subsystem_type": "Misc",
+    "science_tech_required": "megastructure_engineering",
+    "locked": true,
+    "obsolete": false
+  }
+]

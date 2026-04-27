@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cc4h8xdikny2g"]
+
+[ext_resource type="Texture2D" uid="uid://ci4b52if4vitj" path="res://Resources/Stolen/Things.png" id="1_h7bcp"]
+[ext_resource type="Script" uid="uid://2g12l4crmjo8" path="res://Libraries/RotationControl.cs" id="2_v2jp8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ykngv"]
+atlas = ExtResource("1_h7bcp")
+region = Rect2(2315, 1978, 364, 365)
+
+[node name="RotationControl" type="TextureRect" node_paths=PackedStringArray("TimeoutTimer")]
+offset_right = 70.0
+offset_bottom = 70.0
+pivot_offset = Vector2(35, 35)
+texture = SubResource("AtlasTexture_ykngv")
+expand_mode = 1
+script = ExtResource("2_v2jp8")
+TimeoutTimer = NodePath("Timeout")
+MaxRotation = 25.0
+
+[node name="Timeout" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+ignore_time_scale = true

@@ -1,0 +1,268 @@
+{
+  "id": "73b49dd3-85c6-48f8-b9e6-d542e1ace412",
+  "name": "Mock Fleet 1",
+  "x": 43235966.93209649,
+  "y": 54583762.920605086,
+  "target_position": null,
+  "target_object": null,
+  "order_queue": [],
+  "members": [
+    {
+      "id": "16d9fe30-3ca0-4797-82d8-1ea2e7e19a20",
+      "design": {
+        "id": "e7950a8f-ed87-4bcf-8f3e-d614cdae30f3",
+        "name": "Mock_01",
+        "mass": 0.0,
+        "subsystems": [
+          {
+            "id": "engines_chemical",
+            "cost": {
+              "light_metals": 40.0,
+              "heavy_metals": 20.0,
+              "rare_elements": 0.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 30.0
+            },
+            "name": "Chemical Engines",
+            "health": 60.0,
+            "power_consumption": 5.0,
+            "power_output": 0.0,
+            "fuel_storage": 1000.0,
+            "power_storage": 0.0,
+            "mass": 200000.0,
+            "subsystem_type": {
+              "Engines": {
+                "engine_tech_id": "chemical_propulsion"
+              }
+            },
+            "science_tech_required": null,
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "fuel_tank_large",
+            "cost": {
+              "light_metals": 150.0,
+              "heavy_metals": 50.0,
+              "rare_elements": 5.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 80.0
+            },
+            "name": "Large Fuel Tank",
+            "health": 120.0,
+            "power_consumption": 0.0,
+            "power_output": 0.0,
+            "fuel_storage": 80000.0,
+            "power_storage": 0.0,
+            "mass": 2500.0,
+            "subsystem_type": "Misc",
+            "science_tech_required": "heavy_industry",
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "reactor_nuclear_basic",
+            "cost": {
+              "light_metals": 50.0,
+              "heavy_metals": 80.0,
+              "rare_elements": 20.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 60.0
+            },
+            "name": "Basic Nuclear Reactor",
+            "health": 80.0,
+            "power_consumption": 0.0,
+            "power_output": 50.0,
+            "fuel_storage": 0.0,
+            "power_storage": 0.0,
+            "mass": 3000.0,
+            "subsystem_type": "Reactor",
+            "science_tech_required": null,
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "storage_large",
+            "cost": {
+              "light_metals": 300.0,
+              "heavy_metals": 80.0,
+              "rare_elements": 20.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 150.0
+            },
+            "name": "Large Cargo Bay",
+            "health": 300.0,
+            "power_consumption": 4.0,
+            "power_output": 0.0,
+            "fuel_storage": 0.0,
+            "power_storage": 0.0,
+            "mass": 8000.0,
+            "subsystem_type": {
+              "Storage": {
+                "human_rated": false,
+                "capacity": 80000.0
+              }
+            },
+            "science_tech_required": "advanced_storage",
+            "locked": true,
+            "obsolete": false
+          }
+        ],
+        "locked": false,
+        "armor": 0.0,
+        "cost": {
+          "light_metals": 0.0,
+          "heavy_metals": 0.0,
+          "rare_elements": 0.0,
+          "super_elements": 0.0,
+          "fuel": 0.0,
+          "ic": 0.0
+        }
+      }
+    },
+    {
+      "id": "17d9fe30-3ca0-4797-82d8-1ea2e7e19a20",
+      "design": {
+        "id": "e7950a8f-ed87-4bcf-8f3e-d614cdae30f3",
+        "name": "Mock_01",
+        "mass": 0.0,
+        "subsystems": [
+          {
+            "id": "colony_module",
+            "name": "Colony Module",
+            "health": 50.0,
+            "mass": 500.0,
+            "power_consumption": 0.5,
+            "power_output": 0.0,
+            "fuel_storage": 0.0,
+            "power_storage": 0.0,
+            "cost": {
+              "light_metals": 20.0,
+              "heavy_metals": 5.0,
+              "rare_elements": 0.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 10.0
+            },
+            "subsystem_type": "ColonyModule",
+            "science_tech_required": null,
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "engines_chemical",
+            "cost": {
+              "light_metals": 40.0,
+              "heavy_metals": 20.0,
+              "rare_elements": 0.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 30.0
+            },
+            "name": "Chemical Engines",
+            "health": 60.0,
+            "power_consumption": 5.0,
+            "power_output": 0.0,
+            "fuel_storage": 1000.0,
+            "power_storage": 0.0,
+            "mass": 200000.0,
+            "subsystem_type": {
+              "Engines": {
+                "engine_tech_id": "chemical_propulsion"
+              }
+            },
+            "science_tech_required": null,
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "fuel_tank_large",
+            "cost": {
+              "light_metals": 150.0,
+              "heavy_metals": 50.0,
+              "rare_elements": 5.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 80.0
+            },
+            "name": "Large Fuel Tank",
+            "health": 120.0,
+            "power_consumption": 0.0,
+            "power_output": 0.0,
+            "fuel_storage": 80000.0,
+            "power_storage": 0.0,
+            "mass": 2500.0,
+            "subsystem_type": "Misc",
+            "science_tech_required": "heavy_industry",
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "reactor_nuclear_basic",
+            "cost": {
+              "light_metals": 50.0,
+              "heavy_metals": 80.0,
+              "rare_elements": 20.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 60.0
+            },
+            "name": "Basic Nuclear Reactor",
+            "health": 80.0,
+            "power_consumption": 0.0,
+            "power_output": 50.0,
+            "fuel_storage": 0.0,
+            "power_storage": 0.0,
+            "mass": 3000.0,
+            "subsystem_type": "Reactor",
+            "science_tech_required": null,
+            "locked": true,
+            "obsolete": false
+          },
+          {
+            "id": "storage_large",
+            "cost": {
+              "light_metals": 300.0,
+              "heavy_metals": 80.0,
+              "rare_elements": 20.0,
+              "super_elements": 0.0,
+              "fuel": 0.0,
+              "ic": 150.0
+            },
+            "name": "Large Cargo Bay",
+            "health": 300.0,
+            "power_consumption": 4.0,
+            "power_output": 0.0,
+            "fuel_storage": 0.0,
+            "power_storage": 0.0,
+            "mass": 8000.0,
+            "subsystem_type": {
+              "Storage": {
+                "human_rated": false,
+                "capacity": 80000.0
+              }
+            },
+            "science_tech_required": "advanced_storage",
+            "locked": true,
+            "obsolete": false
+          }
+        ],
+        "locked": false,
+        "armor": 0.0,
+        "cost": {
+          "light_metals": 0.0,
+          "heavy_metals": 0.0,
+          "rare_elements": 0.0,
+          "super_elements": 0.0,
+          "fuel": 0.0,
+          "ic": 0.0
+        }
+      }
+    }
+  ],
+  "slipway_fleet": false
+}

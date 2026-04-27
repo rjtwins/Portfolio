@@ -1,0 +1,97 @@
+[gd_scene load_steps=13 format=3 uid="uid://rag23wiwyyr8"]
+
+[ext_resource type="Script" uid="uid://caplf28jc6o7v" path="res://Scenes/Components/Component.cs" id="1_1q4wf"]
+[ext_resource type="Script" uid="uid://df0imrmyn8lkl" path="res://Scenes/Components/SparseSphere.cs" id="2_1q4wf"]
+[ext_resource type="Script" uid="uid://k7o0r7i355ce" path="res://Scenes/Components/IRSensorComponent.cs" id="3_nwlw4"]
+[ext_resource type="Script" uid="uid://kc7i1ulhs1r7" path="res://Scenes/Components/FovChecker3D.cs" id="4_1q4wf"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="4_hmwan"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gt8gh"]
+size = Vector3(0.8, 0.8, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_panoy"]
+size = Vector3(0.64233553, 0.06066215, 0.9219265)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_5mij7"]
+top_radius = 0.125
+bottom_radius = 0.125
+height = 0.125
+cap_top = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kh3px"]
+top_radius = 0.125
+bottom_radius = 0.125
+height = 0.02
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_g7odm"]
+top_radius = 0.125
+bottom_radius = 0.125
+height = 0.02
+
+[sub_resource type="BoxMesh" id="BoxMesh_2eiwy"]
+size = Vector3(0.25, 0.25, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5mij7"]
+size = Vector3(0.4, 0.05, 0.4)
+
+[node name="IRSensor1" type="Node3D" node_paths=PackedStringArray("CollisionDetector", "ConnectionDetector", "Outline", "Data", "FovChecker3D")]
+script = ExtResource("1_1q4wf")
+HasFOV = true
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+FovChecker3D = NodePath("FOVChecker")
+
+[node name="SparseSphere" type="MeshInstance3D" parent="."]
+script = ExtResource("2_1q4wf")
+
+[node name="FOVChecker" type="Node3D" parent="." node_paths=PackedStringArray("SparseSphere")]
+script = ExtResource("4_1q4wf")
+VerticalRays = 36
+MaxDistance = 5.0
+SparseSphere = NodePath("../SparseSphere")
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.04319763, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="CollisionDetector"]
+shape = SubResource("BoxShape3D_gt8gh")
+
+[node name="Surfaces" type="Node3D" parent="."]
+
+[node name="Outline" parent="." instance=ExtResource("4_hmwan")]
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02580458, -0.48725075, -0.009362221)
+shape = SubResource("BoxShape3D_panoy")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43312073, 0)
+mesh = SubResource("CylinderMesh_5mij7")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.12738037, -0.30002975, 0.12347412)
+mesh = SubResource("CylinderMesh_kh3px")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.9723743e-08, -0.68, 0, 0.68, -2.9723743e-08, 0, 0, 0, 0.68, 0.12738037, -0.30002975, -0.14674377)
+mesh = SubResource("CylinderMesh_g7odm")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.29948425, 0)
+mesh = SubResource("BoxMesh_2eiwy")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.48382473, 0)
+mesh = SubResource("BoxMesh_5mij7")
+
+[node name="ComponentData" type="Node" parent="."]
+script = ExtResource("3_nwlw4")
+Label = "IR Senser"

@@ -1,0 +1,323 @@
+[
+  {
+    "name": "Mercury",
+    "semi_major_axis": 57909050.0,
+    "eccentricity": 0.2056,
+    "arg_periapsis": 0.508,
+    "mean_motion": 8.26e-7,
+    "mean_anomaly": 0.0,
+    "satellites": []
+  },
+  {
+    "name": "Venus",
+    "semi_major_axis": 108208000.0,
+    "eccentricity": 0.0067,
+    "arg_periapsis": 1.338,
+    "mean_motion": 3.24e-7,
+    "mean_anomaly": 0.0,
+    "satellites": []
+  },
+  {
+    "name": "Earth",
+    "semi_major_axis": 149597870.7,
+    "eccentricity": 0.0167,
+    "arg_periapsis": 1.796767421,
+    "mean_motion": 1.99e-7,
+    "mean_anomaly": 0.0,
+    "satellites": [
+      {
+        "name": "Moon",
+        "semi_major_axis": 384400.0,
+        "eccentricity": 0.0549,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.66e-6,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      }
+    ]
+  },
+  {
+    "name": "Mars",
+    "semi_major_axis": 227943824.0,
+    "eccentricity": 0.0934,
+    "arg_periapsis": 5.865,
+    "mean_motion": 1.06e-7,
+    "mean_anomaly": 0.0,
+    "satellites": [
+      {
+        "name": "Phobos",
+        "semi_major_axis": 9376.0,
+        "eccentricity": 0.0151,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.28e-4,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Deimos",
+        "semi_major_axis": 23463.2,
+        "eccentricity": 0.00033,
+        "arg_periapsis": 0.0,
+        "mean_motion": 5.76e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      }
+    ]
+  },
+  {
+    "name": "Ceres",
+    "semi_major_axis": 413700000.0,
+    "eccentricity": 0.0758,
+    "arg_periapsis": 3.141592653589793,
+    "mean_motion": 4.33e-8,
+    "mean_anomaly": 0.0,
+    "satellites": []
+  },
+  {
+    "name": "Pallas",
+    "semi_major_axis": 414500000.0,
+    "eccentricity": 0.231,
+    "arg_periapsis": 3.0,
+    "mean_motion": 4.32e-8,
+    "mean_anomaly": 0.0,
+    "satellites": []
+  },
+  {
+    "name": "Vesta",
+    "semi_major_axis": 353400000.0,
+    "eccentricity": 0.089,
+    "arg_periapsis": 2.0,
+    "mean_motion": 5.49e-8,
+    "mean_anomaly": 0.0,
+    "satellites": []
+  },
+  {
+    "name": "Juno",
+    "semi_major_axis": 399600000.0,
+    "eccentricity": 0.256,
+    "arg_periapsis": 1.5,
+    "mean_motion": 4.56e-8,
+    "mean_anomaly": 0.0,
+    "satellites": []
+  },
+  {
+    "name": "Jupiter",
+    "semi_major_axis": 778299000.0,
+    "eccentricity": 0.0489,
+    "arg_periapsis": 4.7798808625593106,
+    "mean_motion": 1.68e-8,
+    "mean_anomaly": 0.0,
+    "satellites": [
+      {
+        "name": "Io",
+        "semi_major_axis": 421700.0,
+        "eccentricity": 0.0041,
+        "arg_periapsis": 0.0,
+        "mean_motion": 4.11e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Europa",
+        "semi_major_axis": 671034.0,
+        "eccentricity": 0.009,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.05e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Ganymede",
+        "semi_major_axis": 1070412.0,
+        "eccentricity": 0.0013,
+        "arg_periapsis": 0.0,
+        "mean_motion": 1.02e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Callisto",
+        "semi_major_axis": 1882709.0,
+        "eccentricity": 0.0074,
+        "arg_periapsis": 0.0,
+        "mean_motion": 4.36e-6,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Amalthea",
+        "semi_major_axis": 181400.0,
+        "eccentricity": 0.003,
+        "arg_periapsis": 0.0,
+        "mean_motion": 1.46e-4,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Himalia",
+        "semi_major_axis": 11461000.0,
+        "eccentricity": 0.16,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.90e-7,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      }
+    ]
+  },
+  {
+    "name": "Saturn",
+    "semi_major_axis": 1433530000.0,
+    "eccentricity": 0.0565,
+    "arg_periapsis": 5.923507854928594,
+    "mean_motion": 6.76e-9,
+    "mean_anomaly": 0.0,
+    "satellites": [
+      {
+        "name": "Titan",
+        "semi_major_axis": 1221870.0,
+        "eccentricity": 0.0288,
+        "arg_periapsis": 0.0,
+        "mean_motion": 4.56e-6,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Rhea",
+        "semi_major_axis": 527108.0,
+        "eccentricity": 0.001,
+        "arg_periapsis": 0.0,
+        "mean_motion": 1.61e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Iapetus",
+        "semi_major_axis": 3560820.0,
+        "eccentricity": 0.0283,
+        "arg_periapsis": 0.0,
+        "mean_motion": 9.17e-7,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Dione",
+        "semi_major_axis": 377396.0,
+        "eccentricity": 0.0022,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.66e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Enceladus",
+        "semi_major_axis": 238042.0,
+        "eccentricity": 0.0047,
+        "arg_periapsis": 0.0,
+        "mean_motion": 5.31e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Mimas",
+        "semi_major_axis": 185539.0,
+        "eccentricity": 0.0196,
+        "arg_periapsis": 0.0,
+        "mean_motion": 7.72e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      }
+    ]
+  },
+  {
+    "name": "Uranus",
+    "semi_major_axis": 2872460000.0,
+    "eccentricity": 0.0463,
+    "arg_periapsis": 1.6929494253211494,
+    "mean_motion": 2.37e-9,
+    "mean_anomaly": 0.0,
+    "satellites": [
+      {
+        "name": "Titania",
+        "semi_major_axis": 436300.0,
+        "eccentricity": 0.0011,
+        "arg_periapsis": 0.0,
+        "mean_motion": 8.35e-6,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Oberon",
+        "semi_major_axis": 583500.0,
+        "eccentricity": 0.0014,
+        "arg_periapsis": 0.0,
+        "mean_motion": 5.40e-6,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Umbriel",
+        "semi_major_axis": 266000.0,
+        "eccentricity": 0.0039,
+        "arg_periapsis": 0.0,
+        "mean_motion": 1.75e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Ariel",
+        "semi_major_axis": 190900.0,
+        "eccentricity": 0.0012,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.88e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Miranda",
+        "semi_major_axis": 129900.0,
+        "eccentricity": 0.0013,
+        "arg_periapsis": 0.0,
+        "mean_motion": 5.15e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      }
+    ]
+  },
+  {
+    "name": "Neptune",
+    "semi_major_axis": 4503440000.0,
+    "eccentricity": 0.0086,
+    "arg_periapsis": 4.768012623645749,
+    "mean_motion": 1.21e-9,
+    "mean_anomaly": 0.0,
+    "satellites": [
+      {
+        "name": "Triton",
+        "semi_major_axis": 354759.0,
+        "eccentricity": 0.000016,
+        "arg_periapsis": 0.0,
+        "mean_motion": 1.24e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Proteus",
+        "semi_major_axis": 117647.0,
+        "eccentricity": 0.0005,
+        "arg_periapsis": 0.0,
+        "mean_motion": 6.48e-5,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      },
+      {
+        "name": "Nereid",
+        "semi_major_axis": 5513819.0,
+        "eccentricity": 0.7507,
+        "arg_periapsis": 0.0,
+        "mean_motion": 2.02e-7,
+        "mean_anomaly": 0.0,
+        "satellites": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgic637o4mfia"]
+
+[ext_resource type="PackedScene" uid="uid://bm2nt6ki4u2dl" path="res://Scenes/Components/Helpers/LibraryScenes/Cube.tscn" id="1_r673v"]
+[ext_resource type="PackedScene" uid="uid://cusxlx4jmexpj" path="res://Scenes/Components/Helpers/LibraryScenes/Slope.tscn" id="2_5488g"]
+
+[node name="Tiles" type="Node3D"]
+
+[node name="Cube" parent="." instance=ExtResource("1_r673v")]
+
+[node name="Cube2" parent="." instance=ExtResource("2_5488g")]

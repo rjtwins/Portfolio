@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvmn5lpoxh2m6"]
+
+[ext_resource type="Texture2D" uid="uid://id6t2cc3hspp" path="res://Resources/LineUI/VisionCircle.png" id="1_wqa4q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4ags"]
+atlas = ExtResource("1_wqa4q")
+region = Rect2(0, 0, 1140, 1140)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -592.0
+offset_bottom = 259.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -3.0
+offset_right = 1172.0
+offset_bottom = 1204.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_x4ags")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
+clip_children = 1
+position = Vector2(-139, -176)
+invert_enabled = true
+invert_border = 300.0
+polygon = PackedVector2Array(807, 1129, 837, 1119, 861, 1109, 881, 1100, 900, 1089, 922, 1076, 939, 1064, 957, 1051, 975, 1038, 989, 1024, 1005, 1008, 1017, 995, 1032, 979, 1039, 970, 1046, 961, 1052, 953, 1058, 944, 1065, 933, 1071, 923, 1077, 914, 1082, 905, 1086, 898, 1092, 887, 1096, 878, 1101, 868, 1106, 855, 1111, 843, 1116, 830, 1122, 813, 1125, 800, 1128, 789, 1131, 776, 1134, 762, 1137, 750, 1139, 738, 1140, 722, 1141, 712, 1142, 703, 1143, 690, 1143, 670, 1143, 651, 1142, 636, 1141, 622, 1140, 610, 1138, 593, 1136, 578, 1133, 564, 1129, 549, 1125, 533, 1120, 516, 1114, 500, 1109, 487, 1104, 475, 1097, 458, 1091, 445, 1085, 433, 1077, 420, 1070, 409, 1061, 395, 1054, 385, 1046, 374, 1039, 365, 1032, 356, 1022, 344, 1012, 332, 999, 319, 985, 306, 922, 257, 900, 243, 879, 232, 857, 222, 835, 214, 816, 208, 794, 201, 776, 196, 754, 191, 734, 187, 717, 185, 694, 183, 673, 182, 654, 182, 630, 182, 607, 185, 583, 189, 558, 194, 532, 200, 511, 207, 483, 219, 457, 230, 434, 241, 420, 249, 409, 256, 381, 277, 358, 296, 340, 313, 322, 331, 299, 355, 282, 378, 265, 401, 254, 418, 249, 425, 237, 450, 226, 475, 216, 501, 207, 528, 200, 552, 196, 571, 191, 595, 189, 620, 188, 647, 187, 665, 188, 683, 188, 702, 190, 724, 194, 748, 199, 773, 204, 794, 209.834, 811.549, 215, 829, 224, 854, 234, 875, 244, 894, 256, 916, 272, 939, 281, 953, 296, 973, 314, 994, 336, 1017, 362, 1040, 389, 1060, 414, 1077, 459, 1103, 481, 1112, 516, 1125, 556, 1137, 591, 1144, 625, 1148, 660, 1150, 684, 1151, 712, 1149, 744, 1144, 776, 1138)
+
+[node name="TextureRect2" type="TextureRect" parent="Polygon2D"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0

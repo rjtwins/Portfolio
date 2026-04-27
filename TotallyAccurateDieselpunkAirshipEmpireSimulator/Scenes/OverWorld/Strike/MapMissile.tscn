@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccigvtdo2qfu3"]
+
+[ext_resource type="Script" uid="uid://cqbk1bbl5v3pw" path="res://Scenes/OverWorld/Strike/MapMissile.cs" id="1_exk3l"]
+[ext_resource type="Texture2D" uid="uid://e3m3aikx2t0i" path="res://Resources/RWR/RWR-M.png" id="1_houeq"]
+
+[node name="MapMissile" type="Node2D" node_paths=PackedStringArray("DetectionArea")]
+script = ExtResource("1_exk3l")
+DetectionArea = NodePath("Area2D")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+texture_filter = 2
+scale = Vector2(1.2, 1.2)
+color = Color(0.803922, 0.803922, 0, 0.627451)
+antialiased = true
+polygon = PackedVector2Array(256, -192, 296, -144, 320, -64, 320, 64, 296, 144, 256, 192, 40, 26.6667, 40, -26.6667)
+
+[node name="MSprite" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_houeq")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+scale = Vector2(1.2, 1.2)
+disable_mode = 1
+collision_layer = 2147483648
+collision_mask = 2147483648
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(0, 0, 256, 192, 296, 144, 320, 64, 320, -64, 296, -144, 256, -192)

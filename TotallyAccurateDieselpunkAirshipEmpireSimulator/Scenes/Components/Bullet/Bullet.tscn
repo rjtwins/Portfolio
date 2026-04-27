@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4coqlgvcfv1f"]
+
+[ext_resource type="Script" uid="uid://c1yyv4jnm4y1g" path="res://Scenes/Components/Bullet/BulletBase.cs" id="1_ap2bt"]
+[ext_resource type="Script" uid="uid://csbvllmiimexq" path="res://Scenes/Components/Bullet/UiOverlay.cs" id="2_qgagw"]
+
+[sub_resource type="Curve" id="Curve_qgagw"]
+_limits = [0.0, 1.0, 0.0, 5.0]
+_data = [Vector2(0, 0), 0.0, 0.2, 0, 1, Vector2(5, 1), 0.2, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fqveq"]
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nrc40"]
+material = SubResource("StandardMaterial3D_fqveq")
+radius = 0.01
+height = 0.05
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_qgagw"]
+
+[node name="Bullet" type="RigidBody3D" node_paths=PackedStringArray("LifeTimeTimer", "PhysicsTimer")]
+process_mode = 1
+physics_interpolation_mode = 1
+collision_layer = 0
+collision_mask = 0
+input_ray_pickable = false
+script = ExtResource("1_ap2bt")
+LifeTimeTimer = NodePath("LifeTimeTimer")
+PhysicsTimer = NodePath("CollisionCheckTimer")
+Damage = 25.0
+DamageRadius = 5.0
+DamageFalloff = SubResource("Curve_qgagw")
+FusingTime = 5.0
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+process_mode = 4
+physics_interpolation_mode = 2
+transform = Transform3D(9.553426e-15, -4.371139e-07, 5, -5, -4.371139e-07, -8.4703295e-22, 2.1855695e-07, -10, -2.1855695e-07, 0, 0, -0.0007324219)
+mesh = SubResource("CapsuleMesh_nrc40")
+
+[node name="CollisionCheckTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+ignore_time_scale = true
+
+[node name="LifeTimeTimer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+autostart = true
+ignore_time_scale = true
+
+[node name="UIOverlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_qgagw")
+
+[node name="Sprite2D" type="Sprite2D" parent="UIOverlay"]
+position = Vector2(2.9802322e-08, 2.9802322e-08)
+scale = Vector2(2, 2)
+texture = SubResource("CanvasTexture_qgagw")

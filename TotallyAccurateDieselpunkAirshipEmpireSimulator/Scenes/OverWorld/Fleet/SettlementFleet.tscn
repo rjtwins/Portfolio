@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://xddymkkrab8h"]
+
+[ext_resource type="Script" uid="uid://cq04jaorbchkp" path="res://Scenes/OverWorld/Fleet/Fleet.cs" id="1_muq10"]
+[ext_resource type="Script" uid="uid://ljwkstw5w2fg" path="res://Scenes/OverWorld/Fleet/FleetInfo.cs" id="8_ocxoh"]
+[ext_resource type="PackedScene" uid="uid://bloowtf4lev7j" path="res://Libraries/CircleLine2D.tscn" id="10_7illi"]
+[ext_resource type="PackedScene" uid="uid://mcff0ufvimb8" path="res://Libraries/ScreenSpaceNode.tscn" id="12_au2fa"]
+[ext_resource type="PackedScene" uid="uid://duqm5ukm83sr1" path="res://Libraries/ScreenLine2D.tscn" id="13_yjtsr"]
+[ext_resource type="Script" uid="uid://dw3cxvwdvt200" path="res://Scenes/OverWorld/Fleet/StrikeManager.cs" id="31_wuchv"]
+[ext_resource type="PackedScene" uid="uid://ccigvtdo2qfu3" path="res://Scenes/OverWorld/Strike/MapMissile.tscn" id="32_jrn81"]
+[ext_resource type="PackedScene" uid="uid://dwdd1mk7iotg4" path="res://Scenes/OverWorld/Strike/MapStrike.tscn" id="33_jgsy3"]
+
+[node name="Fleet" type="CharacterBody2D" node_paths=PackedStringArray("FleetInfo", "StrikeManager") groups=["Fleet", "UIFleetElements"]]
+script = ExtResource("1_muq10")
+FleetInfo = NodePath("FleetInfo")
+StrikeManager = NodePath("StrikeManager")
+IsSettlementFleet = true
+
+[node name="StrikeManager" type="Node" parent="." node_paths=PackedStringArray("TargetLine", "RangeCircle", "TargetRangeLabel")]
+script = ExtResource("31_wuchv")
+MissileScene = ExtResource("32_jrn81")
+StrikeScene = ExtResource("33_jgsy3")
+TargetLine = NodePath("TargetLine")
+RangeCircle = NodePath("RangeCircle")
+TargetRangeLabel = NodePath("ScreenSpaceNode/TargetRangeLabel")
+
+[node name="TargetLine" parent="StrikeManager" instance=ExtResource("13_yjtsr")]
+visible = false
+
+[node name="RangeCircle" parent="StrikeManager" instance=ExtResource("10_7illi")]
+visible = false
+
+[node name="ScreenSpaceNode" parent="StrikeManager" instance=ExtResource("12_au2fa")]
+
+[node name="TargetRangeLabel" type="Label" parent="StrikeManager/ScreenSpaceNode"]
+offset_left = -24.0
+offset_top = -8.0
+offset_right = 24.0
+offset_bottom = 8.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FleetInfo" type="Node" parent="."]
+script = ExtResource("8_ocxoh")

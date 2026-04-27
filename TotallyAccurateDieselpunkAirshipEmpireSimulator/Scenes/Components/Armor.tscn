@@ -1,0 +1,120 @@
+[gd_scene load_steps=12 format=3 uid="uid://b5sn32ys36xcs"]
+
+[ext_resource type="Script" uid="uid://caplf28jc6o7v" path="res://Scenes/Components/Component.cs" id="1_pxn1m"]
+[ext_resource type="Material" uid="uid://cwduynb7wu5vt" path="res://Scenes/Components/Helpers/StructureMat.tres" id="2_bu51e"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="3_1vjf4"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="4_bu51e"]
+[ext_resource type="Script" uid="uid://2qlekbb74hgr" path="res://Scenes/Components/ComponentScripts/StructureComponent.cs" id="5_1vjf4"]
+[ext_resource type="PackedScene" uid="uid://7u8uab7xgnbc" path="res://Resources/ComponentMeshes/ArmorBlock.glb" id="6_jauyu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pxn1m"]
+size = Vector3(0.97699094, 0.9728418, 0.4368335)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favpo"]
+atlas = ExtResource("3_1vjf4")
+region = Rect2(0, 0, 92, 92)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ihkkn"]
+size = Vector3(0.91098785, 1.1352806, 0.40755153)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jauyu"]
+size = Vector3(0.86118317, 0.92274284, 0.6655531)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6q3qa"]
+size = Vector3(1.1435609, 0.92274284, 0.4233656)
+
+[node name="Armor" type="Node3D" node_paths=PackedStringArray("CollisionDetector", "ConnectionDetector", "Outline", "Data")]
+script = ExtResource("1_pxn1m")
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+
+[node name="ArmorBlock" parent="." instance=ExtResource("6_jauyu")]
+transform = Transform3D(0.155, 0, 0, 0, 0.155, 0, 0, 0, 0.155, 0, -0.4781828, -0.48983073)
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="CollisionDetector"]
+transform = Transform3D(0.94, 0, 0, 0, 0.94, 0, 0, 0, 0.94, -0.0030700178, -0.0005461925, -0.24704757)
+shape = SubResource("BoxShape3D_pxn1m")
+
+[node name="Surfaces" type="Node3D" parent="."]
+visible = false
+
+[node name="Z+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0)
+material_override = ExtResource("2_bu51e")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_bu51e")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0, 0.5, -0.25033048)
+material_override = ExtResource("2_bu51e")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(-1.1, 1.6609539e-07, 0, -1.6609539e-07, -1.1, 0, 0, 0, 0.5, 0, -0.5, -0.25033048)
+material_override = ExtResource("2_bu51e")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0.5, 0, -0.25033048)
+material_override = ExtResource("2_bu51e")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, -0.5, 0, -0.25033048)
+material_override = ExtResource("2_bu51e")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Outline" parent="." instance=ExtResource("4_bu51e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, -0.25)
+visible = false
+
+[node name="ComponentData" type="Node" parent="."]
+script = ExtResource("5_1vjf4")
+Label = "Armor"
+Health = 1000
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0221138, 0.005537033, -0.2509128)
+shape = SubResource("BoxShape3D_ihkkn")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0027885437, 0.013417244, -0.2372613)
+shape = SubResource("BoxShape3D_jauyu")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005418062, 0.013417244, -0.25864267)
+shape = SubResource("BoxShape3D_6q3qa")

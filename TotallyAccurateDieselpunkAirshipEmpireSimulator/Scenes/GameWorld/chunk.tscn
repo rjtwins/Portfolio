@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://oqe3t8qxq6rl"]
+
+[ext_resource type="Material" uid="uid://5hblsghglnb4" path="res://Scenes/GameWorld/GameWorldTest.tres" id="1_05me3"]
+[ext_resource type="Script" uid="uid://g7bux0dhm2ir" path="res://Scenes/GameWorld/Chunk.cs" id="1_rlq5b"]
+
+[node name="Chunk" type="MeshInstance3D"]
+material_overlay = ExtResource("1_05me3")
+lod_bias = 128.0
+script = ExtResource("1_rlq5b")
+chunk_lods = PackedInt32Array(2, 5, 8, 10, 20, 50)
+LOD_distances = PackedInt32Array(7000, 6000, 5000, 4000, 3000, 2000)

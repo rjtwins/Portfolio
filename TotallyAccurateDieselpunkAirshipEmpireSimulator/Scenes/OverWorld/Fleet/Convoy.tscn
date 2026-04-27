@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://efd3cghuwm3a"]
+
+[ext_resource type="PackedScene" uid="uid://dri03ny3fx5ny" path="res://Scenes/OverWorld/Fleet/Fleet.tscn" id="1_4t0rg"]
+[ext_resource type="Script" path="res://Scenes/OverWorld/Fleet/Convoy.cs" id="1_s3gcr"]
+
+[node name="Convoy" type="Node2D"]
+script = ExtResource("1_s3gcr")
+
+[node name="Fleet" parent="." instance=ExtResource("1_4t0rg")]

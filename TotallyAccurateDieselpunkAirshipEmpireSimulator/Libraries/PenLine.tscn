@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://diwi27lx1cran"]
+
+[ext_resource type="Script" path="res://Libraries/PenLine.cs" id="1_7ttny"]
+[ext_resource type="PackedScene" uid="uid://bloowtf4lev7j" path="res://Libraries/CircleLine2D.tscn" id="2_c527l"]
+[ext_resource type="PackedScene" uid="uid://mcff0ufvimb8" path="res://Libraries/ScreenSpaceNode.tscn" id="3_vq0ag"]
+
+[node name="PenLine" type="Line2D" node_paths=PackedStringArray("StartCircle", "EndCircle", "DistanceLabel", "LabelParent", "MouseDetector")]
+width = 2.0
+script = ExtResource("1_7ttny")
+StartCircle = NodePath("StartCircle")
+EndCircle = NodePath("EndCircle")
+DistanceLabel = NodePath("ScreenSpaceNode/Label")
+LabelParent = NodePath("ScreenSpaceNode")
+MouseDetector = NodePath("Area2D")
+ScreenWidth = 1
+
+[node name="StartCircle" parent="." instance=ExtResource("2_c527l")]
+position = Vector2(0, 0)
+Radius = 5.0
+ScreenWidth = 1
+MaintainSize = true
+WorldRadius = 5.0
+
+[node name="EndCircle" parent="." instance=ExtResource("2_c527l")]
+position = Vector2(0, 0)
+Radius = 5.0
+ScreenWidth = 1
+MaintainSize = true
+WorldRadius = 5.0
+
+[node name="ScreenSpaceNode" parent="." instance=ExtResource("3_vq0ag")]
+
+[node name="Label" type="Label" parent="ScreenSpaceNode"]
+offset_left = -62.0
+offset_top = 5.0
+offset_right = 62.0
+offset_bottom = 19.0
+text = "0 Km"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 1536
+collision_mask = 1536

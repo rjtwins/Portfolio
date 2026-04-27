@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://biyyl6xtsa8sp"]
+
+[ext_resource type="Script" uid="uid://7a2flhqpb7mt" path="res://terrain_chunk.gd" id="1_1p1i2"]
+[ext_resource type="Material" uid="uid://5hblsghglnb4" path="res://Scenes/GameWorld/GameWorldTest.tres" id="1_f03w5"]
+
+[node name="TerrainChunk" type="MeshInstance3D"]
+material_override = ExtResource("1_f03w5")
+cast_shadow = 0
+lod_bias = 128.0
+ignore_occlusion_culling = true
+gi_mode = 0
+script = ExtResource("1_1p1i2")
+resolution = 5
+chunk_lods = Array[int]([5, 5, 5, 5, 5, 25])
+LOD_distances = Array[int]([100000, 50000, 40000, 30000, 20000, 10000])

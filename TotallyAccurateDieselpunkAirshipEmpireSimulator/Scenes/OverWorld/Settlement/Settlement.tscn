@@ -1,0 +1,153 @@
+[gd_scene load_steps=12 format=3 uid="uid://dmua4t0ctdx3w"]
+
+[ext_resource type="Script" uid="uid://cyijx142ueeo1" path="res://Scenes/OverWorld/Settlement/Settlement.cs" id="1_i2ji1"]
+[ext_resource type="PackedScene" uid="uid://bloowtf4lev7j" path="res://Libraries/CircleLine2D.tscn" id="2_igbwa"]
+[ext_resource type="PackedScene" uid="uid://csynecx3e2vjl" path="res://Libraries/Selectable.tscn" id="3_an56y"]
+[ext_resource type="Script" uid="uid://cj5vykaaq1roq" path="res://Scenes/OverWorld/ScreenCollisionShape2D.cs" id="4_t0bg8"]
+[ext_resource type="PackedScene" uid="uid://mcff0ufvimb8" path="res://Libraries/ScreenSpaceNode.tscn" id="5_nunw6"]
+[ext_resource type="FontFile" uid="uid://bdjofhoc354cb" path="res://Resources/Fonts/dogicapixel.otf" id="6_x7dxn"]
+[ext_resource type="Script" uid="uid://cwd05sns538x8" path="res://Scenes/OverWorld/Settlement/EconInfo.cs" id="7_pnqcl"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rx3dt"]
+radius = 30.0
+height = 80.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4gner"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1yj75"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kmx2m"]
+font = ExtResource("6_x7dxn")
+
+[node name="SettlementRoot" type="Node2D" node_paths=PackedStringArray("NameLabel", "UpdateTimer", "EconInfo", "MapCircle", "MouseDetector", "Selectable", "DetectionArea") groups=["Settlements"]]
+script = ExtResource("1_i2ji1")
+NameLabel = NodePath("ScreenSpaceNode/Label")
+UpdateTimer = NodePath("Timer")
+EconInfo = NodePath("EconInfo")
+MapCircle = NodePath("MapCircle")
+MouseDetector = NodePath("MouseDetector")
+PlayerColor = Color(1, 1, 1, 1)
+AIColor = Color(1, 1, 1, 1)
+Selectable = NodePath("Selectable")
+DetectionArea = NodePath("DetectionArea")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0, -11)
+shape = SubResource("CapsuleShape2D_rx3dt")
+
+[node name="MapCircle" parent="." instance=ExtResource("2_igbwa")]
+texture_filter = 6
+material = SubResource("CanvasItemMaterial_4gner")
+Segments = 100
+Radius = 200.0
+ScreenWidth = 1
+WorldRadius = 200.0
+
+[node name="Selectable" parent="." instance=ExtResource("3_an56y")]
+
+[node name="MouseDetector" type="Area2D" parent="."]
+
+[node name="ScreenCollisionShape2D" type="CollisionShape2D" parent="MouseDetector"]
+shape = SubResource("CircleShape2D_1yj75")
+debug_color = Color(0.958358, 0, 0.527578, 0.42)
+script = ExtResource("4_t0bg8")
+
+[node name="ScreenSpaceNode" parent="." instance=ExtResource("5_nunw6")]
+
+[node name="Label" type="Label" parent="ScreenSpaceNode"]
+offset_left = -165.0
+offset_top = -41.0
+offset_right = 165.0
+offset_bottom = -19.0
+text = "Settlement Name"
+label_settings = SubResource("LabelSettings_kmx2m")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="EconInfo" type="HBoxContainer" parent="." node_paths=PackedStringArray("UpdateTimer", "Funds", "Metals", "Volatiles", "Munitions", "Manpower")]
+offset_left = -623.0
+offset_top = 190.0
+offset_right = -397.0
+offset_bottom = 276.0
+scale = Vector2(5, 5)
+script = ExtResource("7_pnqcl")
+UpdateTimer = NodePath("../Timer")
+Funds = NodePath("VBoxContainer2/FundP")
+Metals = NodePath("VBoxContainer2/MetalsP")
+Volatiles = NodePath("VBoxContainer2/VolatilesP")
+Munitions = NodePath("VBoxContainer2/MunitionsP")
+Manpower = NodePath("VBoxContainer2/ManpowerP")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EconInfo"]
+layout_mode = 2
+
+[node name="Tax" type="Label" parent="EconInfo/VBoxContainer"]
+layout_mode = 2
+text = "Tax:"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="Manpower" type="Label" parent="EconInfo/VBoxContainer"]
+layout_mode = 2
+text = "Manpower:"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="Metals" type="Label" parent="EconInfo/VBoxContainer"]
+layout_mode = 2
+text = "Metals:"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="Volatiles" type="Label" parent="EconInfo/VBoxContainer"]
+layout_mode = 2
+text = "Oil:"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="Munitions" type="Label" parent="EconInfo/VBoxContainer"]
+layout_mode = 2
+text = "Munitions:"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="EconInfo"]
+layout_mode = 2
+
+[node name="FundP" type="Label" parent="EconInfo/VBoxContainer2"]
+layout_mode = 2
+text = "1234567"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="ManpowerP" type="Label" parent="EconInfo/VBoxContainer2"]
+layout_mode = 2
+text = "1234567"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="MetalsP" type="Label" parent="EconInfo/VBoxContainer2"]
+layout_mode = 2
+text = "1234567"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="VolatilesP" type="Label" parent="EconInfo/VBoxContainer2"]
+layout_mode = 2
+text = "1234567"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[node name="MunitionsP" type="Label" parent="EconInfo/VBoxContainer2"]
+layout_mode = 2
+text = "1234567"
+label_settings = SubResource("LabelSettings_kmx2m")
+vertical_alignment = 1
+
+[connection signal="input_event" from="MouseDetector" to="Selectable" method="_on_mouse_detector_input_event"]

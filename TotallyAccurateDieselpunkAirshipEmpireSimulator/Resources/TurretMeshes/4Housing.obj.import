@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://vcrpqydd6stx"
+path="res://.godot/imported/4Housing.obj-a398e2642bd29352ddc19b31d6cd215d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/4Housing.obj-a398e2642bd29352ddc19b31d6cd215d.mesh"]
+
+source_file="res://Resources/TurretMeshes/4Housing.obj"
+dest_files=["res://.godot/imported/4Housing.obj-a398e2642bd29352ddc19b31d6cd215d.mesh", "res://.godot/imported/4Housing.obj-a398e2642bd29352ddc19b31d6cd215d.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

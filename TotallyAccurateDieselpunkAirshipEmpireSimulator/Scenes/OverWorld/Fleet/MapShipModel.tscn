@@ -1,0 +1,149 @@
+[gd_scene load_steps=19 format=3 uid="uid://br2uqpe8nn43s"]
+
+[ext_resource type="Script" uid="uid://bq4qcttlkat4h" path="res://Scenes/OverWorld/Fleet/MapShipModel.cs" id="1_4axjc"]
+[ext_resource type="Texture2D" uid="uid://cwlsla6ogidmu" path="res://Resources/FX/4bitSmoke.png" id="2_sv2vh"]
+[ext_resource type="Script" uid="uid://2byostxyvrlc" path="res://Scenes/OverWorld/Fleet/ConTrail.cs" id="3_2f0w6"]
+[ext_resource type="Texture2D" uid="uid://day30cywl5lbw" path="res://Resources/FX/Bullet_01.png" id="4_6l5je"]
+[ext_resource type="Script" uid="uid://ci68fggmhixdy" path="res://Scenes/OverWorld/Fleet/GPUParticlesTrail.cs" id="4_150d1"]
+[ext_resource type="Texture2D" uid="uid://dwra5hj04h0by" path="res://Resources/FX/NicePng_spotlight-transparent-png_630613.png" id="5_542oy"]
+[ext_resource type="Script" uid="uid://dowy3otdrhf32" path="res://Scenes/OverWorld/Fleet/Shadow.cs" id="5_k1ia5"]
+[ext_resource type="Script" uid="uid://bagk6jxomqrj0" path="res://Scenes/OverWorld/Fleet/MapShipModelSpotlight.cs" id="8_xywac"]
+
+[sub_resource type="Curve" id="Curve_150d1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.50000006, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_542oy"]
+curve = SubResource("Curve_150d1")
+
+[sub_resource type="Curve" id="Curve_xywac"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5076453, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_dhqbf"]
+curve = SubResource("Curve_xywac")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tfyrj"]
+emission_shape_offset = Vector3(0, 0.99, 0)
+emission_shape_scale = Vector3(1.64, 1, 0)
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = -720.0
+angle_max = 720.0
+inherit_velocity_ratio = 0.1
+direction = Vector3(0, 0, 0)
+spread = 0.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_dhqbf")
+alpha_curve = SubResource("CurveTexture_542oy")
+turbulence_enabled = true
+turbulence_noise_strength = 2.0
+turbulence_noise_scale = 1.0
+
+[sub_resource type="Curve" id="Curve_542oy"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.50416666, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_xywac"]
+offsets = PackedFloat32Array(0.018691588, 0.7943925, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="Curve" id="Curve_jakfy"]
+_data = [Vector2(0, 0.451807), 0.0, 0.0, 0, 0, Vector2(1e-05, 0), 0.0, 0.0, 0, 0, Vector2(0.17708333, 0.17195523), 3.555468, 3.555468, 0, 0, Vector2(0.19270833, 0.33574432), 0.0, 0.0, 0, 0, Vector2(0.2604167, 0.25991607), 0.0, 0.0, 0, 0, Vector2(0.28515628, 0.4388708), -3.1922014, -3.1922014, 0, 0, Vector2(0.35677084, 0.28721422), 0.24097633, 0.24097633, 0, 0, Vector2(0.37109378, 0.4419039), 2.0382633, 2.0382633, 0, 0, Vector2(0.44531253, 0.3448437), 0.0, 0.0, 0, 0, Vector2(0.46744794, 0.5055996), 0.0, 0.0, 0, 0, Vector2(0.52734375, 0.5055996), 0.0, 0.0, 0, 0, Vector2(1, 0.256024), 0.0, 0.0, 0, 0]
+point_count = 12
+
+[sub_resource type="Gradient" id="Gradient_tvqw6"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.378319, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.556863, 1, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_wsrib"]
+_data = [Vector2(0, 0.702857), 0.0, 0.0, 0, 0, Vector2(1, 0.1225), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="MapShipModel" type="Node2D" node_paths=PackedStringArray("Shadow", "Glow")]
+script = ExtResource("1_4axjc")
+Shadow = NodePath("Shadow")
+Glow = NodePath("EngineGlow")
+
+[node name="Trail" type="GPUParticles2D" parent="."]
+visible = false
+amount = 10000
+lifetime = 20.0
+interpolate = false
+fract_delta = false
+collision_base_size = 0.0
+visibility_rect = Rect2(-250000, -250000, 250000, 250000)
+draw_order = 0
+process_material = SubResource("ParticleProcessMaterial_tfyrj")
+script = ExtResource("4_150d1")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+visible = false
+position = Vector2(0, 1)
+amount = 10000
+lifetime = 20.0
+emission_shape = 1
+emission_sphere_radius = 1.98
+gravity = Vector2(0, 0)
+scale_amount_curve = SubResource("Curve_542oy")
+color_ramp = SubResource("Gradient_xywac")
+
+[node name="ConTrail" type="Line2D" parent="." node_paths=PackedStringArray("ShipModel")]
+texture_repeat = 2
+position = Vector2(1, -10)
+points = PackedVector2Array(-1, 10)
+width_curve = SubResource("Curve_jakfy")
+gradient = SubResource("Gradient_tvqw6")
+texture = ExtResource("2_sv2vh")
+texture_mode = 1
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+script = ExtResource("3_2f0w6")
+MaxPoints = 1000000
+MaxLength = 1000
+ShipModel = NodePath("..")
+
+[node name="EngineGlow" type="Line2D" parent="."]
+rotation = -1.5707964
+points = PackedVector2Array(-1, 0, -3, 0)
+width = 1.0
+width_curve = SubResource("Curve_wsrib")
+default_color = Color(1, 0.678431, 0, 0)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
+round_precision = 10
+antialiased = true
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 0.705882)
+z_index = -2
+z_as_relative = false
+position = Vector2(-4.76837e-07, 4.76837e-07)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_6l5je")
+offset = Vector2(-60, 60)
+script = ExtResource("5_k1ia5")
+
+[node name="Spotlight" type="PointLight2D" parent="."]
+position = Vector2(1, -44)
+rotation = 3.1415927
+scale = Vector2(-0.035, 0.145)
+color = Color(1, 0.7547807, 0, 1)
+energy = 1.5
+range_z_min = -10
+range_layer_min = -10
+range_layer_max = -1
+texture = ExtResource("5_542oy")
+script = ExtResource("8_xywac")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5707964
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_6l5je")

@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cwduynb7wu5vt"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jwvae"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.s3tc.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3vm6"]
+atlas = SubResource("CompressedTexture2D_jwvae")
+region = Rect2(0, 0, 92, 92)
+
+[resource]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("AtlasTexture_d3vm6")

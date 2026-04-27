@@ -1,0 +1,88 @@
+[gd_resource type="VisualShader" load_steps=9 format=3 uid="uid://ca8rdm17six6t"]
+
+[ext_resource type="Texture2D" uid="uid://csgiu0peknorx" path="res://Resources/Stolen/HFDesert2.png" id="1_klxb6"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_f5vo8"]
+parameter_name = "Texture_1"
+texture_repeat = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_cubqa"]
+source = 5
+
+[sub_resource type="VisualShaderNodeUVFunc" id="VisualShaderNodeUVFunc_j5107"]
+default_input_values = [1, Vector2(2, 2), 2, Vector2(0, 0)]
+function = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_fqwv6"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_t5kd7"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_dugqc"]
+parameter_name = "light_intensity"
+hint = 1
+default_value_enabled = true
+default_value = 1.0
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_7sqpy"]
+texture = ExtResource("1_klxb6")
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D Texture_1 : repeat_enable;
+uniform float light_intensity : hint_range(0.0, 1.0) = 1.0;
+
+
+
+void fragment() {
+// Input:5
+	vec2 n_out5p0 = UV;
+
+
+// UVFunc:4
+	vec2 n_in4p1 = vec2(2.00000, 2.00000);
+	vec2 n_in4p2 = vec2(0.00000, 0.00000);
+	vec2 n_out4p0 = (n_out5p0 - n_in4p2) * n_in4p1 + n_in4p2;
+
+
+	vec4 n_out3p0;
+// Texture2D:3
+	n_out3p0 = texture(Texture_1, n_out4p0);
+
+
+// FloatParameter:7
+	float n_out7p0 = light_intensity;
+
+
+// VectorOp:6
+	vec3 n_out6p0 = vec3(n_out3p0.xyz) * vec3(n_out7p0);
+
+
+// Output:0
+	COLOR.rgb = n_out6p0;
+
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/vertex/0/position = Vector2(460, 40)
+nodes/fragment/0/position = Vector2(1580, 120)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_f5vo8")
+nodes/fragment/2/position = Vector2(400, -280)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_cubqa")
+nodes/fragment/3/position = Vector2(1100, 80)
+nodes/fragment/4/node = SubResource("VisualShaderNodeUVFunc_j5107")
+nodes/fragment/4/position = Vector2(800, 80)
+nodes/fragment/5/node = SubResource("VisualShaderNodeInput_fqwv6")
+nodes/fragment/5/position = Vector2(400, 100)
+nodes/fragment/6/node = SubResource("VisualShaderNodeVectorOp_t5kd7")
+nodes/fragment/6/position = Vector2(1340, 40)
+nodes/fragment/7/node = SubResource("VisualShaderNodeFloatParameter_dugqc")
+nodes/fragment/7/position = Vector2(400, 280)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 5, 0, 4, 0, 4, 0, 3, 0, 3, 0, 6, 0, 6, 0, 0, 0, 7, 0, 6, 1)
+nodes/sky/2/node = SubResource("VisualShaderNodeTexture_7sqpy")
+nodes/sky/2/position = Vector2(80, 20)

@@ -1,0 +1,121 @@
+[gd_scene load_steps=13 format=3 uid="uid://b6ruy5sfg2kjy"]
+
+[ext_resource type="Script" uid="uid://caplf28jc6o7v" path="res://Scenes/Components/Component.cs" id="1_5y3bb"]
+[ext_resource type="Material" uid="uid://cwduynb7wu5vt" path="res://Scenes/Components/Helpers/StructureMat.tres" id="2_l7m2l"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="3_mjaho"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="4_wla30"]
+[ext_resource type="Script" uid="uid://b4mmvkkpi52yu" path="res://Scenes/Components/TacMissileComponent.cs" id="5_5y3bb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gt8gh"]
+size = Vector3(0.8, 0.8, 0.8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favpo"]
+atlas = ExtResource("3_mjaho")
+region = Rect2(0, 0, 92, 92)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_usggc"]
+size = Vector3(0.91098785, 1.1352806, 0.9283843)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xpdpg"]
+size = Vector3(0.86118317, 0.92274284, 1.1457138)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_panoy"]
+size = Vector3(1.1435609, 0.92274284, 0.9219265)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usggc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_usggc"]
+material = SubResource("StandardMaterial3D_usggc")
+size = Vector3(0.99, 0.99, 0.99)
+
+[node name="TacMissile" type="Node3D" node_paths=PackedStringArray("CollisionDetector", "ConnectionDetector", "Outline", "Data")]
+script = ExtResource("1_5y3bb")
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="CollisionDetector"]
+shape = SubResource("BoxShape3D_gt8gh")
+
+[node name="Surfaces" type="Node3D" parent="."]
+
+[node name="Z+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0.5)
+material_override = ExtResource("2_l7m2l")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_l7m2l")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0.5, 0)
+material_override = ExtResource("2_l7m2l")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(-1.1, 9.616505e-08, 0, -9.616505e-08, -1.1, 0, 0, 0, 1.1, 0, -0.5, 0)
+material_override = ExtResource("2_l7m2l")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0.5, 0, 0)
+material_override = ExtResource("2_l7m2l")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -0.5, 0, 0)
+material_override = ExtResource("2_l7m2l")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Outline" parent="." instance=ExtResource("4_wla30")]
+visible = false
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0221138, 0.005537033, 0.009503603)
+shape = SubResource("BoxShape3D_usggc")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0027885437, 0.013417244, 0.0028190613)
+shape = SubResource("BoxShape3D_xpdpg")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005418062, 0.013417244, -0.009362221)
+shape = SubResource("BoxShape3D_panoy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_usggc")
+
+[node name="ComponentData" type="Node" parent="."]
+script = ExtResource("5_5y3bb")
+MissileCapacity = 5.0
+Label = "Missile Launcher"
