@@ -1,0 +1,1099 @@
+{ Analytica Model BIZ_Business_Travel, encoding="UTF-8" }
+SoftwareVersion 6.4.0
+
+{!-60000|Attribute AcpStyles}
+Attribute ExternalType
+Title: ExternalType
+
+
+AskAttribute ExternalType,Function,Yes
+AskAttribute ExternalType,Module,Yes
+AskAttribute ExternalType,Variable,Yes
+
+LinkModule BIZ_Business_Travel
+Title: BIZ~
+Business Travel
+Author: Jac Goorden~
+Simbon
+Date: Tue, Jun 6, 2023 4:41 pm
+NodeSize: 64,32
+DiagState: 2,0,12,1851,596,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule BIZ_Business_Travel,2,2,0,0,Modules\BIZ Business TravelV2.ana
+
+Text Te1651670803
+Title: BIZ v1 Business Travel CO2 impact submodel (FTE Based Version)
+NodeLocation: 444,28,-1
+NodeSize: 436,20
+
+Alias Al1920688531
+Title: Number of FTEs
+NodeLocation: 320,408,1
+NodeSize: 64,24
+NodeColor: 52428,65535,62451
+Original: Number_of_FTEs
+
+Text Te1996972435
+Title: Air Travel - km
+NodeLocation: 1196,204,-3
+NodeSize: 196,140
+
+Text Te1908892051
+Title: Hotel Stays - Budget
+NodeLocation: 400,604,-1
+NodeSize: 184,140
+
+Variable CO2e_per_Year_per_Fl
+Title: CO2e per Year per Flight Type
+Units: kgCO2e/year
+Description: Emissions per year per LOG Type per flight type.
+Definition: CO2e_per_Flight_per_ * Flight_km_per_Year_p
+NodeLocation: 1536,288,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,100,106,1615,529,1,MIDM
+GraphSetup: Att_Stacked_Lines Graph_Primary_Valdim:1~
+Att_AreaFill Graph_Primary_Valdim:1
+Att__TotalsIndex: []
+Att_ResultSliceState: [Flight_Type,1,Flight_Class,3,Biz_Ext_Scenario,1,Time,1]
+
+Index Flight_Type
+Att_PrevIndexValue: ['Continental','Domestic','Intercontinental']
+Title: Flight Type
+Description: Type of flight (distance)
+Definition: ['Continental','Domestic','Intercontinental']
+NodeLocation: 2120,144,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize: 227,64}
+
+Variable CO2e_per_Flight_per_
+Title: CO2e per Flight per Seat per km
+Units: kgCO2e/seat/km
+Description: CO2e per flight per year per km
+Definition: Baseline_CO2e_per_Fl * (1 - SAF_Emission_Reducti * SAF_Use_ratio_per_Ye)
+NodeLocation: 1536,136,1
+NodeSize: 72,24
+WindState: 2,0,0,720,350
+DefnState: 2,572,221,646,285,0,DFNM
+ValueState: 2,100,106,960,301,,MIDM
+ReformVal: [Time,Flight_Type]
+Att_ResultSliceState: [Flight_Class,4,Biz_Ext_Scenario,2,Flight_Type,1,Time,1]
+
+Index Flight_Class
+Att_PrevIndexValue: ['Business','Coach','First','Premium']
+Title: Flight Class
+Description: Class of the flight.
+Definition: ['Business','Coach','First','Premium']
+NodeLocation: 2120,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 247,48}
+
+Variable SAF_Use_ratio_per_Ye
+Title: SAF Use ratio per Year
+Units: %
+Description: Percentage of fuel that is SAF
+Definition: IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Extra SAF Use']~
+	THEN SAF_ratio_Increasing~
+ELSE IF BIZ_Ext_Scenario_Com[BIZ_Interventions='SAF Use'] ~
+	THEN SAF_Base~
+ELSE 0
+NodeLocation: 1904,136,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,212,218,1640,298,,MIDM
+{!50000|Att_ColumnWidths: [,Time,\([66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66])]}
+
+Variable Flight_Class_ratio_p
+Title: Flight Class ratio per Year
+Units: %
+Description: Percentage of flight class (econ/bus).
+Definition: IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Economy Class Focus']~
+	THEN Flight_Class_ratio_I~
+ELSE Base_Flight_Class_Ra
+NodeLocation: 1904,288,1
+NodeSize: 64,24
+DefnState: 2,148,154,957,458,0,DFNM
+ValueState: 2,340,346,1421,253,,MIDM
+Att__TotalsIndex: []
+Att_ResultSliceState: [Flight_Class,1,Biz_Ext_Scenario,1,Time,1]
+
+Text Te358572435
+Title: Air Travel - CO2e
+NodeLocation: 1716,204,-1
+NodeSize: 308,140
+
+Index Airplane_Type1
+Att_PrevIndexValue: ['Wide Body','Narrow Body']
+Title: Airplane Type
+Description: Type of airplane (not used).
+Definition: ['Wide Body','Narrow Body']
+NodeLocation: 2120,216,1
+NodeSize: 64,24
+MetaOnly: 0
+{!60005|Att_AttsToShow: Object Attribute, Attribute ProbValue, Attribute Check, Attribute BalloonHelp, Attribute Att_AxisOrKeyTitle, Attribute CachingMethod, Attribute AcpStyles, Attribute CellFormatExpression, Attribute OnGraphDraw}
+
+Variable Total_CO2e_per_Year
+Title: Total CO2e per Year
+Units: KtCo2e/Year
+Description: Total CO2e per year.
+Definition: Sum(CO2e_per_Year_per_Fl, Flight_Type, Flight_Class) / 1000000
+NodeLocation: 1720,288,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,276,282,759,449,1,MIDM
+
+Text Te310436243
+Title: Hotel Stays - CO2e
+NodeLocation: 1028,604,-1
+NodeSize: 196,140
+
+Variable CO2e_Hotel_Stays
+Title: CO2e Hotel Stays
+Units: KtCO2e/Year
+Description: Total CO2e per year.
+Definition: sum(Hotel_Stays_per_Yea1 * CO2e_per_Stay_per_Lo, Biz_Location) / 1000000
+NodeLocation: 928,696,1
+NodeSize: 64,24
+ValueState: 2,356,362,903,394,0,MIDM
+
+Variable Green_Hotel_ratio_pe
+Title: Green Hotel ratio per Year
+Units: %
+Description: Ratio of stays that are in green hotels.
+Definition: IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Green Hotel Use Increase']~
+	THEN Green_Hotel_ratio_in~
+ELSE IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Green Hotel Use'] ~
+	THEN Green_Hotel_Base~
+ELSE 0
+NodeLocation: 1104,544,1
+NodeSize: 64,24
+DefnState: 2,308,314,768,456,0,DFNM
+ValueState: 2,244,250,1195,441,,MIDM
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,,0
+
+Constant Baseline_CO2e_per_Ni
+Title: Baseline CO2e per Night per Location
+Units: kgCO2e/Night
+Description: Basline (2019) CO2 emission factors per location.
+Definition: Table(Biz_Location)(50,43,13.4,15.2,13,17.4,61.1,37.6,62.3,70.6,16.7,11.5,35.2,60.6,11.8,7.3,73,18.6,46.9,75.6,72.5,27.1,61.3,22.9,56,74.9,69.3,161.6,25.3,22.7,12.8,92.6,27.2,65.7,40.9,30.1,117.9,30.5,34.6,125.9,38.2,64.5,64,20.6,6.6,86.8,55.6,37.3,98.7,15.7,21.7,58.7,0,0)
+NodeLocation: 1104,624,1
+NodeSize: 64,32
+DefnState: 2,276,282,675,303,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Module BIZ_Intervention_Det
+Title: BIZ Intervention Details
+Author: jorre Vedder~
+Bicore Services
+Date: Mon, Jul 17, 2023 7:41 pm
+NodeLocation: 1360,544,1
+NodeSize: 80,40
+DiagState: 2,-47,569,1880,557,17,10
+WindState: 2,0,0,720,350
+
+Index BIZ_Interventions
+Att_PrevIndexValue: ['SAF Use','Extra SAF Use','Economy Class Focus','Reduce Budget 30%','Reduce Budget 40%','Green Hotel Use','Green Hotel Use Increase','Efficient Airplane Type Focus']
+Title: BIZ Interventions
+Definition: ['SAF Use','Extra SAF Use','Economy Class Focus','Reduce Budget 30%','Reduce Budget 40%','Green Hotel Use','Green Hotel Use Increase','Efficient Airplane Type Focus']
+IndexVals: ['item 1']
+NodeLocation: 104,328,1
+NodeSize: 64,24
+WindState: 2,217,141,1005,536
+ValueState: 2,40,50,400,300,0,MIDM
+
+Index Biz_Ext_Scenario
+Title: BIZ Ext Scenario
+Definition: Concat(BIZ_Interventions, Scenario)
+NodeLocation: 104,416,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 367,210}
+
+Variable BIZ_Scenario
+Title: BIZ Scenario
+Definition: Table(Scenario,BIZ_Interventions)(~
+Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),~
+Checkbox(0),Checkbox(0),Checkbox(1),Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),Checkbox(0),~
+Checkbox(1),Checkbox(0),Checkbox(1),Checkbox(1),Checkbox(0),Checkbox(1),Checkbox(0),Checkbox(1),~
+Checkbox(0),Checkbox(1),Checkbox(1),Checkbox(0),Checkbox(1),Checkbox(1),Checkbox(1),Checkbox(1))
+NodeLocation: 328,296,1
+NodeSize: 64,24
+WindState: 2,98,82,720,350
+ValueState: 2,443,371,1229,276,,MIDM
+Aliases: FormNode Fo1856309331
+
+Variable BIZ_Ext_Scenario_Com
+Title: BIZ Ext Scenario Composition
+Definition: IF @Biz_Ext_Scenario<=Size(BIZ_Interventions) ~
+	THEN IF Time >= Effect_Start1 THEN Biz_Ext_Scenario=BIZ_Interventions ELSE 0~
+ELSE BIZ_Scenario[Scenario=Biz_Ext_Scenario]
+NodeLocation: 328,376,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,84,90,1690,333,,MIDM
+ReformVal: [BIZ_Interventions,Biz_Ext_Scenario]
+Att_ResultSliceState: [Time,8,Biz_Ext_Scenario,1,BIZ_Interventions,1]
+
+Text Te169927059
+Title: Scenario Logic
+NodeLocation: 216,376,-1
+NodeSize: 208,112
+
+Text Te1243668883
+Title: Green Hotel Stays
+NodeLocation: 216,620,-1
+NodeSize: 208,124
+
+Alias Al1956700563
+Title: Green Hotel ratio
+NodeLocation: 328,584,1
+NodeSize: 64,24
+Original: Green_Hotel_ratio_pe
+
+Alias Al1168171411
+Title: Fight Class ratio
+NodeLocation: 536,416,1
+NodeSize: 64,24
+NodeColor: 19532,48316,65535
+Original: Fight_Class_ratio_pe
+
+Alias Al228647315
+Title: SAF Use ratio per Year
+NodeLocation: 536,584,1
+NodeSize: 64,24
+NodeColor: 19532,48316,65535
+Original: SAF_Use_ratio_per_Ye
+
+Alias Al1281417619
+Title: Airplane Type ratio per Flight Type
+NodeLocation: 1312,200,1
+NodeSize: 80,32
+NodeColor: 19532,48316,65535
+Original: Airplane_Type_ratio_
+
+Variable Green_Hotel_ratio_in
+Title: Green Hotel ratio increasing
+Definition: Dynamic[Time](Green_Hotel_Base, Min([Green_Hotel_ratio_in[time-1] + Green_Hotel_stay_rat, 1]))
+NodeLocation: 104,584,1
+NodeSize: 64,24
+
+Variable Green_Hotel_Base
+Title: Green Hotel Base
+Definition: 0.1
+NodeLocation: 328,688,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable SAF_ratio_Increasing
+Title: SAF ratio increasing
+Definition: SAF_Base * Extra_SAF_usage
+NodeLocation: 736,680,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Text Te858055059
+Title: SAF Use
+NodeLocation: 632,620,-1
+NodeSize: 200,124
+
+Variable Base_Flight_Class_Ra
+Title: Base Flight Class ratio
+Definition: Table(Flight_Class)(0.7,0.3,0,0)
+NodeLocation: 536,328,1
+NodeSize: 64,24
+
+Variable Flight_Class_ratio_I
+Title: Flight Class ratio Increasing
+Definition: Dynamic[Time](Base_Flight_Class_Ra, ~
+	IF Flight_Class='Economy' ~
+		THEN Min([Flight_Class_ratio_I[time-1] + 0.01, 1])~
+	ELSE Max([Flight_Class_ratio_I[time-1] - 0.01, 0]))
+NodeLocation: 728,328,1
+NodeSize: 64,24
+ValueState: 2,404,410,1336,245,,MIDM
+NodeColor: 52428,65535,62451
+
+Variable Green_Hotel_stay_rat
+Title: Green Hotel stay ratio Yearly increase
+Description: How fast we increase the use of green hotel stays, in percentage per year.
+Definition: 0.050
+NodeLocation: 104,688,1
+NodeSize: 72,32
+Aliases: Alias Al899342739
+NodeColor: 52428,65535,62451
+ExternalType: Input
+
+Text Te1514856851
+Title: Notes:
+Description: ~
+Increasing ratios are set to go up by a fixed amount each year.~
+This can aso be done via interpolation where a goal for a target year is set.~
+And extrapolation where several goals are known and we project into the future.
+NodeLocation: 1020,124,-1
+NodeSize: 180,116
+
+Variable Extra_SAF_usage
+Title: Extra SAF usage
+Description: Percentage extra SAF usage.
+Definition: 1.25
+NodeLocation: 736,584,1
+NodeSize: 72,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1167778195
+NodeColor: 52428,65535,62451
+ExternalType: Input
+
+Text Te1415242131
+NodeLocation: 632,376,-1
+NodeSize: 200,112
+
+Text Te1048240531
+Title: Budget - Fligths
+NodeLocation: 216,132,-1
+NodeSize: 208,124
+
+Text Te66773395
+Title: Budget - Hotel Stays
+NodeLocation: 632,132,-1
+NodeSize: 200,124
+
+Alias Al181155219
+Title: Flight Budget per FTE
+NodeLocation: 96,72,1
+NodeSize: 64,24
+Original: Flight_Budget_per_FT
+
+Variable Flight_Budget_per_F1
+Title: Flight Budget per FTE mod. per Year
+Units: Euro
+Description: Flight budget per year modified by interventions.
+Definition: IF Time < 2022~
+	THEN Flight_Budget_per_FT~
+ELSE IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Reduce Budget 40%']~
+	THEN Flight_Budget_per_FT * 0.60~
+ELSE IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Reduce Budget 30%']~
+	THEN Flight_Budget_per_FT * 0.70~
+ELSE~
+	Flight_Budget_per_FT
+NodeLocation: 96,184,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al439104915
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+Alias Al388773267
+Title: Hotel Budget per FTE
+NodeLocation: 544,104,1
+NodeSize: 64,32
+Original: Hotel_Budget_per_FTE
+
+Variable Hotel_Budget_per_FT1
+Title: Hotel Budget per FTE mod. per Year
+Units: Euro
+Description: Budget for hotel says per year per FTE modified by interventions.
+Definition: IF Time < 2022~
+	THEN Hotel_Budget_per_FT2~
+ELSE IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Reduce Budget 40%']~
+	THEN Hotel_Budget_per_FT2 * 0.60~
+ELSE IF BIZ_Ext_Scenario_Com[BIZ_Interventions='Reduce Budget 30%']~
+	THEN Hotel_Budget_per_FT2 * 0.70~
+ELSE~
+	Hotel_Budget_per_FT2
+NodeLocation: 544,200,1
+NodeSize: 64,24
+Aliases: Alias Al1789670803
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+Alias Al1945033619
+Title: SAF Base
+NodeLocation: 536,680,1
+NodeSize: 64,24
+NodeColor: 52427,65535,62258
+Original: SAF_Base
+
+Variable Effect_Start1
+Title: Effect Start
+Definition: Table(BIZ_Interventions)(Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0),Choice(Time,1,0))
+NodeLocation: 328,456,1
+NodeSize: 64,24
+Aliases: FormNode Fo1051002963
+
+Close BIZ_Intervention_Det
+
+Variable SAF_Base
+Title: SAF Base
+Description: SAF Usage as per EU planning. 
+Definition: Table(Time)(0,3.3333333333329662m,6.666666666666821m,9.999999999999787m,0.013333333333333641,0.016666666666666607,0.019999999999999574,0.028000000000002245,0.036000000000001364,0.04400000000000048,0.0519999999999996,0.060000000000002274,0.09799999999999898,0.13599999999999568,0.1740000000000066,0.2120000000000033,0.25,0.2680000000000007,0.28600000000000136,0.30400000000000205,0.32200000000000273,0.3400000000000034)
+NodeLocation: 1536,544,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 52427,65535,62258
+ExternalType: Input
+
+Alias Al1167778195
+Title: SAF ratio Yearly increase
+NodeLocation: 1536,648,1
+NodeSize: 72,32
+NodeColor: 52428,65535,62451
+Original: Extra_SAF_usage
+
+Alias Al899342739
+Title: Green Hotel stay ratio Yearly increase
+NodeLocation: 1360,648,1
+NodeSize: 72,32
+NodeColor: 52428,65535,62451
+Original: Green_Hotel_stay_rat
+
+{!50500|ArrowClass Arrow259711379}
+{!50500|Att_HeadNode: Green_Hotel_ratio_pe}
+{!50500|Att_TailNode: BIZ_Intervention_Det}
+{!50500|Att_ArrowProperties: 0}
+
+Variable Flight_Budget_per_Ye
+Title: Flight Budget per Year
+Units: Euro
+Description: Total fight budget per year.
+Definition: Flight_Budget_per_F2 * Number_of_FTEs
+NodeLocation: 320,136,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+Variable Flight_Budget_per_FT
+Title: Flight Budget per FTE per Year
+Units: Euro
+Description: Fight budget per FTE per year.
+Definition: Dynamic[Time](Flight_Budget_per_Ye*1000000/Number_of_FTEs, Flight_Budget_per_FT[Time=Time-1] * Inflation)
+NodeLocation: 320,288,1
+NodeSize: 64,32
+NodeInfo: ,,,,,,,,,,,0
+ValueState: 2,40,50,473,369,0,MIDM
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+Variable Flight_km_per_FTE
+Title: Flight km per FTE
+Units: Euro
+Description: Flight km per FTE based on the budged and cost of flight.
+Definition: Flight_Budget_per_F1/Euro_Per_Flight_km_1
+NodeLocation: 1096,136,1
+NodeSize: 64,24
+ValueState: 2,260,266,566,348,,MIDM
+{!50000|Att_RowHeights: [,Biz_Ext_Scenario,\([27])]}
+
+Index Biz_Type
+Att_PrevIndexValue: ['Hotel','Flight']
+Title: Biz Type
+Description: Type of activity, flight or hotel stay.
+Definition: ['Hotel','Flight']
+NodeLocation: 2288,144,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Variable Hotel_Stays_per_FTE1
+Title: Hotel Stays per FTE
+Description: Number of hotel stays per year per FTE.
+Definition: (Hotel_Budget_per_FT1/Euro_per_Hotel_stay)
+NodeLocation: 720,696,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+Att__TotalsIndex: [Biz_Location]
+
+{!50500|ArrowClass Arrow1987679635}
+{!50500|Att_HeadNode: Flight_Budget_per_FT}
+{!50500|Att_TailNode: Flight_Budget_per_Ye}
+{!50500|Att_ArrowProperties: 0}
+
+Variable Hotel_Stays_per_Yea1
+Title: Hotel Stays per Year
+Description: Number of hotel stays per year.
+Definition: Hotel_Stays_per_FTE1*Number_of_FTEs*Hotel_Stays_division
+NodeLocation: 720,544,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Text Te1291310483
+Title: Air Travel - Budget/Costs
+NodeLocation: 400,204,-1
+NodeSize: 184,140
+
+Variable Flight_km_per_FTE_pe
+Title: Flight km per FTE per Type per Class
+Units: Km
+Description: Flight km per FTE per LOG Type per flight class.~
+The ratios between LOG Type and flight class are calculated based on figures from 2019-2020.
+Definition: Flight_km_per_FTE*Air_Travel_ratios_20
+NodeLocation: 1096,288,1
+NodeSize: 64,32
+ValueState: 2,40,50,1260,450,0,MIDM
+ReformVal: [Time,Flight_Type]
+Att__TotalsIndex: [Biz_Ext_Scenario]
+Att_ResultSliceState: [Flight_Class,1,Biz_Ext_Scenario,0,Flight_Type,3,Time,1]
+
+{!50500|ArrowClass Arrow1479529875}
+{!50500|Att_HeadNode: Flight_Budget_per_FT}
+{!50500|Att_TailNode: Al1920688531}
+{!50500|Att_ArrowProperties: 0}
+
+Variable Flight_km_per_Year_p
+Title: Flight km per Year per Type per Class
+Units: Km
+Description: Total flight km per LOG Type per flight class per year.
+Definition: Flight_km_per_FTE_pe*Number_of_FTEs
+NodeLocation: 1296,288,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+Att_ResultSliceState: [Flight_Type,3,Flight_Class,4,Biz_Ext_Scenario,1,Time,1]
+
+{!50500|ArrowClass Arrow1353700755}
+{!50500|Att_HeadNode: Flight_km_per_Year_p}
+{!50500|Att_TailNode: Al1920688531}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.8015873015873016,0]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow742380947}
+{!50500|Att_HeadNode: Hotel_Stays_per_Yea1}
+{!50500|Att_TailNode: Al1920688531}
+{!50500|Att_ArrowProperties: 0}
+
+Alias Al439104915
+Title: Flight Budget per FTE2
+NodeLocation: 496,136,1
+NodeSize: 64,32
+Original: Flight_Budget_per_F1
+
+Alias Al1789670803
+Title: Hotel Budget per FTE2
+NodeLocation: 496,544,1
+NodeSize: 64,32
+NodeColor: 19661,48336,65535
+Original: Hotel_Budget_per_FT1
+
+Objective BIZ_CO2e_Ext
+Title: BIZ CO2e Ext
+Units: KtCO2e/Year
+Description: CO2e for BIZ Business Travel model per Intervention.
+Definition: Total_CO2e_per_Year + CO2e_Hotel_Stays
+NodeLocation: 1752,544,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al1587973011
+{!50000|Att_ColumnWidths: [,Time,\([,,,,,,,,,,,65])]}
+ExternalType: Output
+
+Variable Baseline_CO2e_per_Fl
+Title: Baseline CO2e per Flight per Seat per km
+Units: kgCO2e/km/seat
+Description: Baseline (2019) CO2e per LOG type per flight class.
+Definition: Table(Flight_Type,Flight_Class)(~
+0.23,0.15,0.25,0.25,~
+0.3,0.24,0.3,0.3,~
+0.42,0.15,0.58,0.23)
+NodeLocation: 1720,200,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+ReformDef: [Flight_Class,Flight_Type]
+
+{!50500|ArrowClass Arrow561655187}
+{!50500|Att_HeadNode: BIZ_CO2e_Ext}
+{!50500|Att_TailNode: CO2e_Hotel_Stays}
+{!50500|Att_ArrowWayPoints: [Null,Null,1,0]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow830090643}
+{!50500|Att_HeadNode: BIZ_CO2e_Ext}
+{!50500|Att_TailNode: Total_CO2e_per_Year}
+{!50500|Att_ArrowWayPoints: [Null,Null,0,0.25,1,0.25]}
+{!50500|Att_ArrowProperties: 0}
+
+Objective BIZ_CO2e
+Title: BIZ CO2e
+Units: KtCO2e/Year
+Description: CO2e for Biz Business Travel model per Scenario.
+Definition: BIZ_CO2e_Ext[Biz_Ext_Scenario=Scenario];
+NodeLocation: 1752,648,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al738602387
+ExternalType: Output
+
+{!50500|ArrowClass Arrow820417427}
+{!50500|Att_HeadNode: Al439104915}
+{!50500|Att_TailNode: BIZ_Intervention_Det}
+{!50500|Att_ArrowWayPoints: [Null,Null,0,0.2549019607843137,0.873949545401114,0.2549019607843137]}
+{!50500|Att_ArrowProperties: 0}
+
+Variable CO2e_per_Stay_per_Lo
+Title: CO2e per Stay per Location
+Units: kgCO2e/Night/Year
+Description: CO2 emission factors per location per year.
+Definition: Baseline_CO2e_per_Ni * (1 - Green_Hotel_ratio_pe)
+NodeLocation: 928,544,1
+NodeSize: 64,24
+ValueState: 2,40,50,843,512,0,MIDM
+
+Constant SAF_Emission_Reducti
+Title: SAF Emission Reduction Factor
+Units: %
+Description: Reduction factor of CO2e for using SAF.
+Definition: 0.75
+NodeLocation: 1720,72,1
+NodeSize: 64,32
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,,0
+
+Variable Euro_Per_Flight_km_p
+Title: Euro Per Flight km~
+per Year
+Units: Euro
+Description: Euro per flight km per year.
+Definition: Dynamic[Time](Euro_per_Flight_km_2 , Euro_Per_Flight_km_p[Time = Time-1] * Inflation)
+NodeLocation: 496,288,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+{!50000|Att_ColumnWidths: [,Time,\([63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63])]}
+
+Constant Inflation
+Title: Inflation
+Description: Inflation per year. (1 and ignore for now)
+Definition: 1.0
+NodeLocation: 496,408,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Hotel_Budget_per_Yea
+Title: Hotel Budget per Year
+Units: Euro
+Description: Budget for hotel stays per year.
+Definition: Hotel_Budget_per_FTE * Number_of_FTEs
+NodeLocation: 320,544,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+Variable Hotel_Budget_per_FT2
+Title: Hotel Budget per FTE per Year
+Units: Euro
+Description: Budget for hotel says per year per FTE.
+Definition: Dynamic[Time](Hotel_Budget_per_Yea / Number_of_FTEs, Hotel_Budget_per_FT2[Time=Time-1]*Inflation)
+NodeLocation: 320,696,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+Variable Euro_per_Hotel_Stay_
+Title: Euro per Hotel Stay per Year
+Units: Euro
+Description: Euro per hotel stay per year.
+Definition: Dynamic[Time](Euro_per_Hotel_stay, Euro_per_Hotel_Stay_[Time = Time-1] * Inflation)
+NodeLocation: 496,696,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,F,4,2,0,1,4,0,€,0,"ABBREV",0,,,0,0,15,,0
+
+{!50500|ArrowClass Arrow2020379539}
+{!50500|Att_HeadNode: Euro_per_Hotel_Stay_}
+{!50500|Att_TailNode: Inflation}
+{!50500|Att_ArrowProperties: 1}
+
+Text Te229280659
+Title: Hotel Stays
+NodeLocation: 708,604,-1
+NodeSize: 108,140
+
+Index Biz_Location
+Att_PrevIndexValue: ['Argentina','Australia','Austria','Belgium','Brazil','Canada','Caribbean Region','Chile','China','China (Hong Kong)','Colombia','Costa Rica','Czech Republic','Egypt','Finland','France','French Polynesia','Germany','Greece','India','Indonesia','Ireland','Israel','Italy','Japan','Jordan','Malaysia','Maldives','Mexico','Netherlands','New Zealand','Oman','Panama','Philippines','Poland','Portugal','Qatar','Romania','Russian Federation','Saudi Arabia','Singapore','South Africa','South Korea','Spain','Switzerland','Taiwan','Thailand','Turkey','United Arab Emirates','United Kingdom','United States','Vietnam','EU Other','Global Other']
+Title: Biz Location
+Units: Country
+Description: Location of activity, country.
+Definition: ['Argentina','Australia','Austria','Belgium','Brazil','Canada','Caribbean Region','Chile','China','China (Hong Kong)','Colombia','Costa Rica','Czech Republic','Egypt','Finland','France','French Polynesia','Germany','Greece','India','Indonesia','Ireland','Israel','Italy','Japan','Jordan','Malaysia','Maldives','Mexico','Netherlands','New Zealand','Oman','Panama','Philippines','Poland','Portugal','Qatar','Romania','Russian Federation','Saudi Arabia','Singapore','South Africa','South Korea','Spain','Switzerland','Taiwan','Thailand','Turkey','United Arab Emirates','United Kingdom','United States','Vietnam','EU Other','Global Other']
+NodeLocation: 2288,216,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Variable SAF_Price_per_Year
+Title: SAF Price per Year
+Units: Euro
+Description: Price of pure SAF aviation fuels per year.
+Definition: Table(Time)(1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650,1650)
+NodeLocation: 688,136,1
+NodeSize: 64,24
+ValueState: 2,534,207,171,466,,MIDM
+
+Variable Non_SAF_Price_per_Ye
+Title: Non SAF Price per Year
+Description: Price of non SAF aviation fuels per year.
+Definition: Table(Time)(750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750,750)
+NodeLocation: 880,136,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Variable SAF_premium
+Title: SAF premium
+Units: Euro
+Description: Percentage premium by using SAF over Non SAF for fuel.
+Definition: SAF_Price_per_Year/Non_SAF_Price_per_Ye
+NodeLocation: 688,216,1
+NodeSize: 64,24
+ValueState: 2,40,50,461,601,0,MIDM
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15,,0
+
+Constant Fuel_Operating_Costs
+Title: Fuel Operating Costs Percentage
+Description: Percentage of the operating costs of an average airline that can be contributed to fuel costs.
+Definition: 0.25
+NodeLocation: 880,208,1
+NodeSize: 64,32
+
+Variable SAF_Price_addition
+Title: SAF Price addition
+Description: The final extra price to be paid by using SAF fuels.
+Definition: (Euro_Per_Flight_km_p * SAF_premium * Fuel_Operating_Costs * SAF_Use_ratio_per_Ye)
+NodeLocation: 688,288,1
+NodeSize: 64,24
+ValueState: 2,40,50,1515,460,0,MIDM
+
+Text Te799197075
+Title: SAF Price Correction
+NodeLocation: 792,204,-1
+NodeSize: 192,140
+
+Variable Euro_Per_Flight_km_1
+Title: Euro Per Flight km~
+per Year (SAF Corrected)
+Units: Euro/km
+Description: Cost per flight km per year after corrections from interventions.
+Definition: Euro_Per_Flight_km_p + SAF_Price_addition
+NodeLocation: 880,288,1
+NodeSize: 64,40
+ValueState: 2,40,50,400,300,0,MIDM
+
+{!50500|ArrowClass Arrow920831891}
+{!50500|Att_HeadNode: SAF_Price_addition}
+{!50500|Att_TailNode: SAF_Use_ratio_per_Ye}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.038461538461538464,-80,0.8910256410256411,-80]}
+{!50500|Att_ArrowProperties: 0}
+
+Text Te1372354451
+Title: Indices
+NodeLocation: 2204,204,-1
+NodeSize: 164,140
+
+Text Te1814853523
+Title: Intervention details/Inputs
+NodeLocation: 1436,648,-1
+NodeSize: 196,184
+
+Module A2019_2020_Base_Figu
+Title: 2019-2020 Base Figures
+Description: Contains calculations for base figures from wich to extrapolate over the horizon.
+Author: jorre Vedder~
+Bicore Services
+Date: Tue, Sep 5, 2023 4:36 pm
+NodeLocation: 80,408,1
+NodeSize: 64,24
+
+Variable Travel_Budget_per_Ye
+Title: Travel Budget per Year
+Definition: Table(Time)(158.2,65.1,63.6,149,211,211,211,211,211,211,211,211,211,211,211,211,211,211,211,211,211,211)
+NodeLocation: 144,96,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,148,154,799,398,,MIDM
+NodeColor: 53199,53199,53199
+{!50000|Att_ColumnWidths: [86]}
+
+Variable Air_Travel_km_2019
+Title: Air Travel km 2019
+Definition: Table(Flight_Type,Flight_Class)(~
+724.938K,2.64026550126M,0,12.4965251K,~
+241.07752266K,13.85539707844M,881.8941799K,459.5068035K,~
+33.602294997M,89.3553606799M,87.51751854K,21.87278777836M)
+NodeLocation: 504,96,1
+NodeSize: 64,24
+ValueState: 2,40,50,676,323,0,MIDM
+NodeColor: 53199,53199,53199
+ReformDef: [Flight_Class,Flight_Type]
+Att__TotalsIndex: [Flight_Type,Flight_Class]
+
+Variable Air_Travel_ratios_20
+Title: Air Travel ratios 2019
+Definition: Air_Travel_km_2019 / sum(Air_Travel_km_2019, Flight_Class, Flight_Type)
+NodeLocation: 504,248,1
+NodeSize: 64,24
+ValueState: 2,40,50,747,303,0,MIDM
+NodeColor: 53199,53199,53199
+Att__TotalsIndex: [Flight_Class,Flight_Type]
+
+Variable Hotel_Budget_2019
+Title: Hotel Budget 2019
+Definition: Travel_Budget_per_Ye[time=2019]*Average_Budget_Deivi[Biz_Type='Hotel']
+NodeLocation: 504,504,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Total_Hotel_stays_20
+Title: Total Hotel Stays 2019
+Definition: 65578
+NodeLocation: 504,656,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Euro_per_Hotel_stay
+Title: Euro per Hotel stay
+Definition: Hotel_Budget_2019*1000000/Total_Hotel_stays_20
+NodeLocation: 704,656,1
+NodeSize: 64,24
+ValueState: 2,236,405,555,297,,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Euro_per_Flight_km_2
+Title: Euro per Flight km 2019
+Definition: (Flight_Budget_per_Ye[Time=2019]*1000000)/sum(Air_Travel_km_2019, Flight_Class, Flight_Type);
+NodeLocation: 712,96,1
+NodeSize: 64,24
+ValueState: 2,100,106,603,258,,MIDM
+NodeColor: 53199,53199,53199
+Att__TotalsIndex: [Flight_Class]
+
+Variable Hotel_Budget_per_FTE
+Title: Hotel Budget per FTE 2019
+Definition: Hotel_Budget_2019*1000000/Number_of_FTEs[Time=2019]
+NodeLocation: 704,504,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Budget_Divisions_per
+Title: Budget Divisions per Year
+Definition: Table(Time,Biz_Type)(~
+0.347661188369153,0.5003284431793301,~
+0.24792626728110603,0.35099846390168976,~
+0.21211168741687117,0.3915182369666487,~
+0.31221476510067114,0.3563758389261745,~
+0.3162904541745989,0.3610280119662769,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null,~
+Null,Null)
+NodeLocation: 144,400,1
+NodeSize: 64,32
+DefnState: 2,308,314,1345,217,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+ReformDef: [Time,Biz_Type]
+Att__TotalsIndex: [Biz_Type]
+
+{!50500|ArrowClass Arrow1097962899}
+{!50500|Att_HeadNode: Hotel_Budget_2019}
+{!50500|Att_TailNode: Travel_Budget_per_Ye}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow1936823699}
+{!50500|Att_HeadNode: Hotel_Budget_2019}
+{!50500|Att_TailNode: Budget_Divisions_per}
+{!50500|Att_ArrowWayPoints: [Null,Null,0,0.95]}
+{!50500|Att_ArrowProperties: 0}
+
+Variable Average_Budget_Deivi
+Title: Average Budget Deivisions per Year
+Definition: Average(Budget_Divisions_per, Time)
+NodeLocation: 144,280,1
+NodeSize: 64,40
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+Att__TotalsIndex: [Biz_Type]
+
+{!50500|ArrowClass Arrow2064225683}
+{!50500|Att_HeadNode: Hotel_Budget_2019}
+{!50500|Att_TailNode: Average_Budget_Deivi}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow947492243}
+{!50500|Att_HeadNode: Hotel_Budget_per_FTE}
+{!50500|Att_TailNode: Hotel_Budget_2019}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow135255443}
+{!50500|Att_HeadNode: Air_Travel_ratios_20}
+{!50500|Att_TailNode: Air_Travel_km_2019}
+{!50500|Att_ArrowProperties: 0}
+
+Text Te1309660563
+Title: Air Travel - Seed
+NodeLocation: 612,164,-1
+NodeSize: 212,140
+
+Text Te2057295251
+Title: Hotel Stays - Seed
+NodeLocation: 612,628,-1
+NodeSize: 212,204
+
+Text Te1080022419
+Title: General Budget - Seed
+NodeLocation: 164,244,-1
+NodeSize: 116,220
+
+Variable Flight_Budget_per_F2
+Title: Flight Budget~
+per FTE 2019
+Definition: Flight_Budget_2019 / Number_of_FTEs[time=2019]
+NodeLocation: 712,248,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Flight_Budget_2019
+Title: Flight Budget 2019
+Definition: (Travel_Budget_per_Ye*Average_Budget_Deivi[Biz_Type='Flight'])[time=2019]
+NodeLocation: 504,176,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Hotel_Stays_per_Loca
+Title: Hotel Stays per Location 2020
+Definition: Table(Biz_Location)(0,0,22,1831,0,82,0,0,2997,28,0,0,3,0,0,249,0,1853,0,37,0,31,183,25,1354,0,4,0,23,6974,0,0,0,0,9,0,0,2,39,0,163,0,7587,0,9,12.778K,4,9,4,16,29.183K,0,79,0)
+NodeLocation: 504,776,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Variable Hotel_Stays_division
+Title: Hotel Stays division 2020
+Definition: Hotel_Stays_per_Loca / Sum(Hotel_Stays_per_Loca)
+NodeLocation: 704,776,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 53199,53199,53199
+
+Close A2019_2020_Base_Figu
+
+{!50500|ArrowClass Arrow1800042387}
+{!50500|Att_HeadNode: Flight_Budget_per_Ye}
+{!50500|Att_TailNode: A2019_2020_Base_Figu}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.35294117647058826,1]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow122320787}
+{!50500|Att_HeadNode: A2019_2020_Base_Figu}
+{!50500|Att_TailNode: Flight_Budget_per_Ye}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.6470588235294118,0]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow1330280339}
+{!50500|Att_HeadNode: Euro_Per_Flight_km_p}
+{!50500|Att_TailNode: A2019_2020_Base_Figu}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.21153846153846154,-96,0.9041096613957331,-96]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow1154119571}
+{!50500|Att_HeadNode: Flight_km_per_FTE_pe}
+{!50500|Att_TailNode: A2019_2020_Base_Figu}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.11842105263157894,0.3333333333333333,1,0.3333333333333333]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow583694227}
+{!50500|Att_HeadNode: Euro_per_Hotel_Stay_}
+{!50500|Att_TailNode: A2019_2020_Base_Figu}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.21153846153846154,73,0.8904109367957482,73]}
+{!50500|Att_ArrowProperties: 0}
+
+{!50500|ArrowClass Arrow919238547}
+{!50500|Att_HeadNode: Hotel_Stays_per_FTE1}
+{!50500|Att_TailNode: A2019_2020_Base_Figu}
+{!50500|Att_ArrowWayPoints: [Null,Null,0.13580246913580246,0.8055555555555556,0.9411764262635031,0.8055555555555556]}
+{!50500|Att_ArrowProperties: 0}
+
+Text Te53114771
+Title: Model Output
+NodeLocation: 1948,604,-1
+NodeSize: 300,140
+
+Variable BIZ_Reductions_per_Y
+Title: BIZ Reductions per Year per Scenario
+Definition: BIZ_CO2e[Scenario='Business as usual']-BIZ_CO2e
+NodeLocation: 1944,648,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,1,MIDM
+GraphSetup: Att_ForceCategorical Graph_Primary_Valdim:1~
+Att_StackedBar Graph_Primary_Valdim:1~
+{!40600|Att_WaterfallBar Graph_Primary_Valdim:0}
+ReformVal: [Time,Scenario]
+{!40600|Att_StackingIndex: Scenario}
+{!40600|Att_ClusterIndex: Scenario}
+
+Variable BIZ_Reductions_per_S
+Title: BIZ Reductions per Scenario
+Definition: Sum(BIZ_Reductions_per_Y, Time)
+NodeLocation: 2152,648,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable BIZ_Reductions_per_1
+Title: BIZ Reductions per Year per Interention
+Definition: BIZ_CO2e_Ext[Biz_Ext_Scenario='Business as usual']-BIZ_CO2e_Ext
+NodeLocation: 1944,544,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,1,MIDM
+GraphSetup: {!40600|Att_WaterfallBar Graph_Primary_Valdim:1}~
+Att_StackedBar Graph_Primary_Valdim:1~
+Att_ForceCategorical Graph_Primary_Valdim:1
+ReformVal: [Time,Biz_Ext_Scenario]
+{!40600|Att_StackingIndex: Biz_Ext_Scenario}
+{!40600|Att_ClusterIndex: Biz_Ext_Scenario}
+
+Variable Biz_Reductions_per_I
+Title: Biz Reductions per Intervention
+Definition: Sum(BIZ_Reductions_per_1, Time)
+NodeLocation: 2152,544,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,1,MIDM
+ReformVal: [Biz_Ext_Scenario,Undefined]
+Att_ColorRole: Biz_Ext_Scenario
+{!40600|Att_ClusterIndex: Null}
+
+FormNode Fo1856309331
+Title: BIZ Scenario
+Definition: 0
+NodeLocation: 1376,752,1
+NodeSize: 96,16
+Original: BIZ_Scenario
+
+FormNode Fo1051002963
+Title: Effect Start
+Definition: 0
+NodeLocation: 1376,800,1
+NodeSize: 96,16
+Original: Effect_Start1
+
+Close BIZ_Business_Travel
+

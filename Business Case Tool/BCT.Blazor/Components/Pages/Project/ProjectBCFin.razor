@@ -1,0 +1,435 @@
+﻿@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using Ljbc1994.Blazor.IntersectionObserver.Components
+
+@implements IObserver<BCT.Domain.Entities.Project>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IDisposable
+
+@inject IGetProjectUseCase GetProjectUseCase
+@inject IGetProjectDoubleValues GetProjectDoubleValues
+@inject IProjectValueService pvs
+@inject IHelpTextService hts
+
+@if (gridCols.Count == 0 || gridRows.Count == 0 || gridItems.Count == 0)
+{
+    <div style="width:100%; height:90vh">
+
+    </div>
+}
+else
+{
+    <div>
+        <RadzenDataGrid 
+        AllowAlternatingRows=false 
+        GridLines="DataGridGridLines.Both" 
+        Data="gridRows" Density="Density.Compact" 
+        AllowColumnResize="true" 
+        Style="max-height: 90vh; width:fit-content; max-width:100%"
+        RowRender="RowRender"
+        CellRender="CellRender">
+            <Columns>
+                <RadzenDataGridColumn Frozen="true" Width="280px">
+                    <Template>
+                        <RadzenStack 
+                        Orientation="Orientation.Horizontal" 
+                        AlignItems="AlignItems.Center" 
+                        JustifyContent="JustifyContent.Left"
+                        Style="height:25px; max-height:25px;">
+                            <RadzenIcon Icon="info"
+                            Style="padding-top:0px;"
+                                        class="tooltip_icon"
+                            MouseLeave="hts.CloseTooltip"
+                            MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, key: context.Key))" />
+                            <RadzenText Style="align-content:center">
+                                @if (context.Strong)
+                                {
+                                    <strong>@(context.Label)</strong>
+                                }
+                                else
+                                {
+                                    @(context.Label)
+                                }
+                            </RadzenText>
+                            @if (PresentationSettings.GridHierarchy.ContainsKey(context.Key))
+                            {
+                                <RadzenButton Icon="@(collapsedHeaders.Contains(context.Key) ? "add" : "remove")" Variant="Variant.Text" Click="@(args => ToggleCollapse(context.Key))">
+
+                                </RadzenButton>
+                            }
+                        </RadzenStack>
+                    </Template>
+                </RadzenDataGridColumn>
+                @foreach(var col in gridCols){
+                    <RadzenDataGridColumn Title="@col.Label" Width="100px" OrderIndex="@int.Parse(col.Key)">
+                        <Template>
+                            @if (gridItemsDict.ContainsKey($"{context.Key}_{col.Key}"))
+                            {
+                                <RadzenFormField Style="width:100%; align-content:center" Variant="Variant.Text">
+                                    <RadzenNumeric
+                                    Disabled=@(context.Calculated)
+                                    Format="@(context.Calculated || gridItemsDict[$"{context.Key}_{col.Key}"].CellValue != 0 ? "0.0" : "#.#")"
+                                    Step="0.1"
+                                    TValue="double"
+                                    @bind-Value="@(gridItemsDict[$"{context.Key}_{col.Key}"].CellValue)"
+                                    Style="height:25px; max-height:25px"
+                                    TextAlign="TextAlign.Right"
+                                    Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                                    ShowUpDown="false">
+                                    </RadzenNumeric>
+                                </RadzenFormField>
+                            }
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+                <RadzenDataGridColumn Title="Restwaarde" UniqueID="ResidualColumn" Width="125px" OrderIndex="@(selectedProjectState.Value.StartYear + selectedProjectState.Value.Horizon + 1)">
+                    <HeaderTemplate>
+                        <RadzenStack Orientation="Orientation.Horizontal"
+                        AlignItems="AlignItems.Center"
+                        JustifyContent="JustifyContent.Left"
+                        Style="height:25px; max-height:25px"
+                        Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                        Gap="5px">
+                            <RadzenText>
+                                Restwaarde
+                            </RadzenText>
+                            <RadzenIcon Icon="info"
+                            Style="padding-top:0px;"
+                                        class="tooltip_icon"
+                            MouseLeave="hts.CloseTooltip"
+                            MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.LeftSide, text: HelpText.Step3.Residual))" />
+                        </RadzenStack>
+                    </HeaderTemplate>
+                    <Template>
+                        @if (ShouldRenderResidual(context))
+                        {
+                            <RadzenFormField Style="width:100%; align-content:center" Variant="Variant.Text">
+                                <RadzenNumeric
+                                TValue="double"
+                                Disabled=@(context.Calculated)
+                                Format="@(context.Calculated || GetResidualValue(context.Key).Value != 0 ? "0.0" : "#.#")"
+                                Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+                                Step="0.1"
+                                @bind-Value="@(GetResidualValue(context.Key).Value)"
+                                Change="@(() => SaveResidual(context.Key))"
+                                Style="height:25px; max-height:25px"
+                                TextAlign="TextAlign.Right"
+                                ShowUpDown="false" />
+                            </RadzenFormField>
+                        }
+                        else
+                        {
+
+                        }
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    private SelectedProjectState selectedProjectState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier projectContentUpdatedNotifier { get; set; }
+
+    private List<GridRow> gridRows = new();
+    private List<GridCol> gridCols = new();
+    private List<GridItem> gridItems = new();
+    private Dictionary<string, GridItem> gridItemsDict = new();
+    private List<DoubleValue> values = new();
+    private List<string> collapsedHeaders = new();
+    private List<string> collapsedKeys = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        projectContentUpdatedNotifier?.Subscribe(this);
+        selectedProjectState?.Subscribe(this);
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        SetGridColumns();
+
+        SetGridRows();
+
+        await SetGridValues();
+
+        await base.OnParametersSetAsync();
+
+        foreach (var item in PresentationSettings.GridHierarchy)
+        {
+            ToggleCollapse(item.Key);
+        }
+    }
+
+    private void SetGridRows()
+    {
+        gridRows.Clear();
+
+        var rows = PresentationSettings.GridItems;
+
+        // if (!selectedProjectState.Value.InterestEnabled)
+        //     rows = rows.Where(x => !PresentationSettings.GridInterestItems.Contains(x.Key)).ToList();
+
+        foreach (var a in rows)
+        {
+            gridRows.Add(new()
+            {
+                Key = a.Key,
+                Label = a.Label,
+                Calculated = a.Calculated,
+                Strong = a.StrongText
+            });
+        }
+    }
+
+    private async Task SetGridColumns()
+    {
+        gridCols.Clear();
+
+        var project = await GetProjectUseCase.ExecuteAsync(selectedProjectState?.Value?.Id ?? -1);
+
+        if (project == null)
+            return;
+
+        var startYear = project.StartYear;
+        var horizon = project.Horizon;
+
+
+        for (int i = startYear; i < startYear + horizon; i++)
+        {
+            gridCols.Add(new()
+            {
+                Key = i.ToString(),
+                Label = $"{i}"
+            });
+        }
+    }
+
+    private async Task SetGridValues()
+    {
+        values = await pvs.GetProjectDoubleValues(selectedProjectState.Value);
+        gridItems.Clear();
+        gridItemsDict.Clear();
+
+        foreach (var row in gridRows)
+        {
+            foreach (var col in gridCols)
+            {
+                var gridItemValue = values.FirstOrDefault(x => x.Year.ToString() == col.Key && x.Key == row.Key);
+
+                if (gridItemValue == null)
+                    return;
+
+                var gridItem = new GridItem()
+                    {
+                        RowKey = row.Key,
+                        ColKey = col.Key,
+                        CellValue = gridItemValue.Value,
+                    };
+                gridItem.OnChange = CellValueChanged;
+
+                gridItems.Add(gridItem);
+                gridItemsDict[$"{row.Key}_{col.Key}"] = gridItem;
+            }
+        }
+    }
+
+    private void CellValueChanged(GridItem i)
+    {
+        if (gridRows.FirstOrDefault(x => x.Key == i.RowKey)?.Calculated == true)
+            return;
+
+        //Recursive flip to positive
+        if (i.CellValue < 0)
+        {
+            i.CellValue = Math.Abs(i.CellValue);
+            return;
+        }
+
+        var value = values.FirstOrDefault(x => x.Year.ToString() == i.ColKey && x.Key == i.RowKey);
+        pvs.SaveOverTimeValue(value, i.CellValue);
+    }
+
+    private async void SaveResidual(string key)
+    {
+        var value = values.FirstOrDefault(x => x.Key == (key + " Risidual"));
+        await pvs.SaveOverTimeValue(value, value.Value);
+    }
+
+    private bool ShouldRenderResidual(GridRow row)
+    {
+        if (PresentationSettings.HasResidual.Contains(row.Key))
+            return true;
+        return false;
+    }
+
+    private DoubleValue GetResidualValue(string key)
+    {
+        var v = values.FirstOrDefault(x => x.Key == (key + " Risidual"));
+        if (v == null)
+            return new DoubleValue()
+            {
+                ProjectId = values.FirstOrDefault()?.ProjectId ?? 0,
+                Key = key + " Risidual"
+            };
+        return v;
+    }
+
+    private async Task ToggleCollapse(string key)
+    {
+        if (collapsedHeaders.Contains(key))
+            collapsedHeaders.Remove(key);
+        else
+            collapsedHeaders.Add(key);
+
+        collapsedKeys.Clear();
+
+        SetCollapsedKeys();
+
+        SetGridRows();
+        gridRows = gridRows.Where(x => !collapsedKeys.Contains(x.Key)).ToList();
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    private void SetCollapsedKeys()
+    {
+        collapsedHeaders
+        .ToList()
+        .ForEach(x =>
+        {
+            if (PresentationSettings.GridHierarchy.TryGetValue(x, out string[] keys))
+            {
+                collapsedKeys.AddRange(keys);
+            }
+        });
+
+        collapsedHeaders = collapsedHeaders.Distinct().ToList();
+        collapsedKeys = collapsedKeys.Distinct().ToList();
+    }
+
+    private void RowRender(RowRenderEventArgs<GridRow> args)
+    {
+        if (selectedProjectState.Value.InterestEnabled)
+            return;
+
+        if(!PresentationSettings.GridInterestItems.Contains(args.Data.Key))
+            return;
+
+        args.Attributes["style"] = "display:none;";
+    }
+
+    void CellRender(DataGridCellRenderEventArgs<GridRow> args)
+    {
+        if (args.Column.UniqueID == "ResidualColumn" && !PresentationSettings.HasResidual.Contains(args.Data.Key))
+        {
+            args.Attributes.Add("hide_cell", "true");
+            return;
+        }
+
+        if (PresentationSettings.Highlight.Contains(args.Data.Key))
+            args.Attributes.Add("style", $"background-color: #83cceb !important;");
+        else if (PresentationSettings.HighlightSecondary.Contains(args.Data.Key))
+            args.Attributes.Add("style", $"background-color: #C0E6F5 !important;");
+    }
+
+    public class GridItem
+    {
+        public string RowKey { get; set; } = string.Empty;
+        public string ColKey { get; set; } = string.Empty;
+
+        private double cellValue { get; set; }
+        public double CellValue
+        {
+            get
+            {
+                return cellValue;
+            }
+            set
+            {
+                cellValue = value;
+                OnChange?.Invoke(this);
+            }
+        }
+        public Action<GridItem>? OnChange { get; set; }
+    }
+
+    class GridRow
+    {
+        public string Label { get; set; } = string.Empty;
+        public string Key { get; set; } = string.Empty;
+        public bool Calculated { get; set; } = false;
+        public bool Strong { get; set; } = false;
+    }
+
+    class GridCol
+    {
+        public string Label { get; set; } = string.Empty;
+        public string Key { get; set; } = string.Empty;
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(BCT.Domain.Entities.Project p)
+    {
+        if (p == null || selectedProjectState.Value == null)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            await SetGridColumns();
+
+            SetGridRows();
+
+            await SetGridValues();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent projectContentUpdatedEvent)
+    {
+        if (projectContentUpdatedEvent.Project == null)
+            return;
+
+        var project = projectContentUpdatedEvent.Project;
+        if (selectedProjectState.Value == null || project.Id != selectedProjectState.Value.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            //this.gridRows.Clear();
+
+            SetGridRows();
+            SetGridColumns();
+
+            await SetGridValues();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void Dispose()
+    {
+        projectContentUpdatedNotifier?.Unsubscribe(this);
+        selectedProjectState?.Unsubscribe(this);
+    }
+}

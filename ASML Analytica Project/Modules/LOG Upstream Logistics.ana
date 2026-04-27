@@ -1,0 +1,828 @@
+{ Analytica Model LOG_Upstream_Logisti, encoding="UTF-8" }
+SoftwareVersion 6.3.6
+
+{!-60000|Attribute AcpStyles}
+Attribute ExternalType
+Title: ExternalType
+
+
+AskAttribute ExternalType,Function,Yes
+AskAttribute ExternalType,Module,Yes
+AskAttribute ExternalType,Variable,Yes
+
+LinkModule LOG_Upstream_Logisti
+Title: LOG~
+Upstream Logistics
+Author: Jac Goorden~
+Simbon
+Date: Tue, Jun 6, 2023 4:41 pm
+NodeSize: 64,32
+DiagState: 2,2,4,1880,861,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule LOG_Upstream_Logisti,2,2,0,0,Modules\LOG Upstream Logistics.ana
+
+Text Te233207699
+Title: LOG v1 Upstream Transport and Distribution Logistics CO2 impact submodel
+NodeLocation: 380,24,-1
+NodeSize: 372,16
+
+Text Te1306949523
+Title: Excel Based
+Description: ~
+Submodel based on data and calculations from excel sheets.
+NodeLocation: 156,140,-1
+NodeSize: 148,84
+
+Text Te770078611
+Title: Driver Tree Based
+Description: ~
+Model based on driver tree
+NodeLocation: 476,140,-1
+NodeSize: 148,84
+
+Module Excel_Based_Model
+Title: Excel Based Model
+Author: jorre Vedder~
+Bicore Services
+Date: Tue, Sep 12, 2023 1:23 pm
+NodeLocation: 144,168,1
+NodeSize: 64,24
+DiagState: 2,0,0,944,398,17,10
+
+Objective LOG_CO2e
+Title: LOG CO2e
+Units: KtCO2e/Year
+Description: CO2e for LOG Upstream Logistics model per Scenario.
+Definition: LOG_CO2e_Ext[LOG_Ext_Scenario=Scenario]
+NodeLocation: 1000,360,1
+NodeSize: 64,32
+ValueState: 2,33,291,1790,539,1,MIDM
+Aliases: Alias Al154304275
+ExternalType: Output
+
+Alias Al207762835
+Title: Installed Systems
+NodeLocation: 152,128,1
+NodeSize: 64,32
+Original: Installed_Systems
+
+Alias Al1902261651
+Title: Sales~
+Volume
+NodeLocation: 152,304,1
+NodeSize: 64,24
+NodeColor: 52427,65535,65535
+Original: Sales_Volume
+
+Index LOG_Type
+Att_PrevIndexValue: ['Systems','Inbound','Serv. Opex']
+Title: LOG Type
+Definition: ['Systems','Inbound','Serv. Opex']
+NodeLocation: 152,528,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,80}
+
+Variable EF_per_System_per_LO
+Title: EF per System per LOG Type
+Definition: Table(System,LOG_Type)(~
+Null,Null,Null,~
+1.1121221272727273,0.6030149780443637,0.40550374363261854,~
+Null,Null,Null,~
+0.33815,0.16189981970693923,0.03852475287677506,~
+0.244048,Null,Null,~
+Null,Null,Null,~
+Null,Null,Null,~
+0.026277,Null,Null,~
+Null,Null,Null,~
+Null,Null,Null,~
+0.034567,188.5099598769231u,6.876865684959908m,~
+0.0562772012057515,0.1584,0.010968782904778625)
+NodeLocation: 152,216,1
+NodeSize: 64,24
+ValueState: 2,225,390,924,175,,MIDM
+NodeColor: 52427,65535,65535
+ReformDef: [LOG_Type,System]
+ReformVal: [LOG_Type,System]
+{!50000|Att_ColumnWidths: [,LOG_Type,\([,76])]}
+ExternalType: Input
+
+Variable CO2e_per_System_per_
+Title: CO2e per System per Year
+Definition: IF EF_per_System_per_LO[LOG_Type='Systems'] OR EF_per_System_per_LO[LOG_Type='Inbound']~
+	THEN Sales_Volume_NXT_Con * EF_per_System_per_LO~
+ELSE EF_per_System_per_LO * System_in_use_over_t
+NodeLocation: 416,216,1
+NodeSize: 64,32
+ValueState: 2,228,234,1229,408,,MIDM
+Aliases: Alias Al2117744019
+Att_ResultSliceState: [LOG_Type,1,System,1,Time,1]
+
+Alias Al782906771
+Title: Systems per BL index matrix
+NodeLocation: 632,280,1
+NodeSize: 64,24
+Original: Systems_per_BL_inde2
+
+Alias Al95040915
+Title: System in use over time
+NodeLocation: 152,400,1
+NodeSize: 64,32
+Original: System_in_use_over_t
+
+Module LOG_Intervention_Det
+Title: LOG Intervention Details
+Author: jorre Vedder~
+Bicore Services
+Date: Mon, Aug 14, 2023 8:58 am
+NodeLocation: 416,528,1
+NodeSize: 64,32
+DiagState: 2,258,73,944,124,17,10
+WindState: 2,0,0,720,350
+
+Index LOG_Interventions
+Att_PrevIndexValue: ['Shipment CO2e Reduction','Inbound CO2e Reduction','Service CO2e Reduction']
+Title: LOG Interventions
+Definition: ['Shipment CO2e Reduction','Inbound CO2e Reduction','Service CO2e Reduction']
+NodeLocation: 104,72,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Index LOG_Ext_Scenario
+Att_PrevIndexValue: ['Shipment CO2e Reduction','Inbound CO2e Reduction','Service CO2e Reduction','Business as usual','Business Improvement','ESG','Radical']
+Title: LOG Ext Scenario
+Definition: Concat(LOG_Interventions, Scenario)
+NodeLocation: 104,160,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+{!40300|Att_SlicerPopupSize: 397,210}
+
+Variable LOG_Scenario
+Title: LOG Scenario
+Definition: Table(Scenario,LOG_Interventions)(~
+Checkbox(0),Checkbox(0),Checkbox(0),~
+Checkbox(0),Checkbox(0),Checkbox(0),~
+Checkbox(0),Checkbox(0),Checkbox(0),~
+Checkbox(0),Checkbox(0),Checkbox(0))
+NodeLocation: 328,72,1
+NodeSize: 64,24
+WindState: 2,98,82,720,350
+ValueState: 2,443,371,416,303,,MIDM
+ReformDef: [Scenario,LOG_Interventions]
+
+Variable LOG_Ext_Scenario_Com
+Title: LOG Ext Scenario Composition
+Definition: IF Time < 2023 THEN 0~
+ELSE IF@LOG_Ext_Scenario<=Size(LOG_Interventions) ~
+	THEN LOG_Ext_Scenario=LOG_Interventions~
+ELSE LOG_Scenario[Scenario=LOG_Ext_Scenario]
+NodeLocation: 560,72,1
+NodeSize: 64,32
+ValueState: 2,84,90,1690,333,,MIDM
+ReformVal: [LOG_Interventions,LOG_Ext_Scenario]
+Att_ResultSliceState: [Time,5,LOG_Ext_Scenario,1,LOG_Interventions,1]
+
+Text Te2146055571
+Title: Scenario Logic
+NodeLocation: 344,120,-1
+NodeSize: 336,112
+
+Variable Inbound_CO2e_Reducti
+Title: Inbound CO2e Reductions
+Definition: Table(Time,System)(~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0.2857142857142857,0,0,~
+0,0,0,0,0,0,0,0,0,0.2857142857142857,0,0,~
+0,0,0,37,0,0,0,0,0,0.4857142857142857,0,0,~
+0,0,0,0,0,0,0,0,0,0.4857142857142857,0,0,~
+0,0,0,0,0,0,0,0,0,0.4857142857142857,0,0,~
+0,0,0,0,0,0,0,0,0,0.4857142857142857,0,0,~
+0,0,0,0,0,0,0,0,0,0.4857142857142857,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 328,488,1
+NodeSize: 64,32
+DefnState: 2,177,299,1627,269,0,DFNM
+ReformDef: [Time,System]
+{!50000|Att_ColumnWidths: [,Time,\([,,65])]}
+
+Variable Service_CO2e_Reducti
+Title: Service CO2e Reductions
+Definition: Table(Time,System)(~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,7,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 328,328,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ReformDef: [Time,System]
+{!50000|Att_ColumnWidths: [,Time,\([,,,,62])]}
+
+Variable Shipment_CO2e_Reduc1
+Title: Shipment CO2e Reductions
+Definition: Table(Time,System)(~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,6.714285714285714,0,0,0,0,0,0.5714285714285714,0,0,~
+0,0,0,11.380952380952381,0,0,0,0,0,0.5714285714285714,0,0,~
+0,0,0,81.34095238095239,0,0,0,0,0,0.5714285714285714,0,0,~
+0,0,0,11.380952380952381,0,0,0,0,0,0.5714285714285714,0,0,~
+0,0,0,47.42095238095238,0,0,0,0,0,0.5714285714285714,0,0,~
+0,0,0,11.380952380952381,0,0,0,0,0,0.5714285714285714,0,0,~
+0,0,0,11.380952380952381,0,0,0,0,0,4.571428571428571,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 328,408,1
+NodeSize: 64,32
+ReformDef: [Time,System]
+
+Alias Al2117744019
+Title: CO2e per System per Year
+NodeLocation: 560,488,1
+NodeSize: 64,32
+Original: CO2e_per_System_per_
+
+Variable CO2e_per_System_per1
+Title: CO2e per System per Year (scenario modified)
+Definition: CO2e_per_System_per_ ~
+	- ((Shipment_CO2e_Reduc1 * LOG_Ext_Scenario_Com[LOG_Interventions='Shipment CO2e Reduction']) +~
+	 (Inbound_CO2e_Reducti * LOG_Ext_Scenario_Com[LOG_Interventions='Inbound CO2e Reduction']) +~
+	 (Service_CO2e_Reducti * LOG_Ext_Scenario_Com[LOG_Interventions='Service CO2e Reduction']))
+NodeLocation: 560,328,1
+NodeSize: 64,32
+ValueState: 2,36,42,1687,391,,MIDM
+Aliases: Alias Al361117075
+Att__TotalsIndex: [System]
+Att_ResultSliceState: [LOG_Type,1,LOG_Ext_Scenario,3,System,1,Time,1]
+
+Text Te812395923
+Title: Data driven current interventions
+NodeLocation: 344,396,-1
+NodeSize: 336,156
+
+Text Te1231826323
+Title: Driver Tree Interventions
+NodeLocation: 996,120,-1
+NodeSize: 308,112
+
+Close LOG_Intervention_Det
+
+Variable CO2e_per_BL_per_Yea1
+Title: CO2e per BL per Year
+Definition: Sum(CO2e_per_System_per1*Systems_per_BL_inde2, System)
+NodeLocation: 632,360,1
+NodeSize: 64,24
+ValueState: 2,-130,126,1813,479,1,MIDM
+Att__TotalsIndex: [LOG_Type,BL]
+Att_ResultSliceState: [BL,0,LOG_Type,0,LOG_Ext_Scenario,1,Time,1]
+
+Alias Al361117075
+Title: CO2e per System per Year mod
+NodeLocation: 416,360,1
+NodeSize: 64,40
+Original: CO2e_per_System_per1
+
+Objective LOG_CO2e_Ext
+Title: LOG CO2e Ext
+Units: KtCO2e/Year
+Description: CO2e for LOG Upstream Logistics model per Intervention.
+Definition: Sum(CO2e_per_BL_per_Yea1, BL, LOG_Type)
+NodeLocation: 824,360,1
+NodeSize: 64,24
+ValueState: 2,87,44,1627,305,1,MIDM
+Aliases: Alias Al333876115
+ExternalType: Output
+
+Text Te2058104211
+Title: Data driven model
+NodeLocation: 572,304,-1
+NodeSize: 524,280
+
+Variable Sales_Volume_NXT_Con
+Title: Sales Volume NXT Concat
+Definition: IF System = 'NXTd'~
+	THEN Sales_Volume[System='NXTd'] + Sales_Volume[System='NXTi']~
+ELSE~
+	Sales_Volume 
+NodeLocation: 288,264,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+
+Close Excel_Based_Model
+
+Module Driver_Tree_Model
+Title: Driver Tree Model
+Author: jorre Vedder~
+Bicore Services
+Date: Tue, Sep 12, 2023 1:23 pm
+NodeLocation: 488,168,1
+NodeSize: 64,24
+DiagState: 2,0,0,1884,579,17,10
+
+Variable EF_per_Transport_Typ
+Title: EF per Transport Type
+Description: Emission factors per transport type per tonkm.
+Definition: Table(Log_Transport_Type)(0.593,0.107,0.026,9m)
+NodeLocation: 776,392,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+
+Index Log_Transport_Type
+Att_PrevIndexValue: ['Air','Sea','Rail','Road']
+Title: LOG Transport Type
+Definition: ['Air','Sea','Rail','Road']
+NodeLocation: 1144,112,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable CO2e_per_Transport_T
+Title: CO2e per Transport Type per Year
+Units: tonCO2e
+Description: Total CO2e emissions per year per transport type.
+Definition: Transport_per_System*EF_per_Transport_Typ
+NodeLocation: 776,184,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+Att_ResultSliceState: [Log_Transport_Type,3,System,1,Time,1]
+
+Variable Distance_per_Install
+Title: Distance per Install per System per Customer
+Units: km
+Description: The distance per installation per system type per customer.
+Definition: Table(System,Customer)(~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 376,88,1
+NodeSize: 64,40
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Weight_per_Install_p
+Title: Weight per Install per System per Transport Type
+Units: ton
+Description: The amount of tons that needs to be transported per install per system type per transport type.
+Definition: Table(System,Log_Transport_Type)(~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0)
+NodeLocation: 568,304,1
+NodeSize: 64,40
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,1059,375,0,MIDM
+
+Alias Al1807056275
+Title: Sales Distribution per Customer
+NodeLocation: 168,184,1
+NodeSize: 64,32
+NodeColor: 52427,65535,65535
+Original: Sales_Distribution_c
+
+Variable Distance_per_Year_pe
+Title: Distance per Year per System
+Units: km
+Description: Total distance per system type per year.
+Definition: sum(Sales_Distribution_c*Distance_per_Install, Customer)
+NodeLocation: 376,184,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+Att_ResultSliceState: [Customer,2,System,1,Time,1]
+
+Variable Transport_per_System
+Title: Transport per System per Year per Transport Type
+Description: The total tonkm (tons traveling one km) per system per transport type per year.
+Definition: Distance_per_Year_pe*Weight_per_Install_p
+NodeLocation: 568,184,1
+NodeSize: 64,40
+ValueState: 2,436,442,861,340,,MIDM
+
+Text Te1754103187
+Title: Installs
+NodeLocation: 548,204,-1
+NodeSize: 500,180
+
+Text Te1720548755
+Title: Service
+NodeLocation: 548,580,-1
+NodeSize: 500,180
+
+Variable Distance_per_Service
+Title: Distance per Service per Customer
+Description: The distance per service per system type per customer.
+Definition: Table(Customer)(0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 376,480,1
+NodeSize: 64,32
+
+Variable Distance_per_Year_p1
+Title: Distance per Year per System
+Description: Total distance per system type per year.
+Definition: sum(Systems_in_use_over_*Distance_per_Service, Customer)
+NodeLocation: 376,584,1
+NodeSize: 64,32
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Systems_in_use_over_
+Title: Systems in use over Time per Customer
+Description: Active systems per year per customer.
+Definition: Table(Time,System,Customer)(~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0,~
+0,0,0,0,0,0,0,0,0,0,0,0)
+NodeLocation: 176,584,1
+NodeSize: 72,32
+ValueState: 2,40,50,400,300,0,MIDM
+NodeColor: 52427,65535,65535
+Att_EditSliceState: [Customer,9,System,1,Time,1]
+ExternalType: Input
+
+Variable Weight_per_Service_p
+Title: Weight per Service per System per Transport Type
+Description: The amount of tons that needs to be transported per service per system type per transport type.
+Definition: Table(System,Log_Transport_Type)(~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0)
+NodeLocation: 568,696,1
+NodeSize: 72,40
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Transport_per_Syste1
+Title: Transport per System per Year per Transport Type
+Description: The total tonkm (tons traveling one km) per system per transport type per year.
+Definition: Distance_per_Year_p1*Weight_per_Service_p
+NodeLocation: 568,584,1
+NodeSize: 72,40
+
+Variable CO2e_per_Transport_1
+Title: CO2e per Transport Type per Year
+Description: Total CO2e emissions per year per transport type.
+Definition: Transport_per_Syste1*EF_per_Transport_Typ
+NodeLocation: 776,584,1
+NodeSize: 64,32
+
+Objective LOG_CO2e1
+Title: LOG CO2e
+Units: ktonCO2e
+Description: Total CO2e per year.
+Definition: Sum(CO2e_per_Transport_1+CO2e_per_Transport_T, System, Log_Transport_Type)
+NodeLocation: 968,392,1
+NodeSize: 64,24
+ValueState: 2,40,50,400,300,0,MIDM
+Att_ResultSliceState: [Log_Transport_Type,1,System,1,Time,1]
+
+Text Te606507923
+Title: NOTES:
+Description: ~
+INPUT ALTERNATIVES:~
+- Could be each recorded shipment. The issue here is to link shipments to BL/System.~
+~
+- Just each shipment, where we let go of categorizing by BL/System~
+~
+LEVERS:~
+ - Reduce overall weight per install/service~
+ - Shift weight from high EF LOG Transport Types to low EF.~
+
+NodeLocation: 1400,204,-1
+NodeSize: 160,180
+
+Text Te1479964563
+Title: Indices
+NodeLocation: 1144,204,-1
+NodeSize: 80,180
+
+Close Driver_Tree_Model
+
+Close LOG_Upstream_Logisti
+

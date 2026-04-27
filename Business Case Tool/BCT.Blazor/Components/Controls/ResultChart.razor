@@ -1,0 +1,372 @@
+﻿@using ApexCharts
+@using BCT.Blazor.State
+@using BCT.Blazor.UIModels
+@using System.Timers
+
+@inject IJSRuntime JS
+
+@if (loading)
+{
+
+    <div style="background: none; height: 33vh">
+    </div>
+}
+else
+{
+    <div class="" style="height: 95%; width:100%">
+        <ApexChart @ref="chart" Options="@options" Height="@("100%")" Width="@("100%")">
+            <ApexPointSeries Items="_finalBarData"
+                             Name="@BarName"
+                             SeriesType="SeriesType.Bar"
+                             XValue="@(x => x.DateTime)"
+                             YValue="@(x => (decimal)x.Value)"
+                             Color="#002b36"
+                             DataPointMutator="@PointGoalModulator">
+            </ApexPointSeries>
+            <ApexPointSeries Items="ChartLineData"
+                             Name="@LineName"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(x => x.DateTime)"
+                             YValue="@(x => (decimal)x.Value)"
+                             Color="#f28b04">
+            </ApexPointSeries>
+            @if (_scenarioActive)
+            {
+                <ApexPointSeries Items="ChartLineDataScenario"
+                                 Name="Basisscenario"
+                                 SeriesType="SeriesType.Line"
+                                 XValue="@(x => x.DateTime)"
+                                 YValue="@(x => (decimal)x.Value)"
+                                 Color="#757575">
+                </ApexPointSeries>
+            }
+        </ApexChart>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public List<DataItem> ChartLineData { get; set; } = new();
+    [Parameter]
+    public List<DataItem> ChartBarData { get; set; } = new();
+
+    [Parameter]
+    public List<DataItem> ChartLineDataScenario { get; set; } = new();
+    [Parameter]
+    public List<DataItem> ChartBarDataScenario { get; set; } = new();
+
+    // [Parameter]
+    // public int PaybackMonths { get; set; } = 0;
+
+    private List<DataItem> _finalBarData { get; set; }
+
+    private bool _scenarioActive => ChartBarDataScenario.Count() > 0;
+
+    private List<string> _legendItems = new();
+
+    private List<string> _legendItemsScenario = new();
+
+    [Parameter]
+    public string BarName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string LineName { get; set; } = string.Empty;
+
+    private bool loading = false;
+
+    private ApexChart<DataItem> chart { get; set; }
+
+    private ApexChartOptions<DataItem>? options = null;
+
+    private Dictionary<string, string> chartBarScenarioColors = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (options == null)
+        {
+            options = new();
+            SetupOptions();
+        }
+
+        if (_scenarioActive)
+        {
+            _finalBarData = ChartBarDataScenario;
+
+            options.Legend.CustomLegendItems = _legendItemsScenario;
+            options.Fill.Opacity.Clear();
+            options.Fill.Opacity.Add(1);
+            options.Fill.Opacity.Add(0.5);
+            options.Fill.Opacity.Add(1);
+            options.Stroke.Colors = new List<string>();
+            options.Stroke.Colors.Add("#4D8076");
+            options.Stroke.Colors.Add("#757575");
+            options.Stroke.Colors.Add("#f28b04");
+        }
+        else
+        {
+            _finalBarData = ChartBarData;
+
+            options.Legend.CustomLegendItems = _legendItems;
+            options.Stroke.Colors = new List<string>();
+            options.Stroke.Colors.Add("#4D8076");
+            options.Stroke.Colors.Add("#f28b04");
+            options?.Fill?.Opacity.Clear();
+            options?.Fill?.Opacity.Add(1);
+            options?.Fill?.Opacity.Add(1);
+        }
+
+        await base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        //Stupid bug in apex charts.
+        await JS.InvokeVoidAsync("FixChartGoalMarkerClip");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //SetupOptions();
+        await base.OnInitializedAsync();
+    }
+
+    private void SetupOptions()
+    {
+        if (options == null)
+            return;
+
+        options.Title = new Title()
+            {
+                Text = "",
+            // Style = new TitleStyle()
+            // {
+            //     FontFamily = "Roboto",
+            //     FontWeight = 400,
+            //     FontSize = "16px",
+            //     Color = "#757575"
+            // },
+            // Floating = true
+            };
+
+        options.Chart = new()
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false,
+                },
+                Zoom = new()
+                {
+                    Enabled = false,
+                    AllowMouseWheelZoom = false,
+                },
+
+            };
+
+        options.DataLabels = new DataLabels
+            {
+                Formatter = "function (value) { return value.toLocaleString('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });}"
+            };
+
+        options.Tooltip = new ApexCharts.Tooltip()
+            {
+                X = new TooltipX
+                {
+                    Format = "yyyy",
+                }
+            };
+
+        _legendItems = new List<string>()
+        {
+            "<div style='display: flex; align-items: center;'><div style='width: 12px; height: 12px; background-color: #002b36; margin-right: 6px;'></div><span>Jaarlijks</span></div>",
+            "<div style='display: flex; align-items: center;'><div style='width: 12px; height: 2px; background-color: #F59C1A; margin-right: 6px;'></div><span>Cumulatief</span></div>"
+        };
+
+        _legendItemsScenario = new List<string>()
+        {
+            "<div style='display: flex; align-items: center;'><div style='width: 12px; height: 12px; background-color: #002b36; margin-right: 6px;'></div><span>Jaarlijks</span></div>",
+            "<div style='display: flex; align-items: center;'><div style='width: 12px; height: 2px; background-color: #F59C1A; margin-right: 6px;'></div><span>Cumulatief</span></div>"
+        };
+        _legendItemsScenario.Add(
+                @"
+            <div style='display: flex; flex-direction:row; align-items: center;'>
+                <div style='display:flex; flex-direction:column'>
+                    <div style='width: 12px; height: 12px; background-color: #757575; margin-right: 6px;'></div>
+
+                </div>
+                <span>
+                    Basisscenario
+                </span>
+            </div>
+            ");
+
+        options.Legend = new()
+            {
+                Position = ApexCharts.LegendPosition.Bottom,
+                HorizontalAlign = ApexCharts.Align.Right,
+                Floating = false,
+                Markers = new LegendMarkers()
+                {
+                    CustomHTML = "function() { return '<div></div>'; }"
+                }
+            };
+
+        options.Yaxis = new List<YAxis> { new YAxis
+        {
+            Title = new AxisTitle
+            {
+                Text = "KEUR",
+            }
+        }};
+
+        var lastYear = ChartBarData.MaxBy(x => x.Year).Year;
+
+        var labelFormatter = $@"
+            function(value, timestamp, opts) {{
+                const date = new Date(value);
+                const year = date.getFullYear();
+                const month = date.getMonth();
+
+                if (month === 0 && year === {lastYear}) {{
+                    return 'Restwaarde';
+                }}
+                if (month !== 0){{
+                    return '';
+                }}
+                return year.toString();
+            }}";
+
+        options.Xaxis = new XAxis()
+        {
+            // Min = ChartBarData.MinBy(x => x.DateTime).DateTime.AddMonths(-6).ToUnixTimeMilliseconds(),
+            // Max = ChartBarData.MaxBy(x => x.DateTime).DateTime.AddMonths(6).ToUnixTimeMilliseconds(),
+            TickAmount = ((double)ChartBarData.Count - 1) * 2,
+            AxisTicks = new AxisTicks
+            {
+                Show = true,                
+            },
+            Type = XAxisType.Datetime,
+            TickPlacement = TickPlacement.On,
+            Labels = new XAxisLabels
+            {
+                ShowDuplicates = true,
+                HideOverlappingLabels = false,
+                Formatter = labelFormatter,
+            },
+            Tooltip = new AxisTooltip
+            {
+                Enabled = false,
+            },
+        };
+
+        options.Grid = new()
+            {
+                Show = true,
+                Padding = new()
+                {
+                    Right = 100,
+                },                
+            };
+
+        options.PlotOptions = new()
+            {
+                Bar = new()
+                {
+                    Horizontal = false,
+                    ColumnWidth = "100%"
+                }
+            };
+
+        options.Fill = new()
+            {
+                Opacity = new List<double>
+                {
+
+                }
+            };
+
+        options.Stroke = new()
+            {
+                Show = true,
+                Width = new List<int>() { 0, 3, 3 },
+            };
+
+        // options.Annotations = new()
+        //     {
+        //         Xaxis = new List<AnnotationsXAxis>()
+        //         {
+        //             new AnnotationsXAxis
+        //             {
+        //                 Label = new Label
+        //                 {
+        //                     Text = "",
+        //                     Style = new Style{ Background="green" }
+        //                 },
+        //                 X = ChartBarData.MinBy(x => x.DateTime).DateTime.AddMonths(PaybackMonths - 6).ToUnixTimeMilliseconds(),
+        //                 StrokeDashArray = 2,
+        //                 BorderColor = "green"
+        //             }
+        //         },                
+        //     };
+    }
+
+    private void SetupScenarioColors()
+    {
+        if (ChartBarDataScenario.Count() == 0)
+            return;
+
+        chartBarScenarioColors.Clear();
+        //Conditional coloring
+        for (int i = 0; i < ChartBarData.Count; i++)
+        {
+            var normal = ChartBarData[i];
+            var scenario = ChartBarDataScenario[i];
+            var color = "#9facc1";
+
+            if (normal.Value > scenario.Value)
+                color = "#FF0000";
+            else if (normal.Value < scenario.Value)
+                color = "#008000";
+
+            chartBarScenarioColors[scenario.Key] = color;
+        }
+    }
+
+    private void PointGoalModulator(DataPoint<DataItem> point)
+    {
+        if (!_scenarioActive)
+            return;
+
+        var goal = new DataPointGoal()
+            {
+                Value = (decimal)ChartBarData.Single(x => x.Key == point.Items.Single().Key).Value,
+                Name = "basisscenario",
+                StrokeHeight = 3,
+                StrokeColor = "#757575",
+                StrokeDashArray = 4,
+            };
+
+        point.Goals = new() { goal };
+    }
+
+    public async Task UpdateChart(bool animate = true)
+    {
+        await chart.UpdateOptionsAsync(animate, animate, false);
+        await chart.UpdateSeriesAsync(animate);
+
+        //Stupid bug in apex charts.
+        try
+        {
+            await JS.InvokeVoidAsync("FixChartGoalMarkerClip");
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        }
+        catch (Microsoft.JSInterop.JSDisconnectedException)
+        {
+            
+        }
+    }
+}

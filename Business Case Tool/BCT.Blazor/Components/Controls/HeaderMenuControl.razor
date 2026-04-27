@@ -1,0 +1,78 @@
+@using BCT.Blazor.Components.Layout
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using BCT.Blazor.Components.Pages.Help
+
+@implements IObserver<Domain.Entities.User>
+
+@inject DialogService DialogService
+@inject NavigationManager NavigationManager
+
+<RadzenStack Orientation="Orientation.Horizontal">
+    @*     @if(MainLayout?.SidebarMode == PresentationSettings.SidebarMode.Planner)
+    {
+        <RadzenButton Click=@(async () => { MainLayout.SidebarMode = PresentationSettings.SidebarMode.Charting; NavigationManager.NavigateTo("/home"); }) Style="text-transform:none; color:white" Text="Grafieken" Variant="Variant.Text" class="rz-text-white" />
+    }
+    else
+    {
+        <RadzenButton Click=@(() => { MainLayout.SidebarMode = PresentationSettings.SidebarMode.Planner; NavigationManager.NavigateTo("/home"); }) Style="text-transform:none; color:white" Text="Planner" Variant="Variant.Text" class="rz-text-white" />
+    } *@
+    <RadzenButton Style="text-transform:none; color:white" Text="@($"{CurrentUserState?.Value?.Email ?? ""}")" Variant="Variant.Text" class="rz-text-white" />
+    <AuthorizeView Context="AuthContext3" Roles="@($"{BCT.Domain.Const.Role.Admin}")">
+        <RadzenButton Icon="admin_panel_settings" Style="text-transform:none; color:white" Text="Debug Paneel" Variant="Variant.Text" class="rz-text-white" Click=OnActiveSessionClicked />
+    </AuthorizeView>
+    <AuthorizeView Context="AuthContext2" Roles="@($"{BCT.Domain.Const.Role.Coach}, {BCT.Domain.Const.Role.Admin}")">
+        <RadzenLink Path="@($"settings/user")">
+            <RadzenButton Icon="manage_accounts" Style="text-transform:none; color:white" Text="Gebruikersbeheer" Variant="Variant.Text" class="rz-text-white" />
+        </RadzenLink>
+    </AuthorizeView>
+    <RadzenMenu style="background-color: unset; font-size:14px; font-weight:500; height:36px">
+        <RadzenMenuItem Text="Help">
+            <RadzenMenuItem Text="Feedback" Click="OnFeedbackClicked">
+            </RadzenMenuItem>
+        </RadzenMenuItem>
+    </RadzenMenu>
+    <LoginLogoutButtonControl />
+</RadzenStack>
+
+@code{
+    [CascadingParameter]
+    private CurrentUserState? CurrentUserState { get; set; }
+
+    [CascadingParameter]
+    public required MainLayout MainLayout { get; set; }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(User value)
+    {
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUserState.Subscribe(this);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnActiveSessionClicked()
+    {
+        DialogService.OpenAsync<DebugPanel>("");
+    }
+
+    private async Task OnFeedbackClicked()
+    {
+        var options = new DialogOptions()
+        {
+            ShowTitle = false,
+            Width = "670px",
+        };
+
+        await DialogService.OpenAsync<Feedback>("", options: options);
+    }
+}

@@ -1,0 +1,46 @@
+﻿@using BCT.Application.Services
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.Dtos;
+@using BCT.Blazor.State
+
+@inject DialogService DialogService
+@inject ISendFeedbackEmailUseCase SendFeedbackEmail
+@inject NavigationManager NavigationManager
+
+<h3>Jouw feedback is waardevol!</h3>
+
+<RadzenStack>
+    <div>
+        In dit veld kun je jouw feedback kwijt, deze wordt naar ons verstuurd.<br/>
+        Loop je tegen een probleem aan in de Investeringscalculator?<br />
+        Beschrijf dan zo uitgebreid mogelijk wat je aan het doen was toen het probleem optrad.
+    </div>
+    <RadzenTextArea @bind-Value=@feedbackText Style="height:260px">
+
+    </RadzenTextArea>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" Style="margin-left:25px; margin-right:25px;">
+        <RadzenButton ButtonStyle=ButtonStyle.Danger Text="Annuleer" Click="OnCancelClicked"/>
+        <RadzenButton Text="Verstuur" Click="OnSendClicked"/>
+    </RadzenStack>
+</RadzenStack>
+
+@code {
+    [CascadingParameter]
+    private CurrentUserState currentUserState { get; set; }
+
+    private string feedbackText { get; set; } = string.Empty;
+
+    private async Task OnSendClicked()
+    {
+        var authId = currentUserState.Value.AuthId;
+        var url = NavigationManager.Uri;
+        await SendFeedbackEmail.ExecuteAsync(authId, feedbackText, url);
+
+        DialogService.Close();
+    }
+
+    private async Task OnCancelClicked()
+    {
+        DialogService.Close();
+    }
+}

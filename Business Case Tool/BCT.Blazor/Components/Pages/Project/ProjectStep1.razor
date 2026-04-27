@@ -1,0 +1,180 @@
+﻿@page "/project/step1"
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+
+@implements IObserver<BCT.Domain.Entities.Project>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IDisposable
+
+@inject IProjectValueService pvs
+@inject IHelpTextService hts
+
+@if(SelectedProjectState?.Value == null)
+{
+    <div>
+
+    </div>
+}
+else
+{
+    <RadzenStack Orientation="Orientation.Vertical">
+        <div Style="width:100%">
+            @((MarkupString)HelpText.Step1.IntroText)
+        </div>
+        <RadzenText><strong>Project gegevens</strong></RadzenText>
+        <RadzenCard Style="width:55%; min-width: 650px" Variant="Variant.Outlined">
+            <RadzenStack Orientation="Orientation.Vertical">
+                <RadzenStack Style="width:50%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                        Icon="info"
+                        Style="padding-top:10px;"
+                        class="tooltip_icon"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Name))"/>
+                    <RadzenFormField Text="Naam project" AllowFloatingLabel="false" Style="width: 100%">
+                        <RadzenTextBox @bind-value=@SelectedProjectState.Value.Name Change="(() => pvs.SaveProject(SelectedProjectState.Value))"/>
+                    </RadzenFormField>
+                </RadzenStack>
+
+                <ProjectTags/>
+
+                <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Description))"/>
+                    <RadzenFormField Text="Definieer project" AllowFloatingLabel="false" Style="width: 100%">
+                        <RadzenTextArea @bind-value=@SelectedProjectState.Value.Description Change="(() => pvs.SaveProject(SelectedProjectState.Value))"/>
+                    </RadzenFormField>
+                </RadzenStack>
+
+            </RadzenStack>
+        </RadzenCard>
+        <RadzenCard Style="width:55%; min-width: 650px" Variant="Variant.Outlined">
+            <RadzenStack Orientation="Orientation.Vertical">
+                <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Baseline))"/>
+                    <RadzenFormField Text="Baseline" AllowFloatingLabel="false" Style="width: 100%;">
+                        <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Baseline", Data).Value) Change="@(() => pvs.SaveValue("Baseline", Data))"/>
+                    </RadzenFormField>
+                </RadzenStack>
+
+                <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Value))"/>
+                    <RadzenFormField Text="Beoogde waarde" AllowFloatingLabel="false" Style="width: 100%">
+                        <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Value", Data).Value) Change="@(() => pvs.SaveValue("Value", Data))"/>
+                    </RadzenFormField>
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenCard>
+        <RadzenCard Style="width:55%; min-width: 650px" Variant="Variant.Outlined">
+            <RadzenStack Orientation="Orientation.Vertical">
+                <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Conditionals))"/>
+                    <RadzenFormField Text="Randvoorwaarden" AllowFloatingLabel="false" Style="width: 100%">
+                        <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Conditionals", Data).Value) Change="@(() => pvs.SaveValue("Conditionals", Data))"/>
+                    </RadzenFormField>
+                </RadzenStack>
+
+                <RadzenStack Style="width:100%" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Left">
+                    <RadzenIcon 
+                        Icon="info"
+                        class="tooltip_icon"
+                        Style="padding-top:10px;"
+                        MouseLeave="hts.CloseTooltip"
+                        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.Step1.Means))"/>
+                    <RadzenFormField Text="Middelen" AllowFloatingLabel="false" Style="width: 100%">
+                        <RadzenTextArea @bind-value=@(pvs.GetValue<StringValue>("Means", Data).Value) Change="@(() => pvs.SaveValue("Means", Data))"/>
+                    </RadzenFormField>
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenCard>
+        <RadzenCard Style="width:100%" Variant="Variant.Outlined" class="project-step-notes-container">
+            <RadzenText><strong>Notities</strong></RadzenText>
+            <br />
+            <RadzenText>Gebruik dit notitieveld om belangrijke details en overwegingen vast te leggen.</RadzenText>
+            <RadzenTextArea @bind-Value=@(pvs.GetValue<StringValue>("Step1Notes", Data).Value) class="project-step-notes" Change="@(() => pvs.SaveValue("Step1Notes", Data))">
+            </RadzenTextArea>
+        </RadzenCard>
+    </RadzenStack>
+}
+
+@code {
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    private Dictionary<string, Domain.Entities.ValueModel> Data { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SelectedProjectState.Subscribe(this);
+        ProjectContentUpdatedNotifier.Subscribe(this);
+
+        Data = await pvs.GetProjectData(SelectedProjectState.Value);
+        await base.OnInitializedAsync();
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(BCT.Domain.Entities.Project p)
+    {
+        if (SelectedProjectState.Value == null)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            Data = await pvs.GetProjectData(SelectedProjectState.Value);
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent e)
+    {
+        if (SelectedProjectState.Value == null || e.Project.Id != SelectedProjectState.Value.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            Data = await pvs.GetProjectData(SelectedProjectState.Value);
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void Dispose()
+    {
+        SelectedProjectState.Unsubscribe(this);
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+}

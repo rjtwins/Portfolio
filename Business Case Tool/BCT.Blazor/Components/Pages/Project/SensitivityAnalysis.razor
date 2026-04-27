@@ -1,0 +1,144 @@
+﻿@page "/project/SensitivityAnalysis"
+
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IObserver<ProjectRemovedEvent>
+@implements IDisposable
+
+@inject IGetCompaniesForUserUseCase GetCompaniesForUserUseCase
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+
+<RadzenDropDown @bind-Value="@_selectedCompany"
+Data="@_availableCompanies"
+TextProperty="Name"
+ValueProperty="Id"
+Multiple=false
+Placeholder="Selecteer bedrijf"
+Change="@(async () => await UpdateProjects())"
+FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+FilterOperator="StringFilterOperator.Contains"
+AllowFiltering="true" />
+
+<RadzenDropDown @bind-Value=@_selectedProject
+Data="@_availableProjects"
+TextProperty="@nameof(Project.Name)"
+ValueProperty="@nameof(Project.Id)"
+Multiple=false
+Placeholder="Selecteer proeject"
+Change="@(async () => await _sensitivityChart.UpdateChart())"
+FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+FilterOperator="StringFilterOperator.Contains"
+AllowFiltering="true" />
+
+<RadzenDropDown @bind-Value=@_selectedPropertie
+Data="@_avaialbleProperties"
+TextProperty="Value"
+ValueProperty="Key"
+Multiple=false
+Placeholder="Selecteer project eigenschap(en)"
+Change="@(async () => await _sensitivityChart.UpdateChart())"
+FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+FilterOperator="StringFilterOperator.Contains"
+AllowFiltering="true" />
+
+<div style="height:80vh">
+    <SensitivityChart @ref=@_sensitivityChart Property="@_selectedPropertie" SelectedProject="_selectedProject"/>
+</div>
+
+@code {
+    [CascadingParameter]
+    private CurrentUserState currentUserState { get; set; }
+
+    [CascadingParameter]
+    private ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    private SensitivityChart _sensitivityChart { get; set; }
+    private List<KeyValueItem> _avaialbleProperties { get; set; } = new();
+    private List<Project> _availableProjects { get; set; } = new();
+    private List<Company> _availableCompanies { get; set; } = new();
+
+    private string _selectedPropertie { get; set; } = string.Empty;
+    private int? _selectedProject { get; set; } = null;
+    private int? _selectedCompany { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (currentUserState?.Value == null)
+            return;
+
+        ProjectContentUpdatedNotifier.Subscribe(this);
+
+        _availableCompanies = await GetCompaniesForUserUseCase.ExecuteAsync(currentUserState.Value);
+        _avaialbleProperties = Domain.Configuration.Project.SensitivityAttributesOptions.Select(x => new KeyValueItem()
+            {
+                Key = x,
+                Value = PresentationSettings.AttributeLabels[x]
+            }).ToList();
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task UpdateProjects()
+    {
+        _selectedProject = null;
+        var company = _availableCompanies.FirstOrDefault(x => x.Id == _selectedCompany);
+
+        if (company == null)
+            return;
+
+        _availableProjects = await GetProjectsForCompanyUseCase.ExecuteAsync(company);
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) { throw new NotImplementedException(); }
+
+    public void OnNext(ProjectContentUpdatedEvent value)
+    {
+        if (_selectedProject == null)
+            return;
+
+        if (_selectedProject != value.Project.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            await _sensitivityChart.RefreshData();
+            await _sensitivityChart.UpdateChart();
+        });
+    }
+
+    public void OnNext(ProjectRemovedEvent value)
+    {
+        if ((_selectedProject ?? -1) != value.ProjectId)
+            return;
+
+        _selectedProject = null;
+
+        InvokeAsync(async () =>
+        {
+            await _sensitivityChart.RefreshData();
+            await _sensitivityChart.UpdateChart();
+        });
+    }
+
+    class KeyValueItem
+    {
+        public required string Key { get; set; }
+        public required string Value { get; set; }
+    }
+
+    public void Dispose()
+    {
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+}

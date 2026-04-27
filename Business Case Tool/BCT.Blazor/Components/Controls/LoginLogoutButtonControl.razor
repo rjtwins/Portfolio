@@ -1,0 +1,29 @@
+@* 
+We use a small hack here to allow people a logout button. 
+There is a login button but this should never be visible in the current auth flow.
+*@
+
+<AuthorizeView>
+    <Authorized>
+        <form id="logoutForm" action="Account/Logout" method="post" style="display:none;">
+            <AntiforgeryToken />
+        </form>
+
+        <a href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">
+            <RadzenButton Icon="logout" Variant="Variant.Text" Style="text-transform:none; color:white; background-color: var(--rz-text-secondary-color)" Text="Uitloggen" />
+        </a>
+    </Authorized>
+    <NotAuthorized>
+        <form id="LoginForm" action="Account/Login" method="get" style="display:none;">
+            <AntiforgeryToken />
+        </form>
+
+        <a href="javascript:void(0);" onclick="document.getElementById('LoginForm').submit();">
+            <RadzenButton Icon="login" Variant="Variant.Text" Style="text-transform:none color:white; background-color: var(--rz-text-secondary-color)" Text="Inloggen" class="rz-text-white" />
+        </a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    
+}

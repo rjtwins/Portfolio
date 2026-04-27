@@ -1,0 +1,53 @@
+{ Analytica Model Import_Module, encoding="UTF-8" }
+SoftwareVersion 6.3.6
+
+{!-60000|Attribute AcpStyles}
+
+
+LinkModule Import_Module
+Title: Import Module
+Author: jorre Vedder~
+Bicore Services
+Date: Mon, Jun 19, 2023 10:07 am
+NodeSize: 64,24
+DiagState: 2,105,149,944,480,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule Import_Module,2,2,0,0,Modules\Import_global.ana
+
+Button Import_FTEs
+Title: Import~
+FTEs
+NodeLocation: 128,148,1
+NodeSize: 64,28
+WindState: 2,1087,82,904,350
+Aliases: Alias Al431490195
+OnClick: {Resets the selected spreadsheet, so when Spreadsheet_Open is called again it will prompt the user for a new spreadsheet}~
+Spreadsheet_Workbook := 0;~
+Spreadsheet_Sheet := 'FTEs!';~
+DEFINITION OF Spreadsheet_Workbook := "SpreadsheetOpen('example.xlsx',True)";~
+{Copies the data}~
+Actual_Badge_Swipes := Spreadsheet_Range[@.Column=@Time];
+
+Text Te628426899
+Title: Import Drivers
+NodeLocation: 128,144,-1
+NodeSize: 80,120
+Aliases: Alias Al1505232019
+
+Button Import_Production_Vo
+Title: Import~
+Production Volume
+NodeLocation: 128,220,1
+NodeSize: 64,36
+WindState: 2,979,2,904,350
+Aliases: Alias Al968361107
+OnClick: {Resets the selected spreadsheet, so when Spreadsheet_Open is called again it will prompt the user for a new spreadsheet}~
+Spreadsheet_Workbook := 0;~
+Spreadsheet_Sheet := 'Production Volume!';~
+DEFINITION OF Spreadsheet_Workbook := "SpreadsheetOpen('',True)";~
+{Copies the data}~
+Production_Volume := Spreadsheet_Range[@.Column=@Time,@.Row=@BL];
+
+Close Import_Module
+

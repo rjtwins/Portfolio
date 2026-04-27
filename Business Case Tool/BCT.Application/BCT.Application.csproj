@@ -1,0 +1,122 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UseCases\**" />
+    <EmbeddedResource Remove="UseCases\**" />
+    <None Remove="UseCases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="UseCases\Commands\AddTagToProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\AddUserToCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\ApplyProjectGridWizardUseCase.cs" />
+    <Compile Include="UseCases\Commands\CreateAndAddNewTagUseCase.cs" />
+    <Compile Include="UseCases\Commands\CreateCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\CreateProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\AddRoleToUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\CreateUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\DeleteProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\DeleteUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\IAddTagToProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\IApplyProjectGridWizardUseCase.cs" />
+    <Compile Include="UseCases\Commands\ICreateAndAddNewTagUseCase.cs" />
+    <Compile Include="UseCases\Commands\IProcessMissingValueMigrationsUseCase.cs" />
+    <Compile Include="UseCases\Commands\IRemoveTagFromProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISaveProjectGridWizardUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISaveSensitivityScenarioUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISendFeedbackEmailUseCase.cs" />
+    <Compile Include="UseCases\Commands\ProcessMissingValueMigrationsUseCase.cs" />
+    <Compile Include="UseCases\Commands\RemoveTagFromProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\SaveProjectGridWizardUseCase.cs" />
+    <Compile Include="UseCases\Commands\SaveSensitivityScenarioUseCase.cs" />
+    <Compile Include="UseCases\Commands\SendFeedbackEmailUseCase.cs" />
+    <Compile Include="UseCases\Commands\IUpdateLastSelectedUseCase.cs" />
+    <Compile Include="UseCases\Queries\CheckIfUserExistsUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetCompanyTagsUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectAdditionalCriteriaUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectDoubleValues.cs" />
+    <Compile Include="UseCases\Commands\IAddUserToCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\ICreateProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\ICreateCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\IDeleteCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\IDeleteProjectUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectGridWizardUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectTagsUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetScenarioResultsUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetScenarioUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetSensitivityAnalysisResultUseCase.cs" />
+    <Compile Include="UseCases\Queries\ICheckIfUserExistsUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetCompanyTagsUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectAdditionalCriteriaUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectDoubleValues.cs" />
+    <Compile Include="UseCases\Commands\IRemoveUserFromCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISaveCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISaveProjectToExcelUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISaveProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\ISaveValueUseCase.cs" />
+    <Compile Include="UseCases\Commands\IUpdateProjectFromExcelFile.cs" />
+    <Compile Include="UseCases\Commands\RemoveUserFromCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\SaveCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\SaveProjectToExcelUseCase.cs" />
+    <Compile Include="UseCases\Commands\SaveProjectUseCase.cs" />
+    <Compile Include="UseCases\Commands\SaveValueUseCase.cs" />
+    <Compile Include="UseCases\Commands\UpdateProjectFromExcelFile.cs" />
+    <Compile Include="UseCases\IUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetCompaniesForUserUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetCompanyUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetCompanyUsersUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectsForCompanyUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectsUseCase.cs" />
+    <Compile Include="UseCases\Commands\IAddRoleToUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\ICheckIfEmailAvailableUseCase.cs" />
+    <Compile Include="UseCases\Commands\ICreateUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\IDeleteUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\IRemoveRoleUseCase.cs" />
+    <Compile Include="UseCases\Commands\IResetUserPasswordUseCase.cs" />
+    <Compile Include="UseCases\Commands\RemoveRoleUseCase.cs" />
+    <Compile Include="UseCases\Commands\ResetUserPasswordUseCase.cs" />
+    <Compile Include="UseCases\Commands\CheckIfEmailAvailableUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetAllRolesUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetProjectValuesUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetUserHasAccessToCompany.cs" />
+    <Compile Include="UseCases\Queries\GetUserRolesUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetUsersUseCase.cs" />
+    <Compile Include="UseCases\Queries\GetUserUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetAllProjectsForCompanyUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetAllRolesUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetCompaniesForUserUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetCompanyUsersUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectGridWizardUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectsUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectTagsUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetProjectValuesUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetScenarioResultsUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetScenarioUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetSensitivityAnalysisResultUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetUserRolesUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetUsersUseCase.cs" />
+    <Compile Include="UseCases\Queries\IGetUserUseCase.cs" />
+    <Compile Include="UseCases\Commands\DeleteCompanyUseCase.cs" />
+    <Compile Include="UseCases\Commands\UpdateLastSelectedUseCase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.16" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BCT.Domain\BCT.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,370 @@
+﻿:root {
+    --rz-text-title-color: #00303C;
+    --rz-text-color: #00303C;
+    --rz-text-secondary-color: #00303C;
+    --rz-primary: #F28B04;
+    --rz-secondary: #00303C;
+    --rz-tertiary: #757575;
+    --rz-sidebar-toggle-hover-background: #F28B04;
+    --rz-text-color-white: #ffffff;
+    --rz-steps-color: var(--rz-text-secondary-color);
+    --rz-steps-number-background-color: var(--rz-text-secondary-color);
+    --rz-steps-number-selected-color: var(--rz-primary);
+    --rz-steps-title-selected-color: var(--rz-primary);
+    --rz-switch-checked-circle-background-color: var(--rz-primary);
+    --rz-layout-background-color: white;
+    --rz-tooltip-color: white;
+    --rz-tooltip-background-color: #F28B04;
+
+    print-color-adjust: exact;
+}
+
+.rz-steps .hidden-steps-item:first-child a {
+    display: none;
+}
+
+.rz-body {
+    /*background: white !important;*/
+    background-image: url("../background.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100vh;
+    background-color: rgba(255,255,255,0.90);
+    background-blend-mode: lighten;
+    background-position-x:right;
+}
+
+.rz-text-secondary-color {
+    color: var(--rz-secondary) !important
+}
+    .rz-text-secondary-color input {
+        color: var(--rz-secondary) !important
+    }
+
+.rz-text-tertiary-color {
+    color: var(--rz-tertiary) !important
+}
+    .rz-text-tertiary-color input {
+        color: var(--rz-tertiary) !important
+    }
+
+    .rz-text-tertiary-color .rz-state-disabled{
+        background: #F5F5F5 !important;
+    }
+
+.rz-text-white {
+    color: white;
+}
+
+.layoutMenuItem {
+    border: none !important;
+    border-radius: 0px !important;
+    margin: 0.5rem !important;
+    margin-left: 0px !important;
+    padding: 0px !important;
+}
+
+    .layoutMenuItem .rz-navigation-item-link {
+        padding-block: 0.25rem !important;
+        padding-left: 0px !important;
+    }
+
+.rz-accordion-content {
+    padding-block: 0px !important;
+}
+
+    .rz-text-tertiary-color .rz-numeric-input {
+        color: var(--rz-tertiary);
+        font-size: 14px;
+    }
+
+.project-data-grid{
+    overflow-x: scroll;
+    padding-bottom: 2rem;
+    padding-left:0rem; 
+    padding-right:5%; 
+    padding-top:1rem; 
+    padding-bottom:1rem
+}
+
+.project-data-grid-value-cell {
+    padding: 0px;
+    margin: 0px;
+    height: 30px;
+    max-height: 30px;
+    max-width: 8rem;
+    min-width: 8rem;
+}
+
+.project-data-grid-row-header {
+    display: flex;
+    height: 40px;
+    max-height: 40px;
+    text-align: left;
+    padding-right: 1rem;
+    white-space: nowrap;
+    align-items: end;
+    margin: 0px;
+}
+
+.project-data-grid-column-header {
+    max-height: 20px;
+    text-align: right;
+    padding-right: 1rem;
+    white-space: nowrap;
+}
+
+.project-data-grid-column {
+
+}
+
+.project-step-notes-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-step-notes {
+    width: 100%;
+    flex: 1;
+    min-height: 200px;
+}
+
+.rz-widget-content{
+    overflow-y: hidden !important;
+}
+
+.sidebar-toggle-button{
+
+}
+
+.rz-header {
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    background-color: var(--rz-secondary);
+    color: var(--rz-white);
+}
+
+.short-input {
+    width: 250px;
+}
+
+/*ToolTip CSS Position Override*/
+.rz-tooltip-rtl .rz-tooltip-content {
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
+    max-width: 80vw;
+    /*word-break:break-word;*/
+    height: fit-content;
+}
+
+
+.rz-tooltip-rtl.rz-tooltip .rz-top-tooltip-content:after {
+    left: 12px;
+    transform: translate(-50%, 50%) rotate(45deg);
+    left: unset;
+}
+
+.rz-tooltip-ltl .rz-tooltip-content {
+    position: absolute;
+    bottom: 0px;
+    right: -35px;
+    max-width: 80vw;
+    /*word-break:break-word;*/
+    height: fit-content;
+}
+
+.rz-tooltip-ltl.rz-tooltip .rz-top-tooltip-content:after {
+    right: 12px;
+    transform: translate(-50%, 50%) rotate(45deg);
+    left: unset;
+}
+
+input[disabled] {
+    color: var(--rz-text-color) !important;
+    filter: opacity(60%) !important;
+}
+
+.rz-form-field-label {
+    color: var(--rz-text-color) !important;
+    filter: opacity(100%) !important;
+}
+
+.rz-state-disabled .rz-form-field-content > .rz-form-field-label {
+    color: var(--rz-text-color) !important;
+    filter: opacity(100%) !important;
+}
+
+.rz-form-field-content::after{
+    display:none !important;
+    width: 0px;
+    height: 0px;
+}
+
+.rz-data-row {
+    padding: 0px !important;
+    margin: 0px !important;
+    height: 25px !important;
+}
+
+.rz-frozen-cell {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+td[hide_cell="true"]{
+    background-color: white !important;
+    border-color: white !important;
+}
+
+.rz-cell-data .rz-form-field .rz-form-field-content {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.rz-cell-data .rz-form-field .rz-form-field-content .rz-numeric input {
+    padding: 0px !important;
+    margin: 0px !important;
+    height: 15px;
+    width: 100%;
+}
+
+.rz-grid-table td, .rz-grid-table th {
+    padding-top:2px;
+    padding-right:5px;
+    padding-left:5px;
+    padding-bottom:0px;
+    margin: 0px !important;
+}
+
+.rz-card.rz-variant-outlined {
+    background-color: white !important;
+}
+
+.rz-button.rz-variant-text.rz-primary:not(.rz-state-disabled):hover{
+    background-color: unset;
+}
+
+.rz-steps-title{
+    max-width: 150px;
+}
+
+.rz-steps [role=tablist] {
+    display: flex;
+    /*align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;*/
+    min-width: 400px;
+}
+
+.rz-steps-item {
+    display: flex !important;
+}
+
+.uitkomst-raport {
+    margin-right: 100px;
+    width: 100%;
+    border-top: solid var(--rz-secondary);
+    border-bottom: solid var(--rz-secondary);
+    background: white;
+}
+
+.uitkomst-raport-cell-left {
+    border-bottom: 1px solid grey;
+    padding-left: 25px;
+    background-color: #f3f3fb;
+    margin: 0px;
+    align-content: center;
+    min-height: 50px;
+    min-width: 155px;
+}
+
+.uitkomst-raport-cell-right {
+    border-bottom: 1px solid grey;
+    padding-left: 25px;
+    margin: 0px;
+    align-content: center;
+    min-height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.fade-in-500 {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.5s;
+}
+
+.fade-in-200 {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.2s;
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fast-fill-dialog{
+    width: unset !important;
+    min-width: 850px !important;
+    max-width: 1000px !important;
+}
+
+.scenario_dialog {
+    background-color: var(--rz-secondary);
+    color: white !important;
+    min-height: 270px;
+}
+    .scenario_dialog .rz-dialog-side-titlebar {
+        background-color: var(--rz-secondary);
+        color: white !important;
+    }
+    .scenario_dialog .rz-dialog-side-title {
+        background-color: var(--rz-secondary);
+        color: white !important;
+    }
+    .scenario_dialog div {
+        background-color: var(--rz-secondary);
+        color: white !important;
+    }
+    .scenario_dialog span {
+        background-color: var(--rz-secondary);
+        color: white !important;
+    }
+    .scenario_dialog input {
+        background-color: var(--rz-secondary);
+        color: white !important;
+    }
+    .scenario_dialog label {
+        background-color: var(--rz-secondary) !important;
+        color: white !important;
+    }
+
+.scenario_radio_button div .rz-state-active{
+    background-color: var(--rz-secondary) !important;
+}
+
+.tooltip_icon{
+    cursor: help;
+    z-index: 99;
+}
+
+.rz-steps-number {
+    min-width: var(--rz-steps-number-width) !important;
+    min-height: var(--rz-steps-number-height) !important;
+}

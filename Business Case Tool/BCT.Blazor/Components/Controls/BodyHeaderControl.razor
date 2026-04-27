@@ -1,0 +1,164 @@
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+
+@implements IObserver<BCT.Domain.Entities.Company>
+
+@inject Sqids.SqidsEncoder<int> SqidsEncoder
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+@inject ICreateCompanyUseCase CreateCompanyUseCase
+@inject DialogService DialogService
+@inject ICreateProjectUseCase AddProjectUseCase
+@inject ISaveProjectToExcelUseCase SaveProjectToExcelUseCase
+@inject IUpdateProjectFromExcelFile UpdateProjectFromExcelFileUseCase
+
+@attribute [Authorize]
+
+<InputFile Id="file_upload_control" InputFile OnChange="OnExcelFileUploaded" style="display: none;"/>
+
+<div style="height:6vh">
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenMenu>
+                <RadzenMenuItem Icon="menu" Text="Menu">
+                    @if(SelectedCompanyState.Value != null){
+                        <RadzenMenuItem Icon="source_environment"  Click="OnEditCompanyClicked" Text="Bedrijf instellingen"/>
+                    }
+                    <RadzenMenuItem Icon="domain_add" Click="OnAddCompanyClicked" Text="Bedrijf toevoegen"/>
+                    @if(SelectedCompanyState.Value != null){
+                        <RadzenMenuItem Icon="add" Click="OnAddProjectClicked" Text="Project toevoegen"/>
+                    }
+                    @if(SelectedProjectState.Value != null)
+                    {
+                        <RadzenMenuItem Icon="upload" Text="Importeer project data" Click="@(() => JS.InvokeVoidAsync("clickOnElement", "file_upload_control"))"/>
+                        <RadzenMenuItem Icon="download" Text="Exporteer project data" Click="ExportProjectToExcelButtonClicked"/>
+                    }
+                </RadzenMenuItem>
+            </RadzenMenu>
+            <RadzenDropDown @bind-Value="SelectedCompanyState.Value" Data="Companies" TextProperty="Name"/>
+        </RadzenStack>
+        <div></div>
+    </RadzenStack>
+</div>
+
+@code{
+    [CascadingParameter]
+    public NewCompanyNotifier NewCompanyNotifier { get; set; }
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+
+    [Parameter]
+    public List<BCT.Domain.Entities.Company> Companies { get; set; } = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public void OnNext(Company value)
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    public async Task OnAddCompanyClicked()
+    {
+        var newCompany = await CreateCompanyUseCase.ExecuteAsync(CurrentUserState.Value, $"Bedrijf {Companies.Count + 1}", CurrentUserState?.Value?.Name ?? "NULL");
+
+        SelectedCompanyState.Value = newCompany;
+        StateHasChanged();
+    }
+
+    private async Task OnEditCompanyClicked()
+    {
+        var options = new DialogOptions()
+        {
+            Resizable = false,
+            Draggable = false
+        };
+
+        await DialogService.OpenAsync("Bedrijfs Instellingen", ds => @<BCT.Blazor.Components.Pages.Settings.Company IsDialog="true" />, options);
+    }
+
+    private async Task OnEditUsersClicked()
+    {
+        var options = new DialogOptions()
+        {
+            Resizable = false,
+            Draggable = false,
+            Width = "75vw"
+        };
+        await DialogService.OpenAsync<BCT.Blazor.Components.Pages.Settings.User>("Gebruikers Instellingen", options:options);
+    }
+
+    private async Task OnAddProjectClicked()
+    {
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        var newProject = await AddProjectUseCase.ExecuteAsync(SelectedCompanyState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+        NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(newProject.Id)}");        
+
+        StateHasChanged();
+    }
+
+    private async Task ExportProjectToExcelButtonClicked(){
+        var base64 = await SaveProjectToExcelUseCase.ExecuteAsync(SelectedProjectState.Value);
+        var bytes = Convert.FromBase64String(base64);
+        var fileStream = new MemoryStream(bytes);
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", $"{SelectedProjectState.Value.Name}.xlsx", streamRef);
+    }
+
+        private async Task OnExcelFileUploaded(InputFileChangeEventArgs args)
+    {
+        if(args?.File == null)
+            return;
+
+        var file = args?.File;
+
+        if(file == null)
+            return;
+
+        if(!IsExcelFile(file))
+            return;
+
+        var fileStream = file.OpenReadStream((long)1e8);
+        var memoryStream = new MemoryStream();
+
+        await fileStream.CopyToAsync(memoryStream);
+        byte[] fileBytes = memoryStream.ToArray();
+
+        memoryStream.Close();
+        memoryStream.Dispose();
+        fileStream.Close();
+        fileStream.Dispose();
+
+        string base64String = Convert.ToBase64String(fileBytes);
+
+        await UpdateProjectFromExcelFileUseCase.ExecuteAsync(SelectedProjectState.Value, base64String);
+    }
+
+    private bool IsExcelFile(IBrowserFile file)
+    {
+        string extension = Path.GetExtension(file.Name);
+        if (extension != ".xls" && extension != ".xlsx")
+            return false;
+
+        if (file.ContentType != "application/vnd.ms-excel" &&
+            file.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            return false;
+
+        return true;
+    }
+
+    public void OnCompleted() { }
+    public void OnError(Exception error) => throw error;
+}

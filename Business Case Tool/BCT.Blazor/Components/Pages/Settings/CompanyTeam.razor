@@ -1,0 +1,105 @@
+﻿@page "/settings/companyteam"
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+
+@inject NavigationManager NavigationManager
+@inject DialogService Dialogservice
+
+@* Use case *@
+@inject IGetUsersUseCase GetUsersUseCase
+@inject IGetCompanyUsersUseCase GetCompanyUsersUseCase
+@inject IAddUserToCompanyUseCase AddUserToCompanyUseCase
+@inject IRemoveUserFromCompanyUseCase RemoveUserFromCompanyUseCase
+
+@if (allUsers.Count() == 0 || SelectedCompanyState.Value == null)
+{
+    <div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;">
+        <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </div>
+}
+else
+{
+    <RadzenDropDown Style="width:100%"
+        @bind-Value=@selectedUserAuthIds
+        Data=@allUsers
+        TextProperty="@nameof(BCT.Domain.Entities.User.Name)"
+        ValueProperty="@nameof(BCT.Domain.Entities.User.AuthId)"
+        Name="DropDownMultiple"
+        Multiple=true
+        AllowClear=true
+        Placeholder="Selecteer gebruikers"
+        Change="OnSelectedItemChanged"
+        Chips=true
+        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+        FilterOperator="StringFilterOperator.Contains"
+        AllowFiltering=true />
+}
+
+
+@code {
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+
+    [Parameter]
+    public bool IsDialog { get; set; }
+
+    private List<BCT.Domain.Entities.User> allUsers { get; set; } = new();
+    private List<string> selectedUserAuthIds { get; set; } = new();
+    private List<BCT.Domain.Entities.User> selectedUsers
+    {
+        get
+        {
+            if(selectedUserAuthIds == null)
+                return new();
+
+            return allUsers.Where(x => selectedUserAuthIds.Contains(x.AuthId)).ToList();
+        }
+        set
+        {
+            if (selectedUserAuthIds == null)
+                selectedUserAuthIds = new();
+
+            selectedUserAuthIds.Clear();
+            selectedUserAuthIds.AddRange(value.Select(x => x.AuthId).ToList());
+        }
+    }
+
+    private List<BCT.Domain.Entities.User> currentUsers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        allUsers = (await GetUsersUseCase.ExecuteAsync())
+            .OrderBy(x => x.Name)
+            .ToList();
+        var localSelectedUsers = (await GetCompanyUsersUseCase.ExecuteAsync(SelectedCompanyState.Value)).ToList();
+        selectedUsers = localSelectedUsers;
+        currentUsers = localSelectedUsers.ToList();
+    }
+
+    private async Task OnSelectedItemChanged()
+    {
+        var selectedUsersLocal = (selectedUsers ?? new());
+        var toAdd = selectedUsersLocal.ExceptBy(currentUsers.Select(x => x.Id), x => x.Id).ToList();
+        var toRemove = currentUsers.ExceptBy(selectedUsersLocal.Select(x => x.Id), x => x.Id).ToList();
+
+        foreach (var user in toAdd)
+        {
+            await AddUserToCompanyUseCase.ExecuteAsync(user, SelectedCompanyState.Value);
+            await Task.Delay(100);
+        }
+
+        foreach (var user in toRemove)
+        {
+            await RemoveUserFromCompanyUseCase.ExecuteAsync(user, SelectedCompanyState.Value);
+            await Task.Delay(100);
+        }
+
+        await Task.Delay(100);
+    }
+}

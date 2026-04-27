@@ -1,0 +1,506 @@
+﻿@page "/project/step4"
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using System.Globalization
+@using UIModels
+
+@implements IObserver<BCT.Domain.Entities.Project>
+@implements IObserver<SidebarExtended>
+@implements IObserver<ProjectContentUpdatedEvent>
+@implements IDisposable
+
+@inject IJSRuntime JSRuntime
+@inject IConfiguration Configuration
+@inject DialogService DialogService
+@inject NavigationManager NavigationManager
+
+@inject IHelpTextService hts
+@inject IGetProjectValuesUseCase GetProjectValuesUseCase
+@inject IProjectValueService pvs
+@inject IGetProjectAdditionalCriteriaUseCase GetProjectAdditionalCriteriaUseCase
+@inject IGetScenarioResultsUseCase GetSensativityResults
+@inject IGetScenarioUseCase GetSensativityScenarioUseCase
+@inject ISaveSensitivityScenarioUseCase SaveSensitivityScenarioUseCase
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+@inject IPrinter Printer
+
+<div style="display:flex; flex-direction:column; align-items: flex-end; margin-bottom: 25px;">
+    <RadzenStack Orientation="Orientation.Horizontal">
+        <RadzenSplitButton Click="SplitButtonClicked"
+        Icon="@(_mode == 1 ? "edit" : "")"
+        Text=@_splitButtonText
+        Style="width: 300px">
+            <RadzenSplitButtonItem Text="Basisscenario" Value="0" />
+            <RadzenSplitButtonItem Text="Alternatief scenario" Value="1" />
+        </RadzenSplitButton>
+    </RadzenStack>
+</div>
+
+<Dashboard @ref="@_dashboard"
+DashboardData="@DashboardData"
+ScenarioDashboardData="@ScenarioDashboardData"
+AdditionalCriteriaItems="@additionalCriteriaItems"
+Data="@Data"
+ScenarioData="@ScenarioData"
+Mode="@_mode"
+ChartLineData="@ChartLineData"
+ChartBarData="@ChartBarData"
+ChartLineDataScenario="@ChartLineDataScenario"
+ChartBarDataScenario="@ChartBarDataScenario"
+LineKassstroomKey="@_lineKassstroomKey"
+BarKasstroomKey="@_barKasstroomKey"
+Project="@SelectedProjectState?.Value"/>
+
+@code {
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+
+    [CascadingParameter]
+    public ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+
+    [CascadingParameter]
+    public SidebarState SidebarState { get; set; }
+
+    [Parameter]
+    public bool Printing { get; set; } = false;
+
+    // private ResultChart _resultChart { get; set; }
+    // private CompareProjectsChart _compareChart { get; set; }
+    private Dashboard _dashboard { get; set; }
+
+    private Dictionary<string, Domain.Entities.ValueModel> Data { get; set; } = new();
+    private Dictionary<string, Domain.Entities.ValueModel> ScenarioData { get; set; } = new();
+    private List<StringValue> AdditionalCriteria { get; set; } = new();
+    private List<DataItem> ChartLineData { get; set; } = new();
+    private List<DataItem> ChartBarData { get; set; } = new();
+    private List<DataItem> ChartLineDataScenario { get; set; } = new();
+    private List<DataItem> ChartBarDataScenario { get; set; } = new();
+    // private List<DataItem> ChartBarData2 { get; set; } = new();
+    private List<AdditionalCriteriaItem> additionalCriteriaItems { get; set; } = new();
+
+    private DashboardDataModel? DashboardData { get; set; } = null;
+    private DashboardDataModel? ScenarioDashboardData { get; set; } = null;
+
+    private int _mode { get; set; } = 0;
+    private bool _scenarioActive => _mode == 1;
+    private string _splitButtonText { get; set; } = "Basisscenario";
+    private bool _scenarioEditorOpen { get; set; }
+    private string _lineKassstroomKey { get; set; } = string.Empty;
+    private string _barKasstroomKey { get; set; } = string.Empty;
+
+    private Scenario sensitivityScenario { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SelectedProjectState.Subscribe(this);
+        SidebarState.Subscribe(this);
+        ProjectContentUpdatedNotifier.Subscribe(this);
+
+        await GetProjectData();
+
+        //SidebarState.Extended = false;
+
+        DialogService.OnSideClose += (_) =>
+        {
+            _scenarioEditorOpen = false;
+        };
+
+        DialogService.OnSideOpen += (_, _, _) =>
+        {
+            _scenarioEditorOpen = true;
+        };
+
+        sensitivityScenario = await GetSensativityScenarioUseCase.ExecuteAsync(SelectedProjectState?.Value?.Id ?? -1);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task GetProjectData()
+    {
+        if (SelectedProjectState.Value == null)
+            return;
+
+        Data = await pvs.GetProjectData(SelectedProjectState.Value);
+        var doubleValues = await pvs.GetProjectDoubleValues(SelectedProjectState.Value);
+        doubleValues.Where(x => x.Year == null).ToList().ForEach(x => Data[x.Key] = x);
+
+        List<DoubleValue> scenarioValues = new();
+        if (_scenarioActive)
+        {
+            ScenarioData = Data.ToDictionary(x => x.Key, x => x.Value);
+            scenarioValues = await GetSensativityResults.ExecuteAsync(SelectedProjectState.Value, sensitivityScenario);
+            scenarioValues.Where(x => x.Year == null).ToList().ForEach(x => ScenarioData[x.Key] = x);
+        }
+
+        AdditionalCriteria = await GetProjectAdditionalCriteriaUseCase.Execute(SelectedProjectState.Value);
+        ChartLineData.Clear();
+        ChartBarData.Clear();
+        additionalCriteriaItems.Clear();
+
+        ChartBarDataScenario.Clear();
+        ChartLineDataScenario.Clear();
+
+        _lineKassstroomKey = SelectedProjectState.Value.InterestEnabled ? "Cumulatieve verdisconteerde kasstroom" : "Cumulatieve kasstroom";
+        _barKasstroomKey = SelectedProjectState.Value.InterestEnabled ? "Kasstroom" : "Kasstroom"; //We always want just the Kasstroom.
+
+        //Chart data
+        ChartLineData = doubleValues
+            .Where(x => x.Key == _lineKassstroomKey)
+            .OrderBy(x => x.Year)
+            .Select(x => new DataItem()
+                {
+                    X = (double)x.Year + 0.5,
+                    Key = x.Year.ToString(),
+                    Value = double.Round(x.Value, 1)
+                })
+            .ToList();
+
+        ChartLineData.Add(new DataItem()
+            {
+                X = ChartLineData.MaxBy(x => x.X).X + 0.5,
+                Key = "Restwaarde",
+                Value = double.Round(doubleValues.Single(x => x.Key == $"{_lineKassstroomKey} Risidual").Value, 1)
+            });
+
+        ChartBarData = doubleValues
+            .Where(x => x.Key == _barKasstroomKey)
+            .OrderBy(x => x.Year)
+            .Select(x => new DataItem()
+                {
+                    X = (double)x.Year,
+                    Key = x.Year.ToString(),
+                    Value = double.Round(x.Value, 1)
+                })
+            .ToList();
+
+        ChartBarData.Add(new DataItem()
+            {
+                X = ChartBarData.MaxBy(x => x.X).X + 1,
+                Key = "Restwaarde",
+                Value = double.Round(doubleValues.Single(x => x.Key == $"{_barKasstroomKey} Risidual").Value, 1)
+            });
+
+        double paybackValue = pvs.GetValue<DoubleValue>("Payback", Data).Value * 12;
+        string payback = paybackValue < 0 ? "Buiten horizon" : (((int)Math.Round(paybackValue)).ToString() + " mnd");
+        int ROI = (int)Math.Round((pvs.GetValue<DoubleValue>("ROI", Data).Value * 100));
+
+        DashboardData = new DashboardDataModel(
+                payback,
+                "",
+                BadgeStyle.Success,
+                ROI,
+                BadgeStyle.Success,
+                (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalResultaat", Data).Value),
+                BadgeStyle.Success,
+                (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalInkomsten", Data).Value),
+                BadgeStyle.Success,
+                (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalKosten", Data).Value),
+                BadgeStyle.Success,
+                (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalInvesteringen", Data).Value),
+                BadgeStyle.Success
+            );
+
+        //AdditionalCriteria
+        foreach (var v in AdditionalCriteria)
+        {
+            additionalCriteriaItems.Add(
+                new AdditionalCriteriaItem(
+                    PresentationSettings.AdditionalCriteriaLabels[v.Key],
+                    (int)pvs.GetValue<DoubleValue>($"{v.Key}Weight", Data).Value,
+                    pvs.GetValue<StringValue>($"{v.Key}", Data).Value));
+        }
+
+        AdditionalCriteria = AdditionalCriteria.OrderBy(x => x.Value).ToList();
+
+        if (!_scenarioActive)
+            return;
+
+        ChartLineDataScenario = scenarioValues
+            .Where(x => x.Key == _lineKassstroomKey)
+            .OrderBy(x => x.Year)
+            .Select(x => new DataItem()
+                {
+                    X = (double)x.Year + 0.5,
+                    Key = x.Year.ToString(),
+                    Value = double.Round(x.Value, 1)
+                })
+            .ToList();
+
+        ChartLineDataScenario.Add(new DataItem()
+            {
+                X = ChartLineDataScenario.MaxBy(x => x.X).X + 0.5,
+                Key = "Restwaarde",
+                Value = double.Round(scenarioValues.Single(x => x.Key == $"{_lineKassstroomKey} Risidual").Value, 1)
+            });
+
+        ChartBarDataScenario = scenarioValues
+            .Where(x => x.Key == _barKasstroomKey)
+            .OrderBy(x => x.Year)
+            .Select(x => new DataItem()
+                {
+                    X = (double)x.Year,
+                    Key = x.Year.ToString(),
+                    Value = double.Round(x.Value, 1)
+                })
+            .ToList();
+
+        ChartBarDataScenario.Add(new DataItem()
+            {
+                X = ChartBarDataScenario.MaxBy(x => x.X).X + 1,
+                Key = "Restwaarde",
+                Value = double.Round(scenarioValues.Single(x => x.Key == $"{_barKasstroomKey} Risidual").Value, 1)
+            });
+
+        double scenarioPaybackValue = pvs.GetValue<DoubleValue>("Payback", ScenarioData).Value * 12;
+        string scenarioPayback = scenarioPaybackValue < 0 ? "Buiten horizon" : ((int)Math.Round(scenarioPaybackValue)).ToString() + " mnd";
+        int paybackDifValue = scenarioPaybackValue < 0 || paybackValue < 0 ? 0 : (int)(Math.Round(scenarioPaybackValue - paybackValue));
+        string paybackDif = paybackValue < 0 || scenarioPaybackValue < 0 ? "n.v.t" : ((int)Math.Abs(paybackDifValue)).ToString() + " mnd";
+
+        int scenarioROI = (int)Math.Round((pvs.GetValue<DoubleValue>("ROI", ScenarioData).Value * 100));
+        int roiDif = scenarioROI - ROI;
+
+        var scenarioTotalResult = (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalResultaat", ScenarioData).Value);
+        var scenarioTotalIncome = (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalInkomsten", ScenarioData).Value);
+        var scenarioTotalCost = (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalKosten", ScenarioData).Value);
+        var scenarioTotalInvestment = (int)Math.Round(pvs.GetValue<DoubleValue>("TotaalInvesteringen", ScenarioData).Value);
+
+        ScenarioDashboardData = new DashboardDataModel(
+                scenarioPayback,
+                paybackDif,
+                GetBadgeStyle(paybackDifValue, BadgeStyle.Danger, BadgeStyle.Base, BadgeStyle.Success),
+                scenarioROI,
+                GetBadgeStyle(roiDif, BadgeStyle.Success, BadgeStyle.Base, BadgeStyle.Danger),
+                scenarioTotalResult,
+                GetBadgeStyle(scenarioTotalResult - DashboardData.TotalResult, BadgeStyle.Success, BadgeStyle.Base, BadgeStyle.Danger),
+                scenarioTotalIncome,
+                GetBadgeStyle(scenarioTotalIncome - DashboardData.TotalIncome, BadgeStyle.Success, BadgeStyle.Base, BadgeStyle.Danger),
+                scenarioTotalCost,
+                GetBadgeStyle(scenarioTotalCost - DashboardData.TotalCost, BadgeStyle.Danger, BadgeStyle.Base, BadgeStyle.Success),
+                scenarioTotalInvestment,
+                GetBadgeStyle(scenarioTotalInvestment - DashboardData.TotalInvestment, BadgeStyle.Danger, BadgeStyle.Base, BadgeStyle.Success)
+            );
+    }
+
+    public async Task PrintReport()
+    {
+        InvokeAsync(async () =>
+        {
+            await DialogService.OpenAsync("", ds =>
+            @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" class="rz-p-12">
+                <RadzenProgressBarCircular ShowValue="false" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Large">
+                </RadzenProgressBarCircular>
+                <RadzenText TextStyle="TextStyle.H6">PDF wordt gegenereerd...</RadzenText>
+            </RadzenStack>
+    , new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false });
+        });
+
+        var parameters = new Dictionary<string, object>()
+        {
+            { "ProjectName", SelectedProjectState?.Value?.Name ?? "" },
+            { "DashboardData", DashboardData },
+            { "ScenarioDashboardData", ScenarioDashboardData },
+            { "AdditionalCriteriaItems", additionalCriteriaItems },
+            { "Data", Data },
+            { "ScenarioData", ScenarioData },
+            { "Mode", _mode },
+            { "ChartLineData", ChartLineData },
+            { "ChartBarData", ChartBarData },
+            { "ChartLineDataScenario", ChartLineDataScenario },
+            { "ChartBarDataScenario", ChartBarDataScenario },
+            { "LineKassstroomKey", _lineKassstroomKey },
+            { "BarKasstroomKey", _barKasstroomKey },
+            { "Interest", SelectedProjectState.Value.InterestEnabled },
+            { "Printing", true}
+        };
+
+        var token = Guid.NewGuid().ToString();
+        PrintStore.Set(token, parameters);
+        var baseUri = NavigationManager.BaseUri;
+        var pdfBytes = await Printer.PrintDashboard(baseUri, token);
+        string base64 = Convert.ToBase64String(pdfBytes);
+
+        await JSRuntime.InvokeVoidAsync("downloadPdfFromBase64", base64, "dashboard.pdf");
+
+        PrintStore.Cleanup(token);
+
+        DialogService.Close();
+    }
+
+    private void SplitButtonClicked(RadzenSplitButtonItem item)
+    {
+        if (item == null && (_mode == 0 || _mode == 2))
+        {
+            return;
+        }
+        if (item == null && _mode == 1)
+        {
+            ScenarioEdit();
+            return;
+        }
+
+        if (item != null)
+            _mode = int.Parse(item.Value);
+
+        _splitButtonText = item.Text;
+        if (_mode == 0 || _mode == 2)
+        {
+            InvokeAsync(async () =>
+            {
+                await CloseScenarioView();
+            });
+            return;
+        }
+        if (_mode == 1)
+        {
+            InvokeAsync(async () =>
+            {
+                await OpenScenarioView();
+            });
+        }
+    }
+
+    private void ScenarioEdit()
+    {
+        if (_scenarioEditorOpen)
+        {
+            DialogService.CloseSide();
+            return;
+        }
+
+        Dictionary<string, object> parameters = new()
+        {
+            { "SensitivityScenario", sensitivityScenario },
+            { "SensitivityScenarioChanged",  OnScenarioUpdate }
+        };
+
+        var options = new SideDialogOptions()
+            {
+                Position = DialogPosition.Bottom,
+                Height = "33vh",
+                CssClass = "scenario_dialog",
+                ShowMask = false,
+            };
+
+        DialogService.OpenSideAsync<ScenarioEditControl>("Aangepast Scenario", parameters, options);
+
+    }
+
+    private async Task CloseScenarioView()
+    {
+        DialogService.CloseSide();
+        await GetProjectData();
+        await _dashboard.UpdateChart();
+    }
+
+    private async Task OpenScenarioView()
+    {
+        sensitivityScenario = await GetSensativityScenarioUseCase.ExecuteAsync(SelectedProjectState?.Value?.Id ?? -1);
+        await GetProjectData();
+        await _dashboard.UpdateChart();
+    }
+
+    private async Task OnScenarioUpdate()
+    {
+        sensitivityScenario = await SaveSensitivityScenarioUseCase.ExecuteAsync(sensitivityScenario);
+        await GetProjectData();
+        await UpdateChart();
+    }
+
+    private async Task UpdateChart()
+    {
+        Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"ChartLineData", ChartLineData },
+                {"ChartBarData", ChartBarData },
+                {"ChartLineDataScenario", ChartLineDataScenario },
+                {"ChartBarDataScenario", ChartBarDataScenario },
+            };
+
+        await _dashboard.SetChartParameters(ParameterView.FromDictionary(parameters));
+        await _dashboard.UpdateChart(false);
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    string FormatAsEUR(object value)
+    {
+        return ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("nl-NL"));
+    }
+
+    private BadgeStyle GetBadgeStyle(int diffValue, BadgeStyle pos, BadgeStyle zero, BadgeStyle neg)
+    {
+        if (diffValue > 0)
+            return pos;
+        if (diffValue == 0)
+            return zero;
+        if (diffValue < 0)
+            return neg;
+
+        return BadgeStyle.Base;
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(BCT.Domain.Entities.Project p)
+    {
+        InvokeAsync(async () =>
+        {
+            await GetProjectData();
+            await UpdateChart();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(SidebarExtended value)
+    {
+        InvokeAsync(async () =>
+        {
+            Task.Delay(1);
+            await _dashboard.UpdateChart();
+            Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectContentUpdatedEvent value)
+    {
+        if (SelectedProjectState?.Value?.Id == null)
+            return;
+
+        if (SelectedProjectState.Value.Id != value.Project.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            await GetProjectData();
+            await UpdateChart();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+    
+    public void Dispose()
+    {
+        SelectedProjectState.Unsubscribe(this);
+        SidebarState.Unsubscribe(this);
+        ProjectContentUpdatedNotifier.Unsubscribe(this);
+    }
+}

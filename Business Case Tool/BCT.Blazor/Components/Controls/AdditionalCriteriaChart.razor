@@ -1,0 +1,120 @@
+﻿@using ApexCharts
+@using BCT.Blazor.State
+@using BCT.Blazor.UIModels
+@using System.Timers
+
+@if (loading)
+{
+    <div style="background: none; height: 100%">
+    </div>
+}
+else
+{
+    <div class="fade-in-500" style="height: 100%">
+        <ApexChart @ref=chart TItem="DataItem" Options="@options" Height="@("100%")">
+            <ApexPointSeries TItem="DataItem"
+            Items="ChartBarData"
+            Name="Kasstroom"
+            SeriesType="SeriesType.Bar"
+            XValue="@(x => x.Key)"
+            YValue="@(x => (decimal)x.Value)"
+            Color="#f28b04">
+            </ApexPointSeries>
+        </ApexChart>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public List<DataItem> ChartBarData { get; set; } = new();
+
+    private bool loading = true;
+    private ApexChart<DataItem>? chart { get; set; }
+    private ApexChartOptions<DataItem> options = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        SetupChart();
+
+        loading = true;
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+        loading = false;
+
+        await base.OnParametersSetAsync();
+    }
+
+    private void SetupChart()
+    {
+        options.Chart = new()
+            {
+                Toolbar = new Toolbar
+                {
+                    Show = false,
+                },
+                Zoom = new()
+                {
+                    Enabled = false,
+                    AllowMouseWheelZoom = false,
+                },
+            };
+
+        // options.DataLabels = new DataLabels
+        //     {
+        //         Formatter = "function (value) { return value.toLocaleString('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });}"
+        //     };
+
+        options.Legend = new()
+            {
+                Position = ApexCharts.LegendPosition.Bottom,
+                HorizontalAlign = ApexCharts.Align.Center,
+                Floating = false,
+            };
+
+        options.Yaxis = new List<YAxis> 
+        { 
+            new YAxis
+            {
+                Min = 0,
+                Max = 5,
+                TickAmount = 10
+            }
+        };
+
+        options.PlotOptions = new PlotOptions()
+            {
+                Bar = new PlotOptionsBar()
+                {
+                    Horizontal = true
+                }
+            };
+
+        options.Grid = new Grid()
+            {
+                Position = GridPosition.Back,
+                Show = true,
+                StrokeDashArray = 4,
+                Yaxis = new GridYAxis()
+                {
+                    Lines = new Lines()
+                    {
+                        Show = true,
+                    }
+                },
+                Xaxis = new GridXAxis()
+                {
+                    Lines = new Lines()
+                    {
+                        Show = true,
+                    }
+                }
+            };
+    }
+
+    protected override void OnInitialized()
+    {
+        
+    }
+}

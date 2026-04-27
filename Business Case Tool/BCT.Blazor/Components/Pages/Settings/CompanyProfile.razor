@@ -1,0 +1,130 @@
+﻿@page "/settings/companyprofile"
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+@using BCT.Domain
+
+@inject NavigationManager NavigationManager
+@inject DialogService DialogService
+@inject IDeleteCompanyUseCase DeleteCompanyUseCase
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+
+<RadzenStack>
+    <RadzenFormField Text="Naam">
+        <RadzenTextBox @bind-value=@SelectedCompanyState.Value.Name />
+    </RadzenFormField>
+    <RadzenFormField Text="Omschrijving">
+        <RadzenTextBox @bind-value=@SelectedCompanyState.Value.Description />
+    </RadzenFormField>
+    <RadzenFormField Text="Btw-nummer">
+        <RadzenTextBox @bind-value=@SelectedCompanyState.Value.BtwNumber />
+    </RadzenFormField>
+    <RadzenFormField Text="Adres">
+        <RadzenTextBox @bind-value=@SelectedCompanyState.Value.Adres />
+    </RadzenFormField>
+    <RadzenFormField Text="Postcode">
+        <RadzenTextBox @bind-value=@SelectedCompanyState.Value.PostalCode />
+    </RadzenFormField>
+    <RadzenFormField Text="Plaatsnaam">
+        <RadzenTextBox @bind-value=@SelectedCompanyState.Value.City />
+    </RadzenFormField>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenButton Text="Verwijder" Icon="delete" ButtonStyle="ButtonStyle.Danger" Click="RemoveCompanyClicked" Visible=@(CanSeeRemoveButton())>
+            
+        </RadzenButton>
+        <RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Bewaren" Click="@((e) => DialogService.Close())" Icon="check">
+        </RadzenButton>
+    </RadzenStack>
+@*     <AuthorizeView Roles="@($"{Const.Role.Admin}, {Const.Role.Coach}")">
+        <Authorized>
+        </Authorized>
+    </AuthorizeView> *@
+</RadzenStack>
+
+@code {
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState? CurrentUserState { get; set; }
+
+    [Parameter]
+    public bool IsDialog { get; set; }
+
+    private bool CanSeeRemoveButton()
+    {
+        if (SelectedCompanyState?.Value == null)
+            return false;
+
+        if (CurrentUserState?.Value == null)
+            return false;
+
+        //Admins or coaches can see th remove button.
+        bool isAdminOrCoach = CurrentUserState.Value.Roles.Any(x => x.Name == Const.Role.Admin || x.Name == Const.Role.Coach);
+
+        if (isAdminOrCoach)
+            return true;
+
+
+
+        return false;
+    }
+
+    private async Task<bool> CheckAndInformCanRemoveCompany()
+    {
+        if (SelectedCompanyState?.Value == null)
+            return false;
+
+        if (CurrentUserState?.Value == null)
+            return false;
+
+        bool isAdminOrCoach = CurrentUserState.Value.Roles.Any(x => x.Name == Const.Role.Admin || x.Name == Const.Role.Coach);
+
+        if (!isAdminOrCoach)
+        {
+            await DialogService.Alert("Alleen coaches kunnen bedrijven verwijderen.", "", new AlertOptions() { OkButtonText = "Ok", ShowTitle = false });
+            return false;
+        }
+
+        var projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+
+        if (projects.Count > 0)
+        {
+            await DialogService.Alert("U kunt alleen een bedrijf verwijderen wanneer er geen projecten meer aan gekoppeld zijn.", "", new AlertOptions() { OkButtonText = "Ok", ShowTitle = false });
+            return false;
+        }
+
+        return true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (SelectedCompanyState.Value == null)
+            return;
+    }
+
+    public async Task RemoveCompanyClicked()
+    {
+        var canRemove = await CheckAndInformCanRemoveCompany();
+
+        if(!canRemove)
+            return;
+
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        var result = await DialogService.Confirm("Alle projecten en informatie in deze onderneming worden verwijdert.<br />Deze actie is onomkeerbaar, doorgaan?", "Verwijder onderneming", new ConfirmOptions() { OkButtonText = "Ja", CancelButtonText = "Nee" });
+
+        if (result == false)
+            return;
+
+        await DeleteCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+
+        SelectedCompanyState.Value = null;
+
+        if (IsDialog)
+            DialogService.Close();
+    }
+}

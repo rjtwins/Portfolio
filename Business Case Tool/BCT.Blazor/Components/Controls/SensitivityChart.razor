@@ -1,0 +1,125 @@
+﻿@using ApexCharts
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+@using BCT.Blazor.UIModels
+@using BCT.Domain.Entities
+
+@inject IGetSensitivityAnalysisResultUseCase GetSensitivityAnalysisResultUseCase
+
+@if (!string.IsNullOrEmpty(Property) && SelectedProject > 0 && Serie1.Count != 0 && Serie2.Count != 0)
+{
+    <ApexChart @ref="chart" Options="@options" Height="@("100%")" Width="@("100%")">
+        <ApexPointSeries 
+        Name="-10%"
+        Items="@Serie1"
+        SeriesType="SeriesType.Bar"
+        XValue="@(x => x.Key)"
+        YValue="@(x => (decimal)x.Value)" />
+        <ApexPointSeries Name="+10%"
+        Items="@Serie2"
+        SeriesType="SeriesType.Bar"
+        XValue="@(x => x.Key)"
+        YValue="@(x => (decimal)x.Value)" />
+    </ApexChart>
+}
+else
+{
+    <div></div>
+}
+
+@code {
+    [Parameter]
+    public required int? SelectedProject { get; set; }
+
+    [Parameter]
+    public required string Property { get; set; }
+
+    private ApexChart<DataItem> chart { get; set; }
+
+    private ApexChartOptions<DataItem> options = new();
+
+    private List<DataItem> Serie1 = new();
+    private List<DataItem> Serie2 = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        UpdateOptions();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Serie1.Clear();
+        Serie2.Clear();
+
+        if (SelectedProject == null)
+            return;
+
+        if (string.IsNullOrEmpty(Property))
+            return;
+
+        await GetData();
+        await base.OnParametersSetAsync();
+    }
+
+
+    public async Task GetData()
+    {
+        Serie1.Clear();
+        Serie2.Clear();
+
+        var data = await GetSensitivityAnalysisResultUseCase.ExecuteAsync(SelectedProject.Value, Property);
+        data = data.Where(x => !(x.NegEffect == 0 && x.PosEffect == 0)).OrderByDescending(x => x.NegEffect).ToList();
+
+        Serie1 = data.Select(x => new DataItem() { Key = PresentationSettings.AttributeLabels[x.Property], X = 0, Value = x.NegEffect * -1 }).ToList();
+        Serie2 = data.Select(x => new DataItem() { Key = PresentationSettings.AttributeLabels[x.Property], X = 0, Value = x.PosEffect }).ToList();
+    }
+
+    public async Task RefreshData()
+    {
+        await GetData();
+    }
+
+    private void UpdateOptions()
+    {
+        options.Chart = new();
+        options.Chart.Stacked = true;
+
+        options.PlotOptions = new();
+        options.PlotOptions.Bar = new();
+        options.PlotOptions.Bar.Horizontal = true;
+        options.Xaxis = new();
+        options.Xaxis.Labels = new();
+        options.Xaxis.Labels.Formatter = @"
+        function (value) {
+                if (value === undefined) 
+                    return '';
+                return Math.round(value * 100) + '%';
+        }";
+
+        options.Colors = new List<string> { "#d9534f", "#5cb85c" };
+    }
+
+    public async Task UpdateChart(bool animate = false)
+    {
+        if (SelectedProject == null)
+            return;
+
+        if (string.IsNullOrEmpty(Property))
+            return;
+
+        // if (Serie1.Count == 0 || Serie2.Count == 0)
+        //     return;
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+
+        //await chart.UpdateOptionsAsync(animate, animate, false);
+        await chart.UpdateSeriesAsync(animate);
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+}

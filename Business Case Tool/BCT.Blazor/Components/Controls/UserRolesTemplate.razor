@@ -1,0 +1,57 @@
+@using BCT.Application.UseCases
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using System.Security.Claims
+
+<div style="display:flex">
+    @foreach(var role in User.Roles)
+    {
+        <RadzenBadge Style="width:min-content; margin:2px">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.1rem">
+                @role.Name <RadzenButton 
+                Icon="close" 
+                Size="ButtonSize.ExtraSmall" 
+                Variant="Variant.Text" 
+                ButtonStyle="ButtonStyle.Light" 
+                Style="margin:0px; padding:0px" 
+                Disabled="@(Disabled || !CanRemoveRoll(role))" 
+                Click="@(async args => await RemoveUserRoleClicked.InvokeAsync((User, role)))" />
+            </RadzenStack>
+        </RadzenBadge>
+    }
+    <RadzenBadge Style="width:min-content; margin:2px; padding:2px">
+        <RadzenButton 
+        Icon="Add" 
+        Size="ButtonSize.ExtraSmall" 
+        Variant="Variant.Text" 
+        ButtonStyle="ButtonStyle.Light" 
+        Style="width:min-content; margin:0px; padding:0px" 
+        Disabled="@Disabled" 
+        Click="@(async args => await ShowContextMenAddRoleClicked.InvokeAsync((args, User)))" />
+    </RadzenBadge>
+</div>
+
+@code{
+    [CascadingParameter]
+    private CurrentUserState? CurrentUserState { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    [Parameter]
+    public required BCT.Domain.Entities.User User { get; set; }
+
+    [Parameter]
+    public EventCallback<(BCT.Domain.Entities.User User, Role Role)> RemoveUserRoleClicked { get; set; }
+
+    [Parameter]
+    public EventCallback<(MouseEventArgs MouseArgs, BCT.Domain.Entities.User User)> ShowContextMenAddRoleClicked { get; set; }
+
+
+    private ClaimsPrincipal claimsPrinciple { get; set; }
+
+    private bool CanRemoveRoll(Role role)
+    {
+        return CurrentUserState.Value.CanRemoveRole(role);
+    }
+}

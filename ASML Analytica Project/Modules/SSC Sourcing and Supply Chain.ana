@@ -1,0 +1,63 @@
+{ Analytica Model SSC_Sourcing_and_Sup, encoding="UTF-8" }
+SoftwareVersion 6.3.6
+
+{!-60000|Attribute AcpStyles}
+Attribute ExternalType
+Title: ExternalType
+
+
+AskAttribute ExternalType,Function,Yes
+AskAttribute ExternalType,Module,Yes
+AskAttribute ExternalType,Variable,Yes
+
+LinkModule SSC_Sourcing_and_Sup
+Title: SSC~
+Sourcing and Supply Chain
+Author: Jac Goorden~
+Simbon
+Date: Tue, Jun 6, 2023 4:41 pm
+NodeSize: 64,32
+DiagState: 2,294,155,752,372,17,10
+WindState: 2,0,0,720,350
+FontStyle: Arial,15
+FileInfo: 0,LinkModule SSC_Sourcing_and_Sup,2,2,0,0,Modules\SSC Sourcing and Supply Chain.ana
+
+Objective SSC_CO2e
+Title: SSC CO2e
+Units: KtCO2e/Year
+Description: CO2e for SSC Sourcing and Supply Chain model per Scenario.
+Definition: Table(Time,Scenario)(~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0,~
+0,0,0,0)
+NodeLocation: 112,136,1
+NodeSize: 64,32
+Aliases: Alias Al825392915
+ExternalType: Output
+
+Text Te28475155
+Title: SSC v1 Sourcing and Supply chain Commute CO2 impact submodel
+NodeLocation: 460,44,-1
+NodeSize: 436,20
+
+Close SSC_Sourcing_and_Sup
+

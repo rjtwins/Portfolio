@@ -1,0 +1,196 @@
+﻿@page "/settings/company"
+
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+
+@inject NavigationManager NavigationManager
+@inject DialogService Dialogservice
+
+@* Use case *@
+@inject IGetUsersUseCase GetUsersUseCase
+@inject IGetCompanyUsersUseCase GetCompanyUsersUseCase
+@inject IAddUserToCompanyUseCase AddUserToCompanyUseCase
+@inject IRemoveUserFromCompanyUseCase RemoveUserFromCompanyUseCase
+@inject IDeleteCompanyUseCase DeleteCompanyUseCase
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+@inject IDeleteProjectUseCase DeleteProjectUseCase
+
+@attribute [Authorize]
+
+@if(allUsers.Count() == 0 || SelectedCompanyState.Value == null)
+{
+    <div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;">
+        <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </div>
+}
+else
+{
+    <RadzenStack Orientation="Orientation.Horizontal">
+        <RadzenStack>
+            <RadzenFormField Text="Naam">
+                <RadzenTextBox @bind-value=@SelectedCompanyState.Value.Name />
+            </RadzenFormField>
+            <RadzenFormField Text="Omschrijving">
+                <RadzenTextBox @bind-value=@SelectedCompanyState.Value.Description />
+            </RadzenFormField>
+            <RadzenFormField Text="Adres">
+                <RadzenTextBox @bind-value=@SelectedCompanyState.Value.Adres />
+            </RadzenFormField>
+            <RadzenFormField Text="Postcode">
+                <RadzenTextBox @bind-value=@SelectedCompanyState.Value.PostalCode />
+            </RadzenFormField>
+            <RadzenFormField Text="Plaatsnaam">
+                <RadzenTextBox @bind-value=@SelectedCompanyState.Value.City />
+            </RadzenFormField>
+
+            <AuthorizeView Roles="@($"{BCT.Domain.Const.Role.Admin}, {BCT.Domain.Const.Role.Coach}")" >
+                <RadzenDropDown @bind-Value=@selectedUsers 
+                    Data=@allUsers 
+                    TextProperty="@nameof(BCT.Domain.Entities.User.Name)" 
+                    Name="DropDownMultiple"
+                    Multiple=true 
+                    AllowClear=true 
+                    Placeholder="Selecteer gebruikers"
+                    Change="OnSelectedItemChanged" 
+                    Chips=true
+                    @bind-SearchText=searchText
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                    FilterOperator="StringFilterOperator.Contains"
+                    AllowFiltering=true/>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="@(GetDeleteButtonText())" Click="DeleteCompanyButtonClicked"/>
+                <RadzenAlert AlertStyle="AlertStyle.Danger" Variant="Variant.Flat" AllowClose="false" Shade="Shade.Light">
+                    Alle projecten binnen het bedrijf worden ook verwijdert!
+                </RadzenAlert>
+            </AuthorizeView>
+        </RadzenStack>
+        <div style="overflow-y: auto; max-height: 35vh; padding: 1rem;">
+            <RadzenStack>
+                @foreach(var p in projects)
+                {
+                    <RadzenButton 
+                        Text="@($"Verwijer project: {p.Name}")" 
+                        ButtonStyle="ButtonStyle.Danger" 
+                        Click="@(() => DeleteProjectButtonClicked(p))"
+                        />
+                }
+            </RadzenStack>
+        </div>
+    </RadzenStack>
+}
+
+@code {
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+
+    [CascadingParameter]
+    public ProjectRemovedNotifier ProjectRemovedNotifier { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+
+    [Parameter]
+    public bool IsDialog { get; set; }
+
+    private List<BCT.Domain.Entities.User> allUsers { get; set; } = new();
+    private List<BCT.Domain.Entities.User> selectedUsers { get; set; } = new();
+    private List<BCT.Domain.Entities.User> currentUsers { get; set; } = new();
+    private List<BCT.Domain.Entities.Project> projects { get; set; } = new();
+
+    private int deleteButtonClicks { get; set; } = 0;
+    private bool inDeleteCountDown { get; set; } = false;
+    string searchText { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        allUsers = (await GetUsersUseCase.ExecuteAsync()).ToList();
+        selectedUsers = (await GetCompanyUsersUseCase.ExecuteAsync(SelectedCompanyState.Value)).ToList();
+        currentUsers = selectedUsers.ToList();
+        projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+    }
+
+    private async Task OnSelectedItemChanged()
+    {
+        var selectedUsersLocal = (selectedUsers ?? new());
+        var toAdd = selectedUsersLocal.ExceptBy(currentUsers.Select(x => x.Id), x => x.Id).ToList();
+        var toRemove = currentUsers.ExceptBy(selectedUsersLocal.Select(x => x.Id), x => x.Id).ToList();
+
+        foreach (var user in toAdd)
+        {
+            await AddUserToCompanyUseCase.ExecuteAsync(user, SelectedCompanyState.Value);
+            await Task.Delay(100);
+        }
+
+        foreach (var user in toRemove)
+        {
+            await RemoveUserFromCompanyUseCase.ExecuteAsync(user, SelectedCompanyState.Value);
+            await Task.Delay(100);
+        }
+
+        await Task.Delay(100);
+    }
+
+    private async Task DeleteProjectButtonClicked(BCT.Domain.Entities.Project p)
+    {
+        await DeleteProjectUseCase.ExecuteAsync(p, CurrentUserState?.Value?.Name ?? "NULL");
+
+        projects = await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value);
+        StateHasChanged();
+    }
+
+    private async Task DeleteCompanyButtonClicked()
+    {
+        if (!inDeleteCountDown)
+        {
+            inDeleteCountDown = true;
+            var t = new System.Timers.Timer(3000);
+            t.AutoReset = false;
+            t.Elapsed += (s, e) =>
+            {
+                t.Dispose();
+                InvokeAsync(() =>
+                {
+                    inDeleteCountDown = false;
+                    deleteButtonClicks = 0;
+                    StateHasChanged();
+                });
+            };
+            t.Start();
+            StateHasChanged();
+            return;
+        }
+
+        if (deleteButtonClicks <= 1)
+        {
+            deleteButtonClicks ++;
+            StateHasChanged();
+            return;
+        }
+
+        inDeleteCountDown = false;
+        deleteButtonClicks = 0;
+
+        //Delete item
+        await DeleteCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+
+        //Close self
+        if (IsDialog)
+        {
+            Dialogservice.Close();
+        }
+    }
+
+    private string GetDeleteButtonText()
+    {
+        if (!inDeleteCountDown)
+            return "Verwijderen";
+
+        return $"Druk nogmaals {3 - deleteButtonClicks}";
+    }
+}

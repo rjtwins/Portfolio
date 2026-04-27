@@ -1,0 +1,130 @@
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.State
+@using BCT.Domain.Entities
+@using Sqids
+
+@inject NavigationManager NavigationManager
+@inject SqidsEncoder<int> SqidsEncoder
+@inject ICreateProjectUseCase AddProjectUseCase
+@inject ICreateCompanyUseCase CreateCompanyUseCase
+@inject IDeleteProjectUseCase DeleteProjectUseCase
+@inject IGetProjectUseCase GetProjectUseCase
+@inject DialogService DialogService
+
+<RadzenAccordion Multiple=@true class="rz-shadow-0 rz-border-radius-0">
+    <Items>
+        <RadzenAccordionItem Text="Ondernemingen" Icon="source_environment" CollapseTitle="Collapse overzichten."
+        ExpandTitle="Expand ondernemingen." CollapseAriaLabel="Collapse the overzichten details."
+        ExpandAriaLabel="Expand the ondernemingen details." Selected=true class="rz-text-secondary-color" Visible=@(ShouldShowCompaniesBar())>
+            <RadzenPanelMenu>
+                @foreach (var c in Companies)
+                {
+                    <RadzenPanelMenuItem Path="@($"company/overview/{SqidsEncoder.Encode(c.Id)}")" Icon="source_environment" Text="@(c.Name)" class="rz-text-tertiary-color layoutMenuItem" Click="@(args => { SelectedCompanyState.Value = c; })" />
+                }
+                <AuthorizeView Context="AuthContext2" Roles="@($"{BCT.Domain.Const.Role.Coach}, {BCT.Domain.Const.Role.Admin}")">
+                    <Authorized>
+                        <RadzenPanelMenuItem Icon="add_box" Text="Nieuwe onderneming" class="rz-text-tertiary-color layoutMenuItem" Click="OnAddCompanyClicked"/>
+                    </Authorized>
+                </AuthorizeView>
+            </RadzenPanelMenu>
+        </RadzenAccordionItem>
+        <RadzenAccordionItem Text="Mijn projecten" Icon="topic" 
+        ExpandTitle="Expand employees." CollapseAriaLabel="Collapse the employee details."
+        ExpandAriaLabel="Expand the employee details." Selected=true class="rz-text-primary-color">
+            <RadzenPanelMenu>
+                @foreach (var project in Projects)
+                {
+                    <RadzenStack Orientation="Orientation.Horizontal" Gap="0px">
+                        <RadzenPanelMenuItem Path=@($"project/overview/{SqidsEncoder.Encode(project.Id)}")
+                        Click="@(args => SelectProject(project.Id))"
+                        Icon="edit_note" 
+                        Text="@project.Name" 
+                        class="rz-text-tertiary-color layoutMenuItem" >
+                        </RadzenPanelMenuItem>
+                        <RadzenButton Variant="Variant.Text" Size="ButtonSize.ExtraSmall" IconColor="red" Icon="delete" Click="@(args => RemoveProjectClicked(project))" />
+                    </RadzenStack>
+                }
+                @if (SelectedCompanyState?.Value != null)
+                {
+                    <RadzenPanelMenuItem Icon="add_box" Text="Nieuw project" class="rz-text-tertiary-color layoutMenuItem" Click="OnAddProjectClicked" />
+                }
+            </RadzenPanelMenu>
+        </RadzenAccordionItem>
+    </Items>
+</RadzenAccordion>
+
+@code{
+    [Parameter]
+    public List<BCT.Domain.Entities.Company> Companies { get; set; } = new();
+
+    //Projects placeholder
+    [Parameter]
+    public List<BCT.Domain.Entities.Project> Projects { get; set; } = new();
+
+    [CascadingParameter]
+    SelectedProjectState SelectedProjectState { get; set; }
+
+    [CascadingParameter]
+    SelectedCompanyState SelectedCompanyState { get; set; }
+
+    [CascadingParameter]
+    public NewCompanyNotifier NewCompanyNotifier { get; set; }
+
+    [CascadingParameter]
+    private CurrentUserState CurrentUserState { get; set; }
+
+    private async Task SelectProject(int projectId)
+    {
+        var project = await GetProjectUseCase.ExecuteAsync(projectId);
+
+        if (project == null)
+            return;
+
+        SelectedProjectState.Value = project;
+    }
+
+    private async Task RemoveProjectClicked(Project p)
+    {
+        var result = await DialogService.Confirm("Alle project informatie wordt verwijderd.<br />Deze actie is onomkeerbaar, doorgaan?", "Verwijder project", new ConfirmOptions() { OkButtonText = "Ja", CancelButtonText = "Nee" });
+
+        if (result == false)
+            return;
+
+        await DeleteProjectUseCase.ExecuteAsync(p, CurrentUserState?.Value?.Name ?? "NULL");
+    }
+
+    private async Task OnAddProjectClicked()
+    {
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        var newProject = await AddProjectUseCase.ExecuteAsync(SelectedCompanyState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+        NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(newProject.Id)}");        
+
+        StateHasChanged();
+    }
+
+    public async Task OnAddCompanyClicked()
+    {
+        var newCompany = await CreateCompanyUseCase.ExecuteAsync(CurrentUserState.Value, $"Onderneming {Companies.Count + 1}", CurrentUserState?.Value?.Name ?? "NULL");
+
+        SelectedCompanyState.Value = newCompany;
+        StateHasChanged();
+    }
+
+    public bool ShouldShowCompaniesBar()
+    {
+        if (CurrentUserState.Value == null)
+            return false;
+
+        if (CurrentUserState.Value.HasRoleByName(Domain.Const.Role.Coach) || CurrentUserState.Value.HasRoleByName(Domain.Const.Role.Admin))
+            return true;
+
+        if (Companies.Count > 1)
+            return true;
+
+        return false;
+    }
+}

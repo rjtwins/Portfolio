@@ -1,0 +1,81 @@
+﻿@using System.Reflection
+@using BCT.Blazor.Services
+@inject IHelpTextService hts
+
+<RadzenRow>
+    <RadzenColumn Style="display:flex; align-items:center;">
+        <RadzenIcon Icon="info"
+        style="margin-right:4px"
+                    class="tooltip_icon"
+        MouseLeave="hts.CloseTooltip"
+        MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, key:PropertyName))" />
+        @((MarkupString)Text)
+    </RadzenColumn>
+    <RadzenColumn Size="1" Style="display:flex; align-items:center; justify-content:end">
+        k€
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenNumeric 
+        Format="@(_value != 0 ? "0.0    " : "0.0    ")"
+        Step="0.1"
+        TextAlign="TextAlign.Right"
+        Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+        TValue="double"
+        @bind-value="@_value"
+        Change="SaveToModel"
+        Style="margin-right:10px" />
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenNumeric
+        Step="1"
+        TextAlign="TextAlign.Right"
+        Culture=@(System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))
+        TValue="int"
+        @bind-value="@_year"
+        Change="SaveToModel"
+        Style="margin-right:10px" />
+    </RadzenColumn>
+    <RadzenColumn>
+        <RadzenTextBox 
+        @bind-Value="@_description"
+        Change="SaveToModel"/>
+    </RadzenColumn>
+</RadzenRow>
+<br />
+
+@code {
+    [Parameter] public required string PropertyName { get; set; }
+    [Parameter] public required BCT.Domain.Entities.ProjectGridWizard ProjectGridWizard { get; set; }
+    [Parameter] public required string Text { get; set; }
+
+    private double _value { get; set; }
+    private string _description { get; set; } = string.Empty;
+    private int _year { get; set; }
+    private Type _type = typeof(BCT.Domain.Entities.ProjectGridWizard);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var property = _type.GetProperty(PropertyName, BindingFlags.Public | BindingFlags.Instance);
+        _value = (double)property.GetValue(ProjectGridWizard);
+
+        var descProperty = _type.GetProperty(PropertyName + "Description", BindingFlags.Public | BindingFlags.Instance);
+        _description = (string)descProperty.GetValue(ProjectGridWizard);
+
+        var yearProperty = _type.GetProperty(PropertyName + "Year", BindingFlags.Public | BindingFlags.Instance);
+        _year = (int)yearProperty.GetValue(ProjectGridWizard);
+
+        await base.OnParametersSetAsync();
+    }
+
+    private void SaveToModel()
+    {
+        var property = _type.GetProperty(PropertyName, BindingFlags.Public | BindingFlags.Instance);
+        property.SetValue(ProjectGridWizard, _value);
+
+        var descProperty = this.ProjectGridWizard.GetType().GetProperty(PropertyName + "Description", BindingFlags.Public | BindingFlags.Instance);
+        descProperty.SetValue(ProjectGridWizard, _description);
+
+        var yearProperty = this.ProjectGridWizard.GetType().GetProperty(PropertyName + "Year", BindingFlags.Public | BindingFlags.Instance);
+        yearProperty.SetValue(ProjectGridWizard, _year);
+    }
+}

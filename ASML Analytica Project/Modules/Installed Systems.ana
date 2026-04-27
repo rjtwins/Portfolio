@@ -1,0 +1,127 @@
+{ Analytica Model Installed_Systems, encoding="UTF-8" }
+SoftwareVersion 6.3.6
+
+{!-60000|Attribute AcpStyles}
+
+
+LinkModule Installed_Systems
+Title: Installed Systems
+Description: Submodel calculating how many sytems are active based on sales and installed base.
+Author: jorre Vedder~
+Bicore Services
+Date: Fri, Aug 18, 2023 11:35 am
+NodeSize: 64,32
+DiagState: 2,273,431,1151,533,17,10
+Aliases: Alias Al207762835, Alias Al779892115
+FontStyle: Arial,15
+FileInfo: 0,LinkModule Installed_Systems,2,2,0,0,Modules\Installed Systems.ana
+
+Variable System_per_Generatio
+Title: System per Generation in use over time
+Definition: Dynamic[Time](Horizon_Systems_per_, ~
+	IF (System_Generation = 2019) ~
+		THEN System_per_Generatio[@Time -1] * (1 - Upgrades_per_Year) ~
+	ELSE ~
+		Begin ~
+			IF System_Generation > Time THEN 0~
+			ELSE IF System_Generation = TIME ~
+			THEN Sales_Volume + (System_per_Generatio[@Time -1][System_Generation=System_Generation-1] * Upgrades_per_Year)~
+			ELSE (System_per_Generatio[@Time -1][System_Generation=System_Generation-1] * Upgrades_per_Year) + System_per_Generatio[@Time -1] * (1 - Upgrades_per_Year)~
+		End)
+NodeLocation: 280,208,1
+NodeSize: 64,32
+WindState: 2,0,0,720,350
+ValueState: 2,21,114,1652,603,0,MIDM
+Aliases: Alias Al302134675
+NodeColor: 19661,48336,65535
+ReformVal: [Time,System_Generation]
+Att__TotalsIndex: [System_Generation]
+Att_ResultSliceState: [System,2,System_Generation,1,Time,1]
+Att_EditSliceState: [System,1,System_Generation,1,Time,1]
+{!50000|Att_ColumnWidths: [,Time,\([63,63,63,63,63,63,63,63,63,63,63,63])]}
+
+Constant Upgrades_per_Year
+Title: Upgrades per Year
+Definition: Table(System)(0,0,0,0,0,0.1,0.1,0,0,0,0,0)
+NodeLocation: 280,336,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+
+Variable Horizon_Systems_per_
+Title: Horizon Systems per Generation in use
+Definition: IF (Time=2019 AND System_Generation = 2019) THEN Installed_Base_per_G + Sales_Volume ELSE 0
+NodeLocation: 96,208,1
+NodeSize: 64,40
+ValueState: 2,40,50,815,518,0,MIDM
+NodeColor: 19661,48336,65535
+ReformDef: [Time,System_Generation]
+Att_ResultSliceState: [System,8,Time,1,System_Generation,1]
+Att_EditSliceState: [System,4,System_Generation,1,Time,1]
+
+Constant Churn
+Title: Churn
+Description: Asume zero churn in line with ASML calculation
+Definition: 0
+NodeLocation: 280,88,1
+NodeSize: 64,24
+
+{!50500|ArrowClass Arrow976191123}
+{!50500|Att_HeadNode: System_per_Generatio}
+{!50500|Att_TailNode: Upgrades_per_Year}
+{!50500|Att_ArrowProperties: ,,,,0}
+
+Text Te1593310867
+Title: Installed Systems
+NodeLocation: 364,204,-1
+NodeSize: 356,196
+
+Alias Al1911333267
+Title: Sales~
+Volume
+NodeLocation: 96,88,1
+NodeSize: 64,24
+NodeColor: 52427,65535,65535
+Original: Sales_Volume
+
+Variable System_in_use_over_t
+Title: System in use over time
+Definition: Sum(System_per_Generatio,System_Generation)
+NodeLocation: 464,208,1
+NodeSize: 64,32
+ValueState: 2,68,74,1503,273,,MIDM
+Aliases: Alias Al95040915
+
+Variable BL_in_use_over_time
+Title: BL in use over time
+Units: MtonCO2e
+Definition: SUM(System_in_use_over_t*Systems_per_BL_inde2, System)
+NodeLocation: 632,208,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,1519,688,0,MIDM
+GraphSetup: Att_GraphIndexRange Time:1,0,1,,,,10,2018,2030,0~
+Att_AreaFill Graph_Primary_Valdim:0~
+Att_Stacked_Lines Graph_Primary_Valdim:0~
+Att_ContLineStyle Graph_Primary_Valdim:1
+ReformVal: [Time,USE_Ext_Scenario]
+Att__TotalsIndex: []
+Att_ResultSliceState: [BL,2,USE_Ext_Scenario,4,Time,1]
+{!40600|Att_StackingIndex: USE_Ext_Scenario}
+{!40600|Att_ClusterIndex: USE_Ext_Scenario}
+{!50000|Att_ColumnWidths: [,Time,\([71])]}
+
+Alias Al517092755
+Title: Systems per BL index matrix
+NodeLocation: 632,88,1
+NodeSize: 64,24
+Original: Systems_per_BL_inde2
+
+Alias Al1180465043
+Title: Legacy Products per Generation in use
+NodeLocation: 96,336,1
+NodeSize: 64,40
+NodeColor: 52427,65535,65535
+Original: Installed_Base_per_G
+
+Close Installed_Systems
+

@@ -1,0 +1,86 @@
+﻿@using BCT.Blazor.Services
+
+@inject SessionTracker SessionTracker
+
+<RadzenText>
+    <strong>Gebruikers</strong>
+</RadzenText>
+<RadzenRow>
+    <RadzenColumn Size="6">
+        Gebruikersnaam
+    </RadzenColumn>
+    <RadzenColumn Size="6">
+        Actieve sessies
+    </RadzenColumn>
+</RadzenRow>
+
+
+@foreach(var d in dataItems)
+{
+    <RadzenRow>
+        <RadzenColumn Size="6">
+            @d.UserId
+        </RadzenColumn>
+        <RadzenColumn Size="6">
+            @d.Sessions
+        </RadzenColumn>
+    </RadzenRow>
+}
+<br />
+<RadzenText>
+    <strong>Server Logs</strong>
+</RadzenText>
+<div style="overflow: scroll;">
+    @foreach(var l in logs){
+        <div style="width: max-content">@l</div>
+    }
+</div>
+
+@code {
+    IEnumerable<string> logs;
+    List<DataItem> dataItems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        InvokeAsync(async () =>
+        {
+            while (true)
+            {
+                await UpdateSelf();
+                await Task.Delay(1000);
+            }
+        });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task UpdateSelf()
+    {
+        dataItems = SessionTracker.GetCurrentSessions().Select(x => new DataItem()
+        {
+            UserId = x.Key,
+            Sessions = x.Value
+        }).ToList();
+
+        logs = InMemorySink.Logs.Reverse().ToList();
+
+        await InvokeAsync(async () =>
+        {
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+
+    class DataItem
+    {
+        public string UserId { get; set; }
+        public int Sessions { get; set; }
+    }
+}

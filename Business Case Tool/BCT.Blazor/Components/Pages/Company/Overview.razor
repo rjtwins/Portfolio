@@ -1,0 +1,387 @@
+﻿@page "/company/overview/{CompanyCode}"
+@using BCT.Application.EventManagement.Events
+@using BCT.Application.EventManagement.Notifiers
+@using BCT.Application.UseCases.Commands
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.State
+
+@implements IObserver<CompanyContentUpdatedEvent>
+@implements IObserver<ProjectRemovedEvent>
+@implements IObserver<Domain.Entities.Company?>
+@implements IObserver<Domain.Entities.Project?>
+@implements IDisposable
+
+@inject IConfiguration Configuration
+@inject SessionTracker SessionTracker
+@inject IGetCompanyUsersUseCase GetCompanyUsersUseCase
+@inject ISaveCompanyUseCase SaveCompanyUseCase
+@inject DialogService DialogService
+@inject Sqids.SqidsEncoder<int> SqidsEncoder
+@inject NavigationManager NavigationManager
+@inject IGetProjectsForCompanyUseCase GetProjectsForCompanyUseCase
+@inject ICreateProjectUseCase AddProjectUseCase
+@inject IHelpTextService hts
+
+<title>@(SelectedCompanyState.Value == null ? "Onderneming" : SelectedCompanyState.Value.Name)</title>
+
+<RadzenStack Orientation="Orientation.Horizontal">
+    <RadzenStack Orientation="Orientation.Vertical" Style="width:60%">
+        <RadzenStack Orientation="Orientation.Horizontal" Style="height:100px">
+            <RadzenIcon Icon="source_environment" Style="font-size:4rem"/>
+            <RadzenStack Orientation="Orientation.Vertical" Gap="0px" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Start" Style="margin-top: 12px;">
+                <RadzenText Style="margin:0px">
+                    <strong>@(SelectedCompanyState?.Value?.Name)</strong>
+                </RadzenText>
+                <RadzenText Style="margin:0px">
+                    @($"Welkom {CurrentUserState?.Value?.Name}")
+                </RadzenText>
+            </RadzenStack>
+            <RadzenSteps @bind-SelectedIndex="stepsSelectedIndex" ShowStepsButtons=false Style="width:20%">
+                <Steps>
+                    <RadzenStepsItem class="rz-steps-item hidden-steps-item" Text="">
+                    </RadzenStepsItem>
+                    <RadzenStepsItem Text="@(firstProjectId > -1 ? "NAAR PROJECT" : "MAAK PROJECT")">
+                    </RadzenStepsItem>
+                </Steps>
+            </RadzenSteps>
+        </RadzenStack>
+        <RadzenCard Variant="Variant.Outlined">
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center">
+                @if(Configuration["OtherConfig:ShowLogo"] == "true")
+                {
+                    <RadzenImage Path="@(Configuration["OtherConfig:LogoPathBlack"])" Style="height: 50px;" />
+                }
+                <RadzenText>
+                    <strong>Welkom bij de Investeringscalculator!</strong>
+                </RadzenText>
+            </RadzenStack>
+            <br />
+            <RadzenText>
+                Deze tool is speciaal ontwikkeld om MKB-ers in de maakindustrie te ondersteunen bij het plannen en realiseren van (digitale) investeringen. Deze tool biedt waardevolle inzichten en begeleiding om uw bedrijf naar een hoger niveau te tillen.​
+            </RadzenText>
+        </RadzenCard>
+        <div style="width:40vw; height:fit-content; background-color: var(--rz-primary)">
+            <div style="padding:50px;">
+                <RadzenText Style="font-size:xx-large">
+                    <strong>Aan de slag</strong>
+                </RadzenText>
+                <br />
+                <RadzenText>
+                    De Investeringscalculator begeleidt u door vier eenvoudige stappen om uw project succesvol te plannen en uit te voeren. U kunt op elk moment terugkeren naar de homepage via de navigatiebalk, een nieuw project aanmaken in uw portfolio, of uw profiel en teamrechten aanpassen.
+                </RadzenText>
+                <br />
+                <RadzenButton Variant="Variant.Flat" Click="ContinueOrMakeProject" style="color:white; background-color: var(--rz-secondary); text-transform:none">
+                    <RadzenIcon Icon="arrow_back" IconColor="white"/>
+                    @(firstProjectId == -1 ? "Maak links een project aan" : $"Kies links een project of ga verder met project {firstProjectName}")
+                </RadzenButton>
+            </div>
+        </div>
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical" style="width:40%">
+        <RadzenCard Variant="@(Configuration["OtherConfig:ShowBanner"] == "true" ? Variant.Outlined : Variant.Text)" Style="height:100px; min-height: 100px; max-height:100px; width 100%">
+            <RadzenText Text="Mogelijk gemaakt door:" Style="color: var(--rz-tertiary); margin: unset; font-size:10px" Visible=@(Configuration["OtherConfig:ShowBanner"] == "true")/>
+            <RadzenImage Path="@(Configuration["OtherConfig:LogoBannerPath"])" Style="width: 100%; height:100%; object-fit:contain" Visible=@(Configuration["OtherConfig:ShowBanner"] == "true")/>
+        </RadzenCard>
+        <RadzenCard Variant="Variant.Outlined" Style="width:100%; height:100%">
+            <RadzenText TextStyle="TextStyle.H6"><strong>Mijn organisatieprofiel</strong></RadzenText>
+            <br />
+            <RadzenText>@(SelectedCompanyState?.Value?.Name)</RadzenText>
+            <RadzenText>@(SelectedCompanyState?.Value?.Description)</RadzenText>
+            <RadzenText>@(SelectedCompanyState?.Value?.BtwNumber)</RadzenText>
+            <RadzenText>@(SelectedCompanyState?.Value?.Adres)</RadzenText>
+            <RadzenText>@(SelectedCompanyState?.Value?.PostalCode) @(SelectedCompanyState?.Value?.City)</RadzenText>
+            <br />
+            <RadzenButton Text="Bewerk profiel" Click="OnEditProfileClicked"/>
+        </RadzenCard>
+        <RadzenCard Variant="Variant.Outlined" Style="width:100%; height:100%">
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenText TextStyle="TextStyle.H6"><strong>Mijn team</strong></RadzenText>
+                <strong><RadzenIcon Icon="lock" MouseLeave="hts.CloseTooltip" MouseEnter="@(args => hts.ShowTooltip(args, IHelpTextService.RightSide, text: HelpText.CompanyOverview.LockHelpText))"/></strong>
+            </RadzenStack>
+
+            <br />
+            @foreach(var u in companyUsers)
+            {
+                var ingelogd = u.AuthId == CurrentUserState?.Value?.AuthId || SessionTracker.GetCurrentSessions().ContainsKey(u.Name);
+                var ingelogdText = ingelogd ? "[ingelogd]" : "";
+
+                var owner = u.Id == (SelectedCompanyState?.Value?.CreatorId);
+                var ownerText = owner ? "" : ""; //"[eigenaar]" : "";
+                var text = $"{u.Name} {ownerText} {ingelogdText}";
+
+                if(u.AuthId == CurrentUserState?.Value?.AuthId)
+                {
+                    <RadzenText><strong>@(text)</strong></RadzenText>
+                }
+                else
+                {
+                    <RadzenText>@(text)</RadzenText>
+                }
+            }
+            <br />
+            <RadzenButton Text="Beheer team" Click="OnEditTeamClicked"></RadzenButton>
+        </RadzenCard>
+    </RadzenStack>
+</RadzenStack>
+
+@switch (stepsSelectedIndex)
+{
+    case 1:
+        if(firstProjectId < 0)
+        {
+            InvokeAsync(async () =>
+            {
+                await OnAddProjectClicked();
+                stepsSelectedIndex = 0;
+            });
+            return;
+        }
+        if((SelectedProjectState.Value?.Id ?? -1) > -1)
+        {
+            NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(SelectedProjectState.Value.Id)}");
+            return;
+        }
+        if(firstProjectId > -1)
+        {
+            NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(firstProjectId)}");
+            return;
+        }
+        break;
+
+    default:
+        return;
+}
+
+@code {
+    [CascadingParameter]
+    CompanyContentUpdatedNotifier CompanyContentUpdatedNotifier { get; set; }
+    [CascadingParameter]
+    public ProjectContentUpdatedNotifier ProjectContentUpdatedNotifier { get; set; }
+    [CascadingParameter]
+    public ProjectRemovedNotifier ProjectRemovedNotifier { get; set; }
+    [CascadingParameter]
+    private SelectedProjectState SelectedProjectState { get; set; }
+    [CascadingParameter]
+    private SelectedCompanyState SelectedCompanyState { get; set; }
+    [CascadingParameter]
+    private CurrentUserState? CurrentUserState { get; set; }
+    [CascadingParameter]
+    public SidebarState SidebarState { get; set; }
+
+    [Parameter]
+    public string CompanyCode { get; set; } = string.Empty;
+
+    private int stepsSelectedIndex = 0;
+
+    private List<BCT.Domain.Entities.User> companyUsers { get; set; } = new();
+
+    private int firstProjectId { get; set; } = -1;
+    private string firstProjectName { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        stepsSelectedIndex = 0;
+        CompanyContentUpdatedNotifier.Subscribe(this);
+        ProjectRemovedNotifier.Subscribe(this);
+        SelectedCompanyState.Subscribe(this);
+        SelectedProjectState.Subscribe(this);
+        SidebarState.Value = new() { Value = true };
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        stepsSelectedIndex = 0;
+
+        // if (SelectedCompanyState?.Value == null)
+        // {
+        //     var id = SqidsEncoder.Decode(CompanyCode).First();
+        // }
+
+        if(SelectedCompanyState?.Value != null)
+        {
+            companyUsers = (await GetCompanyUsersUseCase.ExecuteAsync(SelectedCompanyState.Value))
+                .OrderBy(x => x.AuthId == CurrentUserState.Value.AuthId)
+                .ThenBy(x => x.Name)
+                .ToList();
+
+            await GetFirstProjectId();
+        }
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task GetFirstProjectId()
+    {
+        var projects = (await GetProjectsForCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value)).OrderBy(x => x.Name);
+        if (projects.Count() == 0){
+            firstProjectId = -1;
+            return;
+        }
+
+        if((SelectedProjectState?.Value?.Id ?? -1) != -1 && SelectedProjectState.Value.CompanyId == SelectedCompanyState.Value.Id)
+        {
+            firstProjectId =  SelectedProjectState.Value.Id;
+            firstProjectName = SelectedProjectState.Value.Name;
+            return;
+        }
+
+        if(CurrentUserState?.Value?.LastProjectId != null && projects.Any(x => x.Id == CurrentUserState.Value.LastProjectId))
+        {
+            firstProjectId =  CurrentUserState.Value.LastProjectId.Value;
+            firstProjectName = projects.FirstOrDefault(x => x.Id == firstProjectId)?.Name ?? string.Empty;
+            return;
+        }
+
+        firstProjectId = projects.FirstOrDefault()?.Id ?? -1;
+        firstProjectName = projects.FirstOrDefault(x => x.Id == firstProjectId)?.Name ?? string.Empty;
+    }
+
+    private async Task OnEditProfileClicked()
+    {
+        if(SelectedCompanyState?.Value == null)
+            return;
+
+        var options = new DialogOptions()
+        {
+            Resizable = false,
+            Draggable = false
+        };
+
+        await DialogService.OpenAsync("Profiel", ds => @<BCT.Blazor.Components.Pages.Settings.CompanyProfile IsDialog="true" />, options);
+
+        if(SelectedCompanyState.Value != null)
+            await SaveCompanyUseCase.ExecuteAsync(SelectedCompanyState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+
+        await InvokeAsync(async () =>
+        {
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    private async Task OnEditTeamClicked()
+    {
+        var options = new DialogOptions()
+        {
+            Resizable = false,
+            Draggable = false
+        };
+
+        await DialogService.OpenAsync("Team", ds => @<BCT.Blazor.Components.Pages.Settings.CompanyTeam IsDialog="true" />, options);
+
+        await InvokeAsync(async () =>
+        {
+            companyUsers = (await GetCompanyUsersUseCase.ExecuteAsync(SelectedCompanyState.Value)).ToList();
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    private async Task OnAddProjectClicked()
+    {
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        var newProject = await AddProjectUseCase.ExecuteAsync(SelectedCompanyState.Value, CurrentUserState?.Value?.Name ?? "NULL");
+        NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(newProject.Id)}");        
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    private async Task ContinueOrMakeProject()
+    {
+        if (SelectedCompanyState.Value == null)
+            return;
+
+        if((SelectedProjectState.Value?.Id ?? -1) > -1 && SelectedProjectState.Value.CompanyId == SelectedCompanyState.Value.Id)
+        {
+            NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(SelectedProjectState.Value.Id)}");
+            return;
+        }
+
+        if(firstProjectId > -1)
+        {
+            NavigationManager.NavigateTo($"project/overview/{SqidsEncoder.Encode(firstProjectId)}");
+            return;
+        }
+
+        await OnAddProjectClicked();
+    }
+
+    private void OnCompareProjectsClicked()
+    {
+        NavigationManager.NavigateTo($"company/compareProjects");
+    }
+
+    public void OnCompleted() { }
+
+    public void OnError(Exception error) => throw error;
+
+    public void OnNext(CompanyContentUpdatedEvent e)
+    {
+        if(SelectedCompanyState?.Value?.Id != e.Company.Id)
+            return;
+
+        InvokeAsync(async () =>
+        {
+            SelectedCompanyState.Value = e.Company;
+
+            await GetFirstProjectId();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(ProjectRemovedEvent e)
+    {
+        InvokeAsync(async () =>
+        {
+            await GetFirstProjectId();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(Domain.Entities.Company? c)
+    {
+        InvokeAsync(async () =>
+        {
+            await GetFirstProjectId();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void OnNext(Domain.Entities.Project? p)
+    {
+        InvokeAsync(async () =>
+        {
+            await GetFirstProjectId();
+
+            await Task.Delay(1);
+            StateHasChanged();
+            await Task.Delay(1);
+        });
+    }
+
+    public void Dispose()
+    {
+        CompanyContentUpdatedNotifier.Unsubscribe(this);
+        ProjectRemovedNotifier.Unsubscribe(this);
+        SelectedCompanyState.Unsubscribe(this);
+        SelectedProjectState.Unsubscribe(this);
+    }
+}

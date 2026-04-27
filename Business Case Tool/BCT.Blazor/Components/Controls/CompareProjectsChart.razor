@@ -1,0 +1,131 @@
+﻿@using ApexCharts
+@using BCT.Application.UseCases.Queries
+@using BCT.Blazor.Services
+@using BCT.Blazor.UIModels
+@using BCT.Domain.Entities
+
+@inject IProjectValueService pvs
+@inject IGetProjectUseCase getProjectUseCase
+
+@if ((SelectedProjects?.Count ?? 0) != 0 && (Properties?.Count ?? 0) != 0 && Datas.Count != 0)
+{
+    <ApexChart @ref="chart" Options="@options" Height="@("100%")" Width="@("100%")">
+        @foreach(int projectId in SelectedProjects)
+        {
+            @foreach (string property in Properties)
+            {
+                <ApexPointSeries 
+                Items="@Datas[$"{projectId}_{property}"]"
+                Name="@($"{projectId} {PresentationSettings.GridItems.First(x => x.Key == property).Label}")"
+                SeriesType="SeriesType.Bar"
+                XValue="@(x => x.Key)"
+                YValue="@(x => (decimal)x.Value)" 
+                />
+            }
+        }
+    </ApexChart>
+}
+else
+{
+    <div></div>
+}
+
+
+@code {
+    [Parameter]
+    public required List<int> SelectedProjects { get; set; }
+
+    [Parameter]
+    public required List<string> Properties { get; set; }
+
+    private ApexChart<DataItem> chart { get; set; }
+
+    private ApexChartOptions<DataItem>? options = null;
+
+    private Dictionary<string, List<DataItem>> Datas = new();
+
+    private List<string> SelectedProjectNames { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await RefreshData();
+
+        if (options == null)
+            options = new();
+
+        UpdateOptions();
+
+        await base.OnParametersSetAsync();
+    }
+
+    public async Task RefreshData()
+    {
+        Datas.Clear();
+
+        if ((SelectedProjects?.Count ?? 0) == 0)
+            return;
+
+        if ((Properties?.Count ?? 0) == 0)
+            return;
+
+        foreach (var id in SelectedProjects)
+        {
+            foreach (var property in Properties)
+            {
+                Datas[$"{id}_{property}"] = await GetData(property, id);
+            }
+        }
+    }
+
+    private async Task<List<DataItem>> GetData(string property, int projectId)
+    {
+        var project = await getProjectUseCase.ExecuteAsync(projectId);
+        var data = await pvs.GetProjectData(project);
+        var doubleValues = await pvs.GetProjectDoubleValues(project);
+        doubleValues.Where(x => x.Year == null).ToList().ForEach(x => data[x.Key] = x);
+
+        var chartItems = doubleValues
+            .Where(x => x.Key == property)
+            .OrderBy(x => x.Year)
+            .Select(x => new DataItem()
+                {
+                    X = (double)x.Year!,
+                    Key = x.Year.ToString(),
+                    Value = double.Round(x.Value, 1)
+                })
+            .ToList();
+
+        return chartItems;
+    }
+
+    public async Task UpdateChart(bool animate = true)
+    {
+        if ((SelectedProjects?.Count ?? 0) == 0)
+            return;
+
+        if ((Properties?.Count ?? 0) == 0)
+            return;
+
+        if (options == null)
+            options = new();
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+
+        await chart.UpdateSeriesAsync(animate);
+        await chart.UpdateOptionsAsync(animate, animate, false);
+
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+    }
+
+    public void UpdateOptions()
+    {
+        options.Stroke = new()
+            {
+                Width = 2
+            };
+    }
+}
