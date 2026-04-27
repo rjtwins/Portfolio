@@ -25,8 +25,19 @@
       padding-bottom: 0.5rem;
       margin-bottom: 1.5rem;
     }
+    h2 {
+      color: #e6edf3;
+      font-size: 1.25rem;
+      margin: 2rem 0 0.5rem;
+    }
     p {
       margin: 1rem 0;
+    }
+    ul {
+      margin: 0.5rem 0 1rem 1.5rem;
+    }
+    li {
+      margin: 0.3rem 0;
     }
     a {
       color: #58a6ff;
@@ -45,7 +56,58 @@
   <main>
     <nav><a href="../index.html">← Portfolio</a></nav>
     <h1>Business Case Tool</h1>
-    <p>The Business Case Tool is a tool developed for The Brabant Development Agency (BOM) and Smart Industry.</p>
+
+    <h2>Overview</h2>
+    <p>
+      Small and medium-sized businesses looking to invest in IT or automation often struggle to make
+      a well-founded decision: the financial implications are complex, the variables are many, and
+      there is rarely a structured way to compare options. The Business Case Tool was developed for
+      the <strong>Brabant Development Agency (BOM)</strong> and <strong>Smart Industry</strong> to
+      address exactly that gap — giving businesses a clear, quantitative foundation for their IT and
+      automation investment decisions.
+    </p>
+    <p>
+      The application allows users to create and manage business cases through an intuitive interface.
+      By entering a set of project parameters, the tool evaluates financial viability across multiple
+      indicators — including <strong>payback period</strong> and <strong>Net Present Value (NPV)</strong>
+      — and presents the results both in structured tables and interactive charts. A convenient
+      dashboard export makes it easy to share findings with stakeholders. Beyond a single scenario,
+      the tool supports side-by-side scenario comparisons, letting users tweak individual parameters
+      to stress-test assumptions and fine-tune their business case before committing to an investment.
+    </p>
+
+    <h2>Collaboration</h2>
+    <p>
+      The requirements for the application were shaped in close collaboration with experts at
+      <strong>TNO</strong> (the Dutch national innovation and applied-science consultancy), combining
+      theoretical financial modelling knowledge with practical experience from the field. This
+      cross-domain sparring ensured that the tool's analytical framework was both methodologically
+      sound and directly usable by the businesses it was designed for.
+    </p>
+
+    <h2>My Role</h2>
+    <p>
+      I was responsible for the application from first requirements through to release and ongoing
+      maintenance. My contributions included:
+    </p>
+    <ul>
+      <li>Sparring with domain and financial experts at TNO to translate theoretical and practical knowledge into concrete application requirements.</li>
+      <li>Designing the data models and overall system architecture, following <strong>clean architecture</strong> principles to keep the codebase easy to extend, modify, and integrate with third-party plugins.</li>
+      <li>Fully implementing the application, including the UI, business logic, and all integrations.</li>
+      <li>Integrating <strong>Auth0</strong> for authentication and role-based authorisation.</li>
+      <li>Integrating with <strong>HubSpot</strong> for CRM-linked user and company management.</li>
+      <li>Configuring <strong>Azure</strong> services to handle transactional email delivery outside the authentication flow.</li>
+      <li>Releasing and maintaining the production application across its lifecycle.</li>
+      <li>Running structured feedback cycles with key users and translating their input into prioritised improvements.</li>
+    </ul>
+
+    <h2>Project Phase</h2>
+    <p>
+      The tool was delivered as a <strong>production application</strong>, actively used by businesses
+      engaging with BOM and Smart Industry to evaluate IT and automation investments. The structured
+      feedback cycle ensured the tool evolved continuously based on real user needs, moving beyond
+      an initial release into a maintained product with an ongoing improvement loop.
+    </p>
   </main>
 </body>
 </html>
