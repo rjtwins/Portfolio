@@ -1,0 +1,237 @@
+[gd_scene load_steps=20 format=3 uid="uid://bby4asrxpurco"]
+
+[ext_resource type="Script" uid="uid://caplf28jc6o7v" path="res://Scenes/Components/Component.cs" id="1_oipwj"]
+[ext_resource type="Material" uid="uid://cwduynb7wu5vt" path="res://Scenes/Components/Helpers/StructureMat.tres" id="2_gpmwc"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="3_5vx6d"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="4_7g4ni"]
+[ext_resource type="Script" uid="uid://1bbr5j5d6gsh" path="res://Scenes/Components/ComponentScripts/Turret.cs" id="5_gpmwc"]
+[ext_resource type="Script" uid="uid://kleh657ubwjc" path="res://Scenes/Components/ComponentScripts/TurretComponent.cs" id="6_5vx6d"]
+[ext_resource type="PackedScene" uid="uid://b4coqlgvcfv1f" path="res://Scenes/Components/Bullet/Bullet.tscn" id="6_7g4ni"]
+[ext_resource type="Script" uid="uid://dqlyvnlf7fxdi" path="res://Scenes/Components/RotatingBarrel.cs" id="7_cppbo"]
+[ext_resource type="Script" uid="uid://x3iyen4pb5u4" path="res://Scenes/Components/DebugTargetBall.cs" id="8_7g4ni"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gpmwc"]
+size = Vector3(0.99, 0.99, 0.6326953)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5vx6d"]
+size = Vector3(0.12356573, 0.9820636, 0.12716797)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favpo"]
+atlas = ExtResource("3_5vx6d")
+region = Rect2(0, 0, 92, 92)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_oipwj"]
+top_radius = 0.4
+bottom_radius = 0.4
+height = 0.25
+radial_segments = 6
+rings = 0
+cap_bottom = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cppbo"]
+top_radius = 0.02
+bottom_radius = 0.02
+height = 0.8
+rings = 0
+cap_top = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7g4ni"]
+size = Vector3(0.91098785, 0.51148796, 0.9283843)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cppbo"]
+size = Vector3(0.86118317, 0.41303158, 1.1457138)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_caqvb"]
+size = Vector3(1.1435609, 0.36127377, 0.9219265)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vx6d"]
+albedo_color = Color(1, 0, 1, 1)
+emission_enabled = true
+emission = Color(1, 0, 1, 1)
+emission_energy_multiplier = 16.0
+emission_intensity = 100000.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7g4ni"]
+material = SubResource("StandardMaterial3D_5vx6d")
+radius = 0.25
+height = 0.5
+
+[node name="Turret1" type="Node3D" node_paths=PackedStringArray("CollisionDetector", "ConnectionDetector", "Outline", "Data")]
+script = ExtResource("1_oipwj")
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="BaseAndTurret" type="CollisionShape3D" parent="CollisionDetector"]
+transform = Transform3D(0.94, 0, 0, 0, -4.1088704e-08, -0.94, 0, 0.94, -4.1088704e-08, 0, -0.050433204, -2.2045055e-09)
+shape = SubResource("BoxShape3D_gpmwc")
+
+[node name="Barrel" type="CollisionShape3D" parent="CollisionDetector"]
+transform = Transform3D(0.94, 0, 0, 0, -4.1088704e-08, -0.94, 0, 0.94, -4.1088704e-08, 0.001, 0.12753296, 0.786)
+shape = SubResource("BoxShape3D_5vx6d")
+
+[node name="Base" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.5, 0)
+
+[node name="Z+" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0)
+material_override = ExtResource("2_gpmwc")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Base"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_gpmwc")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0, 0.5, -0.25033048)
+material_override = ExtResource("2_gpmwc")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Base"]
+transform = Transform3D(-1.1, 1.6609539e-07, 0, -1.6609539e-07, -1.1, 0, 0, 0, 0.5, 0, -0.5, -0.25033048)
+material_override = ExtResource("2_gpmwc")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0.5, 0, -0.25033048)
+material_override = ExtResource("2_gpmwc")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, -0.5, 0, -0.25033048)
+material_override = ExtResource("2_gpmwc")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Outline" parent="." instance=ExtResource("4_7g4ni")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -0.75, 0, 1, -3.278354e-08, 0, -0.1, 0)
+visible = false
+
+[node name="Turret" type="Node3D" parent="." node_paths=PackedStringArray("FireRateTimer", "MagazineReloadTimer", "BarrelAssembly", "DebugTargetBall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+script = ExtResource("5_gpmwc")
+AngularVelocity = 0.25
+ProjectileSpeed = 350.0
+Magazine = 300
+MagazineCap = 300
+FireRate = 0.25
+MagazineReloadTime = 1.0
+FireRateTimer = NodePath("FireRateTimer")
+MagazineReloadTimer = NodePath("MagazineReloadTimer")
+BulletScene = ExtResource("6_7g4ni")
+BarrelAssembly = NodePath("BarrelAssembly")
+DebugTargetBall = NodePath("../DebugTargetBall")
+
+[node name="FireRateTimer" type="Timer" parent="Turret"]
+
+[node name="MagazineReloadTimer" type="Timer" parent="Turret"]
+wait_time = 6.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Turret"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.6220169, 0)
+mesh = SubResource("CylinderMesh_oipwj")
+
+[node name="BarrelAssembly" type="Node3D" parent="Turret" node_paths=PackedStringArray("Barrel")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.0927847e-08, 0.6220169, 0.25)
+script = ExtResource("7_cppbo")
+NrBarrels = 6
+FireRate = 0.25
+Barrel = NodePath("SixBarrels")
+
+[node name="SixBarrels" type="Node3D" parent="Turret/BarrelAssembly"]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Turret/BarrelAssembly/SixBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.4, 0.1, 0)
+mesh = SubResource("CylinderMesh_cppbo")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Turret/BarrelAssembly/SixBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.4, 0.05, 0.087)
+mesh = SubResource("CylinderMesh_cppbo")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Turret/BarrelAssembly/SixBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.4, -0.05, -0.087)
+mesh = SubResource("CylinderMesh_cppbo")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Turret/BarrelAssembly/SixBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.4, -0.1, 0)
+mesh = SubResource("CylinderMesh_cppbo")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Turret/BarrelAssembly/SixBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.4, -0.05, 0.087)
+mesh = SubResource("CylinderMesh_cppbo")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Turret/BarrelAssembly/SixBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.4, 0.05, -0.087)
+mesh = SubResource("CylinderMesh_cppbo")
+skeleton = NodePath("../../..")
+
+[node name="ComponentData" type="Node" parent="." node_paths=PackedStringArray("Turret")]
+script = ExtResource("6_5vx6d")
+Turret = NodePath("../Turret")
+Label = "40 MM CWIS"
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02199173, -0.30333042, 0.009495974)
+shape = SubResource("BoxShape3D_7g4ni")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0027885437, -0.24143839, 0.0028190613)
+shape = SubResource("BoxShape3D_cppbo")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005418062, -0.2673173, -0.009362221)
+shape = SubResource("BoxShape3D_caqvb")
+
+[node name="DebugTargetBall" type="MeshInstance3D" parent="." node_paths=PackedStringArray("DebugTextLabel3D")]
+visible = false
+mesh = SubResource("CapsuleMesh_7g4ni")
+script = ExtResource("8_7g4ni")
+DebugTextLabel3D = NodePath("Label3D")
+
+[node name="Label3D" type="Label3D" parent="DebugTargetBall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3725891, 0)
+visible = false
+billboard = 1
+double_sided = false
+fixed_size = true
+modulate = Color(1, 0, 1, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "100s"
+font_size = 10
+uppercase = true
+autowrap_trim_flags = 0
+justification_flags = 0

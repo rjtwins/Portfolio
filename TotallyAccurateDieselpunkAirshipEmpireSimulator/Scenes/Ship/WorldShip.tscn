@@ -1,0 +1,113 @@
+[gd_scene load_steps=12 format=3 uid="uid://buc2m62sgwj4x"]
+
+[ext_resource type="Script" uid="uid://cev48h5fjhuwb" path="res://Scenes/Ship/WorldShip.cs" id="1_3fkvr"]
+[ext_resource type="Script" uid="uid://dtumg872alahg" path="res://Scenes/Ship/ShipData.cs" id="2_cdmjc"]
+[ext_resource type="Script" uid="uid://d0pe3ofcq8ds4" path="res://Scenes/Ship/ShipPid.cs" id="3_1bo41"]
+[ext_resource type="Script" uid="uid://cxumyobq2kop3" path="res://Scenes/Ship/ShipTuner.cs" id="4_oe4m4"]
+[ext_resource type="Script" uid="uid://57ac3wkslwye" path="res://Scenes/Ship/MapModeIndicator.cs" id="5_3k5lo"]
+[ext_resource type="Script" uid="uid://v3002hpoxx73" path="res://Scenes/Ship/WorldShipUI.cs" id="5_ss7yo"]
+[ext_resource type="Script" uid="uid://b6wbrgf0koojf" path="res://Scenes/Ship/WorldsShipLabel.cs" id="6_r32t5"]
+[ext_resource type="Script" uid="uid://c251d583y54eh" path="res://Scenes/Ship/WorldShipSelectionArea.cs" id="7_lcg66"]
+[ext_resource type="Texture2D" uid="uid://cpd1xk870f0lr" path="res://Resources/RWR/RWR-Track.png" id="8_214sy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_214sy"]
+radius = 20.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r32t5"]
+size = Vector2(202, 32)
+
+[node name="WorldShip" type="RigidBody3D" node_paths=PackedStringArray("ShipData", "PID", "ShipTuner")]
+linear_damp = 1.0
+script = ExtResource("1_3fkvr")
+ShipData = NodePath("Data")
+PID = NodePath("PID")
+ShipTuner = NodePath("ShipTuner")
+MoveP = 1.0
+MoveD = 2.0
+RotationSpeed = 1.0
+
+[node name="ComponentsContainer" type="Node3D" parent="."]
+transform = Transform3D(-2.1855695e-07, 0, 5, 0, 5, 0, -5, 0, -2.1855695e-07, 0, 0, 0)
+
+[node name="Data" type="Node" parent="."]
+script = ExtResource("2_cdmjc")
+
+[node name="PID" type="Node" parent="."]
+script = ExtResource("3_1bo41")
+
+[node name="ShipTuner" type="Node" parent="." node_paths=PackedStringArray("Pid")]
+script = ExtResource("4_oe4m4")
+Pid = NodePath("../PID")
+
+[node name="MapModeIndicator" type="Line2D" parent="." node_paths=PackedStringArray("worldShip")]
+visible = false
+points = PackedVector2Array(2, 2, -2, 2, -2, -2, 2, -2)
+closed = true
+width = 1.0
+default_color = Color(0.09395909, 1, 0, 1)
+script = ExtResource("5_3k5lo")
+worldShip = NodePath("..")
+
+[node name="WorldShipSelectionArea" type="Area2D" parent="." node_paths=PackedStringArray("WorldShip", "Shape")]
+collision_layer = 262144
+collision_mask = 262144
+script = ExtResource("7_lcg66")
+WorldShip = NodePath("..")
+Shape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldShipSelectionArea"]
+shape = SubResource("CircleShape2D_214sy")
+
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("worldShip", "MapModeIndicator")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("5_ss7yo")
+worldShip = NodePath("..")
+MapModeIndicator = NodePath("../MapModeIndicator")
+
+[node name="Area2D" type="Area2D" parent="UI"]
+position = Vector2(13, -13)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI/Area2D"]
+position = Vector2(116, -28)
+shape = SubResource("RectangleShape2D_r32t5")
+
+[node name="Label" type="RichTextLabel" parent="UI" node_paths=PackedStringArray("worldShip")]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -69.0
+offset_right = 68.0
+offset_bottom = -27.0
+grow_vertical = 0
+bbcode_enabled = true
+text = "
+
+
+"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+script = ExtResource("6_r32t5")
+worldShip = NodePath("../..")
+
+[node name="Connector" type="Line2D" parent="UI"]
+visible = false
+points = PackedVector2Array(28, -27, 22, -21)
+closed = true
+width = 1.0
+
+[node name="SelectionIndicator" type="Line2D" parent="UI"]
+visible = false
+points = PackedVector2Array(4, 4, -4, 4, -4, -4, 4, -4)
+closed = true
+width = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="UI"]
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("8_214sy")

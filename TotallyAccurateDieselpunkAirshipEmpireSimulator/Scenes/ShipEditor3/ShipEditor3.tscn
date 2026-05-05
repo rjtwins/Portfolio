@@ -1,0 +1,520 @@
+[gd_scene load_steps=56 format=3 uid="uid://cin28tqu0xpm5"]
+
+[ext_resource type="Script" path="res://Scenes/ShipEditor3/ShipEditor3.cs" id="1_icldv"]
+[ext_resource type="Script" path="res://Scenes/ShipEditor3/ComponentButton2.cs" id="2_jhk4f"]
+[ext_resource type="PackedScene" uid="uid://c1ea1dytlog0j" path="res://Scenes/Components/ComponentRoot.tscn" id="3_2dyec"]
+[ext_resource type="Script" path="res://Scenes/ShipEditor3/ToggleSaveLoadButton.cs" id="3_7fih2"]
+[ext_resource type="Texture2D" uid="uid://du11mncue8pwy" path="res://Resources/NotStolen/ComponentsV2_n.png" id="4_26rpb"]
+[ext_resource type="PackedScene" uid="uid://dl51i3vllts74" path="res://Scenes/Components/Bridge.tscn" id="4_c7t70"]
+[ext_resource type="PackedScene" uid="uid://dsa7h4auj12cs" path="res://Scenes/Components/Slope1.tscn" id="5_4qkxa"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="5_k21rd"]
+[ext_resource type="PackedScene" uid="uid://crhsw8pjgbpdq" path="res://Scenes/Components/Armor1.tscn" id="6_2jipg"]
+[ext_resource type="PackedScene" uid="uid://bi2lksfhuu73w" path="res://Scenes/Components/Armor2.tscn" id="7_qxxcn"]
+[ext_resource type="PackedScene" uid="uid://b5w3c0yxkj28x" path="res://Scenes/Components/Small1.tscn" id="7_ta7pw"]
+[ext_resource type="PackedScene" uid="uid://dvcpse106o8s7" path="res://Scenes/Components/SmallSlope.tscn" id="8_eh10f"]
+[ext_resource type="Texture2D" uid="uid://bv3ghjnj7cian" path="res://Resources/NotStolen/ground_shaker_asset/Blue/Weapons/weapons.png" id="8_kw07i"]
+[ext_resource type="PackedScene" uid="uid://ddf57bsns23uy" path="res://Scenes/Components/SubComponents/Turret2.tscn" id="9_g7qic"]
+[ext_resource type="PackedScene" uid="uid://bhos204s8o6qk" path="res://Scenes/Components/SubComponents/Turret1.tscn" id="10_xiya1"]
+[ext_resource type="Texture2D" uid="uid://ibh0bttu225i" path="res://Resources/NotStolen/ground_shaker_asset/Blue/Weapons/VLS1.png" id="11_otqm8"]
+[ext_resource type="PackedScene" uid="uid://dewse8k67ojg7" path="res://Scenes/Components/SubComponents/VLS1.tscn" id="12_tjg10"]
+[ext_resource type="Texture2D" uid="uid://b20m1vnroabig" path="res://Resources/NotStolen/ground_shaker_asset/Blue/Weapons/Engine1.png" id="14_3c186"]
+[ext_resource type="PackedScene" uid="uid://clwuc4hlviwn5" path="res://Scenes/Components/SubComponents/Engine1.tscn" id="14_bw7rs"]
+[ext_resource type="PackedScene" uid="uid://clqdqmc3ily64" path="res://Scenes/GameWorld/Ship.tscn" id="16_y73ih"]
+[ext_resource type="PackedScene" uid="uid://codgrnqlgacdf" path="res://Scenes/Components/Runway.tscn" id="17_hqfih"]
+[ext_resource type="PackedScene" uid="uid://u24iceotmtbw" path="res://Scenes/Components/SubComponents/AirCraft1.tscn" id="18_7ug6w"]
+[ext_resource type="Texture2D" uid="uid://ds5eb42qteixu" path="res://Resources/Stolen/Bucc-Sketch-Profile.png" id="19_monhx"]
+[ext_resource type="Script" path="res://Scenes/ShipEditor3/SavedShipList.cs" id="22_1t01d"]
+[ext_resource type="Script" path="res://Scenes/ShipEditor3/SaveLoadPanel.cs" id="22_t2pny"]
+[ext_resource type="PackedScene" uid="uid://5hnshupjcqbt" path="res://Libraries/CustomCamera2D.tscn" id="23_nu1k6"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wag01"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k30by"]
+atlas = SubResource("CompressedTexture2D_wag01")
+region = Rect2(0, 188, 92, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cnf5r"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(0, 188, 92, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fobwj"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(0, 94, 92, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hcoy0"]
+atlas = ExtResource("4_26rpb")
+region = Rect2(2, 96, 92, 92)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_torhx"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhdde"]
+atlas = SubResource("CompressedTexture2D_torhx")
+region = Rect2(562, 96, 90, 90)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unvt2"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(562, 96, 90, 90)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_e3hlf"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_seofu"]
+atlas = SubResource("CompressedTexture2D_e3hlf")
+region = Rect2(186, 188, 89, 89)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nl7hv"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jypwt"]
+atlas = SubResource("CompressedTexture2D_nl7hv")
+region = Rect2(186, 188, 89, 89)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_c4egg"]
+load_path = "res://.godot/imported/ComponentsV2_n.png-35bb6cc15a4cc224addaaf517ea42078.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q443j"]
+atlas = SubResource("CompressedTexture2D_c4egg")
+region = Rect2(379, 98, 90, 90)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kfonl"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(470, 96, 90, 90)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_msher"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba853"]
+atlas = SubResource("CompressedTexture2D_msher")
+region = Rect2(746, 95, 46, 92)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cunaj"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32avn"]
+atlas = SubResource("CompressedTexture2D_cunaj")
+region = Rect2(746, 95, 46, 92)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n1lcj"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(794, 141, 46, 46)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wqy6"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(794, 141, 46, 46)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xohxa"]
+atlas = ExtResource("8_kw07i")
+region = Rect2(29, 1, 38, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80wu8"]
+atlas = ExtResource("8_kw07i")
+region = Rect2(29, 1, 38, 77)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ew5s0"]
+load_path = "res://.godot/imported/weapons.png-56076e230fd822ed7661ddeecc7c52f3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctt1e"]
+atlas = SubResource("CompressedTexture2D_ew5s0")
+region = Rect2(315, 1, 42, 77)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5olsh"]
+load_path = "res://.godot/imported/weapons.png-56076e230fd822ed7661ddeecc7c52f3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0xb8"]
+atlas = SubResource("CompressedTexture2D_5olsh")
+region = Rect2(315, 1, 42, 77)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kykfc"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(94, 188, 90, 90)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_un7d0"]
+atlas = ExtResource("5_k21rd")
+region = Rect2(94, 188, 90, 90)
+
+[node name="ShipEditor3" type="Node2D" node_paths=PackedStringArray("SaveButton", "LoadButton", "EditorShip", "ComponentNodesNode", "WeightLabel", "DownThrustLabel", "DownTTWLabel")]
+script = ExtResource("1_icldv")
+SaveButton = NodePath("UICanvas/UI/VBoxContainer/HBoxContainer/Button")
+LoadButton = NodePath("UICanvas/UI/VBoxContainer/HBoxContainer/Button2")
+EditorShip = NodePath("EditorShip")
+ComponentNodesNode = NodePath("ComponentNodes")
+WeightLabel = NodePath("UICanvas/UI/Label4")
+DownThrustLabel = NodePath("UICanvas/UI/Label5")
+DownTTWLabel = NodePath("UICanvas/UI/Label6")
+BridgeScene = ExtResource("4_c7t70")
+
+[node name="UICanvas" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="UICanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.137181, 0.364938, 0.687274, 1)
+
+[node name="UI" type="Control" parent="UICanvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvas/UI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -108.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="UICanvas/UI/VBoxContainer"]
+layout_mode = 2
+text = "Ship Components"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvas/UI/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 10
+
+[node name="Button" type="Button" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("saveLoadPanel")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Save/Load"
+script = ExtResource("3_7fih2")
+saveLoadPanel = NodePath("../../../SaveLoadPanel")
+
+[node name="Button2" type="Button" parent="UICanvas/UI/VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Load Ship"
+
+[node name="Button3" type="Button" parent="UICanvas/UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Close Editor"
+
+[node name="ComponentButton1" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+visible = false
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_k30by")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("4_c7t70")
+Texture = SubResource("AtlasTexture_cnf5r")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton2" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_fobwj")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("3_2dyec")
+Texture = SubResource("AtlasTexture_hcoy0")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton12" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_xhdde")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("7_ta7pw")
+Texture = SubResource("AtlasTexture_unvt2")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton13" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_seofu")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("8_eh10f")
+Texture = SubResource("AtlasTexture_jypwt")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton8" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_q443j")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("5_4qkxa")
+Texture = SubResource("AtlasTexture_kfonl")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton3" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_ba853")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("6_2jipg")
+Texture = SubResource("AtlasTexture_32avn")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton4" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_n1lcj")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("7_qxxcn")
+Texture = SubResource("AtlasTexture_8wqy6")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton5" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_xohxa")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("9_g7qic")
+Texture = SubResource("AtlasTexture_80wu8")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton6" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_ctt1e")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("10_xiya1")
+Texture = SubResource("AtlasTexture_j0xb8")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton7" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("11_otqm8")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("12_tjg10")
+Texture = ExtResource("11_otqm8")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton9" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("14_3c186")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("14_bw7rs")
+Texture = ExtResource("14_3c186")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton10" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_kykfc")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("17_hqfih")
+Texture = SubResource("AtlasTexture_un7d0")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="ComponentButton11" type="TextureButton" parent="UICanvas/UI/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("ComponentNodesNode")]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("19_monhx")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("2_jhk4f")
+ComponentScene = ExtResource("18_7ug6w")
+Texture = ExtResource("19_monhx")
+ComponentNodesNode = NodePath("../../../../../ComponentNodes")
+
+[node name="Label" type="Label" parent="UICanvas/UI"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 23.0
+text = "Weight"
+
+[node name="Label2" type="Label" parent="UICanvas/UI"]
+layout_mode = 0
+offset_top = 24.0
+offset_right = 100.0
+offset_bottom = 47.0
+text = "Down Thrust"
+
+[node name="Label3" type="Label" parent="UICanvas/UI"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 178.0
+offset_bottom = 71.0
+text = "Down Thrust to Weight"
+
+[node name="Label4" type="Label" parent="UICanvas/UI"]
+layout_mode = 0
+offset_left = 286.0
+offset_right = 350.0
+offset_bottom = 23.0
+text = "0"
+
+[node name="Label5" type="Label" parent="UICanvas/UI"]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 24.0
+offset_right = 350.0
+offset_bottom = 47.0
+text = "0"
+
+[node name="Label6" type="Label" parent="UICanvas/UI"]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 48.0
+offset_right = 350.0
+offset_bottom = 71.0
+text = "0"
+
+[node name="SaveLoadPanel" type="Control" parent="UICanvas/UI" node_paths=PackedStringArray("saveButton", "loadButton", "deleteButton", "shipList", "confirmationDialog", "shipNameEdit", "fileDialog")]
+visible = false
+top_level = true
+anchors_preset = 0
+offset_left = 50.0
+offset_top = 90.0
+offset_right = 850.0
+offset_bottom = 990.0
+script = ExtResource("22_t2pny")
+saveButton = NodePath("VBoxContainer/HBoxContainer/Save")
+loadButton = NodePath("VBoxContainer/HBoxContainer/Load")
+deleteButton = NodePath("VBoxContainer/HBoxContainer/Delete")
+shipList = NodePath("VBoxContainer/ScrollContainer")
+confirmationDialog = NodePath("../../../ConfirmationDialog")
+shipNameEdit = NodePath("VBoxContainer/LineEdit")
+fileDialog = NodePath("../../../FileDialog")
+
+[node name="ColorRect" type="ColorRect" parent="UICanvas/UI/SaveLoadPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.107704, 0.309506, 0.593647, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvas/UI/SaveLoadPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer"]
+layout_mode = 2
+text = "Save/Load ship"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("22_1t01d")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LineEdit" type="LineEdit" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="Load" type="Button" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Load"
+
+[node name="Delete" type="Button" parent="UICanvas/UI/SaveLoadPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Delete"
+
+[node name="ComponentNodes" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="EditorShip" parent="." instance=ExtResource("16_y73ih")]
+ShipName = "EditorShip"
+
+[node name="Camera2D" parent="." instance=ExtResource("23_nu1k6")]
+MaxZoom = 2.0
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+title = "Overwrite selected?"
+initial_position = 2
+size = Vector2i(330, 100)
+unresizable = true
+borderless = true
+popup_window = true
+dialog_text = "Overwrite"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+disable_3d = true
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+title = "Export Ship"
+initial_position = 1
+size = Vector2i(540, 260)
+unresizable = true
+borderless = true
+always_on_top = true
+popup_window = true
+force_native = true
+ok_button_text = "Save"
+dialog_hide_on_ok = true
+access = 2
+use_native_dialog = true

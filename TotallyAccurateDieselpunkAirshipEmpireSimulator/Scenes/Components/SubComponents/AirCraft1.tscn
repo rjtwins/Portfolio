@@ -1,0 +1,104 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5s6qioigr64n"]
+
+[ext_resource type="Texture2D" uid="uid://eyfkxo8psqqa" path="res://Resources/NotStolen/TurretBase.png" id="2_cdmxb"]
+[ext_resource type="Texture2D" uid="uid://ds5eb42qteixu" path="res://Resources/Stolen/Bucc-Sketch-Profile.png" id="3_j1erg"]
+[ext_resource type="Script" uid="uid://bdmb34fy6h0yw" path="res://Scenes/Components/SubComponents/MapAircraft.cs" id="5_rcc06"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cwql7"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ipxi7"]
+radius = 44.85
+
+[sub_resource type="CSharpScript" id="CSharpScript_wv4d4"]
+script/source = "using System.Linq;
+using Godot;
+
+public partial class AircraftComponent : ComponentBase
+{
+	[Export] public MapAircraft Aircraft {get; set; }
+
+	public override void _Ready()
+	{
+		base._Ready();
+		//PlacedDown();
+	}
+
+	// public override void PlacedDown()
+	// {	
+	// 	base.PlacedDown();
+		
+	// 	SubComponentRoot root = ComponentRoot as SubComponentRoot;
+		
+	// 	GetTree().CreateTimer(0.1f).Timeout += () => 
+	// 	{
+	// 		if(!root.OnHardPoint())
+	// 			return;
+				
+	// 		Runway = root.GetMountedOn().FirstOrDefault() as ComponentRoot2;
+			
+	// 		if(Runway == null)
+	// 			return;
+							
+	// 		Aircraft.Runway = runwayComponent;
+	// 		Aircraft.Mothership = Ship;
+	// 		runwayComponent.Aircraft = Aircraft;
+	// 		runwayComponent.AircraftComponent = this;
+	// 	};
+	// }
+
+	// public override void PickedUp()
+	// {
+	// 	base.PickedUp();
+	// 	Runway = null;
+	// 	Aircraft.Runway = null;
+	// 	Aircraft.Mothership = null;
+	// 	if(runwayComponent != null)
+	// 	{
+	// 		runwayComponent.Aircraft = Aircraft;
+	// 		runwayComponent.AircraftComponent = this;	
+	// 	}
+	// }
+
+	public override void OnShipLoaded()
+	{
+		// Aircraft.Runway = runwayComponent;
+		// Aircraft.Mothership = Ship;
+		// runwayComponent.AircraftComponent = this;
+		// runwayComponent.Aircraft = Aircraft;
+	}
+}
+"
+
+[node name="SubComponentRoot" type="Node2D"]
+
+[node name="BG" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.47, 0.47)
+texture = ExtResource("2_cdmxb")
+
+[node name="FG" type="Sprite2D" parent="."]
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("3_j1erg")
+
+[node name="HardPoint" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 1024
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HardPoint"]
+shape = SubResource("CircleShape2D_cwql7")
+
+[node name="EditorCollision" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EditorCollision"]
+shape = SubResource("CircleShape2D_ipxi7")
+
+[node name="Component" type="Node2D" parent="." node_paths=PackedStringArray("Aircraft")]
+script = SubResource("CSharpScript_wv4d4")
+Aircraft = NodePath("MapAircraft")
+
+[node name="MapAircraft" type="Node" parent="Component"]
+script = ExtResource("5_rcc06")
+Health = 101.0

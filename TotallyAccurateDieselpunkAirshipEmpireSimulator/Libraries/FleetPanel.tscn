@@ -1,0 +1,215 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsta01wy7epvl"]
+
+[ext_resource type="Script" uid="uid://hyynv7a74v72" path="res://Libraries/FleetPanel.cs" id="2_4wwi8"]
+[ext_resource type="Texture2D" uid="uid://ccusogybaxxtc" path="res://Resources/LineUI/FleetPanelLayout.png" id="2_hodpu"]
+[ext_resource type="Script" uid="uid://cucd0n8evpy65" path="res://Libraries/ItemContainer.cs" id="3_73f28"]
+[ext_resource type="PackedScene" uid="uid://bpb0exckawdqe" path="res://Scenes/OverWorld/MissilePanel.tscn" id="4_c8mro"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lvenf"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="FleetPanel" type="TextureRect" node_paths=PackedStringArray("ItemContainer", "Slider", "ToggleMode", "Detach", "CurrentlySelectedStrikePanel", "MissilePanel") groups=["UIFleetElements"]]
+anchors_preset = -1
+anchor_right = 0.417
+anchor_bottom = 0.648
+offset_right = -0.640076
+offset_bottom = 0.159973
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hodpu")
+expand_mode = 1
+script = ExtResource("2_4wwi8")
+ItemContainer = NodePath("ScrollContainer/ItemContainer")
+Slider = NodePath("Controls/VSlider")
+ToggleMode = NodePath("Controls/ModeToggle")
+Detach = NodePath("Controls/Detach")
+CurrentlySelectedStrikePanel = NodePath("CurrentlySelectedStrikePanel")
+MissilePanel = NodePath("MissilePanal")
+
+[node name="CurrentlySelectedStrikePanel" type="ItemList" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 805.0
+offset_top = -279.0
+offset_right = 888.0
+offset_bottom = 273.0
+grow_vertical = 2
+allow_search = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 104.0
+offset_right = 631.0
+offset_bottom = 434.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="ItemContainer" type="HFlowContainer" parent="ScrollContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(535, 330)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+alignment = 1
+script = ExtResource("3_73f28")
+
+[node name="Controls" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Controls"]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 600.0
+offset_right = 454.0
+offset_bottom = 655.0
+text = "LS"
+
+[node name="Detach" type="Button" parent="Controls"]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 600.0
+offset_right = 583.0
+offset_bottom = 655.0
+text = "Detach"
+
+[node name="Button3" type="Button" parent="Controls"]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 600.0
+offset_right = 328.0
+offset_bottom = 655.0
+text = "+"
+
+[node name="Button4" type="Button" parent="Controls"]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 600.0
+offset_right = 198.0
+offset_bottom = 655.0
+text = "-"
+
+[node name="ModeToggle" type="Button" parent="Controls"]
+layout_mode = 0
+offset_left = 672.0
+offset_top = 72.0
+offset_right = 760.0
+offset_bottom = 126.0
+
+[node name="VSlider" type="VSlider" parent="Controls"]
+layout_mode = 0
+offset_left = 696.0
+offset_top = 136.0
+offset_right = 726.0
+offset_bottom = 557.0
+max_value = 3.0
+tick_count = 3
+
+[node name="Labels" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Labels"]
+layout_mode = 0
+offset_left = 616.0
+offset_top = 568.0
+offset_right = 760.0
+offset_bottom = 632.0
+text = "Spoolup"
+label_settings = SubResource("LabelSettings_lvenf")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MissilePanal" parent="." instance=ExtResource("4_c8mro")]
+visible = false
+layout_mode = 1
+offset_left = 45.0
+offset_top = 45.0
+offset_right = 45.0
+offset_bottom = 45.0
+
+[node name="StrikeCraftPanel" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StrikeCraftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="VBoxContainer" parent="StrikeCraftPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Panel" type="Panel" parent="StrikeCraftPanel/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="StrikeCraftPanel/HBoxContainer/PanelContainer/Panel"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "StrikeCraft"
+
+[node name="MissileList" type="ItemList" parent="StrikeCraftPanel/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+
+[node name="PanelContainer2" type="VBoxContainer" parent="StrikeCraftPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Panel" type="Panel" parent="StrikeCraftPanel/HBoxContainer/PanelContainer2"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="StrikeCraftPanel/HBoxContainer/PanelContainer2/Panel"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "Info"
+
+[node name="MissileInfo" type="ItemList" parent="StrikeCraftPanel/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+allow_search = false
+
+[node name="Panel2" type="Panel" parent="StrikeCraftPanel/HBoxContainer/PanelContainer2"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="StrikeCraftPanel/HBoxContainer/PanelContainer2/Panel2"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "Launcher"
+
+[node name="LauncherList" type="ItemList" parent="StrikeCraftPanel/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5

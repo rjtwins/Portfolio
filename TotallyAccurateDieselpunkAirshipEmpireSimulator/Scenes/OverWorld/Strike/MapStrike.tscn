@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://dwdd1mk7iotg4"]
+
+[ext_resource type="Script" path="res://Scenes/OverWorld/Strike/MapStrike.cs" id="1_8rhij"]
+[ext_resource type="PackedScene" uid="uid://bloowtf4lev7j" path="res://Libraries/CircleLine2D.tscn" id="1_qxla3"]
+[ext_resource type="Texture2D" uid="uid://cmie26drhqpe3" path="res://Resources/NotStolen/aircraft-66-512.png" id="2_hl1jq"]
+[ext_resource type="PackedScene" uid="uid://csynecx3e2vjl" path="res://Libraries/Selectable.tscn" id="4_d3nrh"]
+[ext_resource type="Script" path="res://Scenes/OverWorld/Strike/ASprite.cs" id="5_1rwjh"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7ywax"]
+blend_mode = 2
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vt0xw"]
+radius = 20.0
+height = 40.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aykqv"]
+height = 20.0
+
+[node name="MapStrike" type="Node2D" node_paths=PackedStringArray("selectable", "aircraft", "CollisionArea")]
+script = ExtResource("1_8rhij")
+selectable = NodePath("Selectable")
+aircraft = []
+CollisionArea = NodePath("MouseDetector")
+
+[node name="Selectable" parent="." instance=ExtResource("4_d3nrh")]
+
+[node name="VisionCircle" parent="." instance=ExtResource("1_qxla3")]
+position = Vector2(0, 0)
+width = 1.0
+ScreenWidth = 1
+WorldRadius = 0.0
+
+[node name="ASprite2" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0.780392, 0, 0.643137)
+rotation = 0.785398
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_hl1jq")
+offset = Vector2(-28.3945, 27.8856)
+script = ExtResource("5_1rwjh")
+
+[node name="ASprite" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 0.780392, 0, 0.643137)
+material = SubResource("CanvasItemMaterial_7ywax")
+rotation = 0.785398
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_hl1jq")
+offset = Vector2(-28.3945, 27.8856)
+script = ExtResource("5_1rwjh")
+
+[node name="MouseDetector" type="Area2D" parent="."]
+scale = Vector2(1.2, 1.2)
+disable_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MouseDetector"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_vt0xw")
+
+[node name="RadarDetectable" type="Area2D" parent="."]
+scale = Vector2(1.2, 1.2)
+disable_mode = 1
+collision_layer = 2147483648
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RadarDetectable"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_aykqv")
+
+[node name="RangeCircle" parent="." instance=ExtResource("1_qxla3")]
+visible = false
+
+[connection signal="input_event" from="MouseDetector" to="Selectable" method="_on_mouse_detector_input_event"]

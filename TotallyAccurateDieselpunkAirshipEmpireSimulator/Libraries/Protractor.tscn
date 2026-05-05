@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dslxerpxmqgpw"]
+
+[ext_resource type="PackedScene" uid="uid://mcff0ufvimb8" path="res://Libraries/ScreenSpaceNode.tscn" id="1_5yltd"]
+[ext_resource type="Texture2D" uid="uid://cv1i2stufwva5" path="res://Resources/NotStolen/Protractor.png" id="1_227o4"]
+
+[node name="Protractor" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("1_227o4")
+
+[node name="ScreenSpaceNode" parent="." instance=ExtResource("1_5yltd")]
+visible = false

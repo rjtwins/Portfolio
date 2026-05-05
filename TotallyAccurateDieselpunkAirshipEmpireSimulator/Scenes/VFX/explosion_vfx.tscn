@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://bx8ne8eg5reeb"]
+
+[ext_resource type="Script" path="res://Scenes/VFX/DebugClick.cs" id="1_nwmil"]
+[ext_resource type="PackedScene" uid="uid://c5tjsojxn751o" path="res://Scenes/VFX/Explosion.tscn" id="2_qtofh"]
+[ext_resource type="Texture2D" uid="uid://cbyncy7m7okh1" path="res://Resources/FX/ExplosionsFireSmoke/SmokeArea.png" id="2_t3xhd"]
+[ext_resource type="Texture2D" uid="uid://csgiu0peknorx" path="res://Resources/Stolen/HFDesert2.png" id="3_6sjig"]
+[ext_resource type="Texture2D" uid="uid://by7ueki73urhe" path="res://Resources/FX/NicePng_white-circle-png_129447.png" id="6_va8e1"]
+
+[sub_resource type="Environment" id="Environment_2ewgm"]
+background_mode = 3
+glow_enabled = true
+glow_blend_mode = 0
+
+[node name="ExplosionVFX" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("3_6sjig")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -22164.0
+offset_top = -13821.0
+offset_right = 28986.0
+offset_bottom = 19349.0
+color = Color(0.219608, 0.219608, 0.219608, 0)
+script = ExtResource("1_nwmil")
+ExplosionScene = ExtResource("2_qtofh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_t3xhd")
+hframes = 10
+vframes = 7
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(143, 157)
+scale = Vector2(0.0229748, 0.0276853)
+color = Color(10, 10, 10, 1)
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.513726)
+shadow_filter = 2
+texture = ExtResource("6_va8e1")
+height = 25.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2ewgm")

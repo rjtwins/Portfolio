@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw5k5u2uhhu6f"]
+
+[ext_resource type="PackedScene" uid="uid://dq466b24id2ox" path="res://Scenes/OverWorld/OverWorld.tscn" id="2_3nx24"]
+[ext_resource type="PackedScene" uid="uid://x473mk6o1hqb" path="res://Scenes/ShipEditor2/ShipEditor2.tscn" id="2_bvare"]
+
+[node name="Master" type="Node2D"]
+
+[node name="ShipEditor" parent="." instance=ExtResource("2_bvare")]
+process_mode = 4
+z_index = 1
+ShipScene = null
+
+[node name="Overworld" parent="." instance=ExtResource("2_3nx24")]
+process_mode = 4

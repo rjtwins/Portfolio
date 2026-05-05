@@ -1,0 +1,857 @@
+[gd_scene load_steps=44 format=3 uid="uid://o0kma3t5fdqs"]
+
+[ext_resource type="Shader" uid="uid://ckqsd2862w7gd" path="res://Scenes/OverWorld/ViewportShader2.gdshader" id="1_8h3yh"]
+[ext_resource type="Script" uid="uid://dkkexcl7pexnv" path="res://Scenes/OverWorld/MouseFollower.cs" id="2_ngedv"]
+[ext_resource type="Texture2D" uid="uid://ci4b52if4vitj" path="res://Resources/Stolen/Things.png" id="3_r0wuh"]
+[ext_resource type="Script" uid="uid://d301cwtvenp5h" path="res://Scenes/OverWorld/UIMouseFollower.cs" id="5_qp6ky"]
+[ext_resource type="Script" uid="uid://c3wfgg6h3wpsq" path="res://Scenes/OverWorld/SoftwareCurser.cs" id="5_qy1jj"]
+[ext_resource type="Texture2D" uid="uid://dpji167wl7j5k" path="res://Resources/empyt.png" id="6_g27kt"]
+[ext_resource type="PackedScene" uid="uid://bvmn5lpoxh2m6" path="res://Scenes/OverWorld/Screen.tscn" id="8_q3tk2"]
+[ext_resource type="Texture2D" uid="uid://dqru6yv61r64" path="res://Resources/Stolen/Switch_04.png" id="9_3xfxo"]
+[ext_resource type="Script" uid="uid://3gcjqmnsjbex" path="res://Scenes/OverWorld/MapOverlayDial.cs" id="10_ns0v5"]
+[ext_resource type="Texture2D" uid="uid://u7bxqch6pequ" path="res://Resources/Stolen/Switch_03.png" id="10_scisk"]
+[ext_resource type="Script" uid="uid://cqorlp6y5eo7" path="res://Scenes/OverWorld/GlobalInformation.cs" id="10_tk346"]
+[ext_resource type="PackedScene" uid="uid://cc4h8xdikny2g" path="res://Libraries/RotationControl.tscn" id="10_ybhn6"]
+[ext_resource type="PackedScene" uid="uid://cc63inqpfm68i" path="res://Libraries/UIArea2d.tscn" id="11_6uyvt"]
+[ext_resource type="Script" uid="uid://5g2uugareg08" path="res://Scenes/OverWorld/Targeter.cs" id="12_d3d4g"]
+[ext_resource type="Script" uid="uid://ce6r6hokp11un" path="res://Scenes/OverWorld/FleetControlOverlay.cs" id="12_g7spt"]
+[ext_resource type="Texture2D" uid="uid://c1jgu8psrnlbv" path="res://Resources/LineUI/HorizontalArm.png" id="12_jgjvy"]
+[ext_resource type="Texture2D" uid="uid://bbl44vx80fkrp" path="res://Resources/LineUI/VerticalArm.png" id="13_v4hgb"]
+[ext_resource type="FontFile" uid="uid://cjpjlvwk5kxr7" path="res://Resources/Fonts/FuturaPTMedium.otf" id="13_yc164"]
+[ext_resource type="Texture2D" uid="uid://c7106byhwng8w" path="res://Resources/LineUI/Targeter.png" id="14_06tfl"]
+[ext_resource type="Script" uid="uid://cv74evehyb6x5" path="res://Scenes/OverWorld/MapSettlementOverlayDail.cs" id="14_xrofo"]
+[ext_resource type="PackedScene" uid="uid://bsta01wy7epvl" path="res://Libraries/FleetPanel.tscn" id="15_rmqoq"]
+[ext_resource type="PackedScene" uid="uid://b8sx0uo7cl84a" path="res://Scenes/OverWorld/SettlementDetails.tscn" id="17_ueo0i"]
+[ext_resource type="Script" uid="uid://2nmy710lig2f" path="res://Scenes/OverWorld/OpenShipEditorButton.cs" id="18_1ercw"]
+[ext_resource type="Script" uid="uid://bn0twiy8yewc6" path="res://Scenes/OverWorld/SettlementControlOverlay.cs" id="18_i7e61"]
+[ext_resource type="Script" uid="uid://cchilecbp7ywv" path="res://Scenes/OverWorld/AnimationPlayerTimeScaleHandler.cs" id="21_ki4b1"]
+[ext_resource type="Script" uid="uid://dcojw3dkvpve" path="res://Scenes/OverWorld/MapToolButtons.cs" id="24_tgara"]
+[ext_resource type="Script" uid="uid://bfhvee7rm4vmp" path="res://Scenes/OverWorld/SidePanel.cs" id="25_m7pvx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w3wcf"]
+radius = 32.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ve76c"]
+shader = ExtResource("1_8h3yh")
+shader_parameter/resolution = Vector2(1920, 1080)
+shader_parameter/scan_line_amount = 0.0
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.0
+shader_parameter/interference_amount = 0.0
+shader_parameter/grille_amount = 0.0
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.0
+shader_parameter/vignette_intensity = 0.0
+shader_parameter/aberation_amount = 0.0
+shader_parameter/roll_line_amount = 0.3
+shader_parameter/roll_speed = 0.5
+shader_parameter/scan_line_strength = -8.0
+shader_parameter/pixel_strength = -2.0
+shader_parameter/x_offset = 0.0
+shader_parameter/y_offset = 0.0
+shader_parameter/width_scale = 1.0
+shader_parameter/height_scale = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gdf7n"]
+radius = 550.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3pta"]
+size = Vector2(1921, 1079)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fyhi7"]
+atlas = ExtResource("3_r0wuh")
+region = Rect2(634, 1775, 125, 60)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4o3vg"]
+font_size = 15
+
+[sub_resource type="LabelSettings" id="LabelSettings_ngd41"]
+font = ExtResource("13_yc164")
+
+[sub_resource type="Animation" id="Animation_3qtdw"]
+resource_name = "OverlaySwing"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FleetControlOverlay:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5708, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_n3akm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FleetControlOverlay:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ymrsm"]
+_data = {
+&"OverlaySwing": SubResource("Animation_3qtdw"),
+&"RESET": SubResource("Animation_n3akm")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caihw"]
+size = Vector2(850.0001, 648)
+
+[sub_resource type="Animation" id="Animation_4ywgh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.5708]
+}
+
+[sub_resource type="Animation" id="Animation_62a50"]
+resource_name = "Swing"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.5708, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b2hkj"]
+_data = {
+&"RESET": SubResource("Animation_4ywgh"),
+&"Swing": SubResource("Animation_62a50")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mfws3"]
+size = Vector2(607.998, 914.15796)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_n0knb"]
+allow_unpress = true
+
+[node name="OverworldUi" type="Control"]
+z_index = 50
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MouseManger" type="Node2D" parent="."]
+clip_children = 2
+position = Vector2(632, 128)
+scale = Vector2(0.25, 0.25)
+script = ExtResource("2_ngedv")
+
+[node name="Sprite2D" type="Sprite2D" parent="MouseManger" node_paths=PackedStringArray("ShadedArea", "OwnArea", "MapOverlay")]
+centered = false
+script = ExtResource("5_qy1jj")
+EmptyCurser = ExtResource("6_g27kt")
+ShadedArea = NodePath("../../ShadedArea")
+OwnArea = NodePath("UIMouseFollower")
+MapOverlay = NodePath("../../ViewportPolygon/NinePatchRect2")
+
+[node name="UIMouseFollower" type="Area2D" parent="MouseManger/Sprite2D"]
+collision_layer = 513
+collision_mask = 513
+script = ExtResource("5_qp6ky")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MouseManger/Sprite2D/UIMouseFollower"]
+shape = SubResource("CircleShape2D_w3wcf")
+
+[node name="MonitorBackground" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_ve76c")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_g27kt")
+
+[node name="ShadedArea" type="Area2D" parent="."]
+visible = false
+position = Vector2(1368, 539)
+collision_layer = 512
+collision_mask = 512
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShadedArea"]
+shape = SubResource("CircleShape2D_gdf7n")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ShadedArea"]
+position = Vector2(-408.5, 1.5)
+shape = SubResource("RectangleShape2D_b3pta")
+
+[node name="ViewportPolygon" type="Polygon2D" parent="."]
+visible = false
+clip_children = 2
+position = Vector2(406, -612)
+scale = Vector2(1.47059, 1.4)
+color = Color(0, 0, 0, 1)
+invert_enabled = true
+invert_border = 1122.5
+polygon = PackedVector2Array(418.2, 535.714, 398.48, 562.857, 360.4, 614.286, 333.2, 665.714, 316.88, 705.714, 302.6, 752.143, 297.84, 824.286, 301.92, 870.714, 316.2, 964.286, 357, 1041.43, 452.879, 1145.71, 518.159, 1185.71, 621.519, 1208.57, 719.439, 1208.57, 841.159, 1162.86, 947.919, 1071.43, 996.879, 985.714, 1018.64, 882.857, 1024.08, 814.286, 1018.64, 751.429, 975.119, 625.714, 881.959, 509.286, 805.799, 468.571, 736.439, 446.429, 662.319, 440, 583.439, 445.714, 523.599, 463.571, 465.799, 492.143)
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="ViewportPolygon"]
+offset_left = -276.0
+offset_top = 437.0
+offset_right = 1029.0
+offset_bottom = 1209.0
+texture = ExtResource("3_r0wuh")
+region_rect = Rect2(52, 2659, 553, 805)
+patch_margin_left = 49
+patch_margin_top = 66
+patch_margin_right = 84
+patch_margin_bottom = 59
+axis_stretch_vertical = 2
+
+[node name="ViewportRing" parent="." instance=ExtResource("8_q3tk2")]
+visible = false
+layout_mode = 1
+offset_left = 835.0
+offset_top = -11.0
+offset_right = 87.0
+offset_bottom = 119.0
+scale = Vector2(0.93, 0.93)
+mouse_filter = 2
+
+[node name="TogglePanel" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 26.0
+offset_top = 85.0
+offset_right = 476.0
+offset_bottom = 239.0
+
+[node name="TextureRect" type="TextureRect" parent="TogglePanel"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 140.0
+offset_right = 129.0
+offset_bottom = 200.0
+rotation = -1.5708
+texture = SubResource("AtlasTexture_fyhi7")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="TogglePanel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 10.0
+offset_right = 450.0
+offset_bottom = 154.0
+texture = ExtResource("3_r0wuh")
+region_rect = Rect2(52, 2659, 553, 805)
+patch_margin_left = 44
+patch_margin_top = 60
+patch_margin_right = 46
+patch_margin_bottom = 63
+
+[node name="ToggleButton" type="TextureButton" parent="TogglePanel/NinePatchRect"]
+layout_mode = 0
+offset_left = 57.0
+offset_right = 164.0
+offset_bottom = 139.0
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("9_3xfxo")
+texture_pressed = ExtResource("10_scisk")
+
+[node name="GlobalInformation" type="Control" parent="." node_paths=PackedStringArray("Funds", "Manpower", "Metals", "Volatiles", "Munitions", "Time")]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("10_tk346")
+Funds = NodePath("ColorRect/GridContainer/Funds")
+Manpower = NodePath("ColorRect/GridContainer/Manpower")
+Metals = NodePath("ColorRect/GridContainer/Metals")
+Volatiles = NodePath("ColorRect/GridContainer/Volatiles")
+Munitions = NodePath("ColorRect/GridContainer/Munitions")
+Time = NodePath("Time")
+
+[node name="UIArea2D" parent="GlobalInformation" instance=ExtResource("11_6uyvt")]
+position = Vector2(127, 3)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="GlobalInformation/UIArea2D"]
+position = Vector2(0, 2)
+polygon = PackedVector2Array(1176, -6, 1176, 58, 1112, 122, 1088, 122, 1024, 154, 896, 154, 832, 122, 640, 122, 576, 96, 576, 97, -64, 98, -64, -6, 504.6281, -6)
+
+[node name="Polygon2D" type="Polygon2D" parent="GlobalInformation"]
+position = Vector2(-176, 0)
+scale = Vector2(1.25, 1.98438)
+color = Color(0.180392, 0.180392, 0.180392, 0.741176)
+polygon = PackedVector2Array(704, 0, 704, 32, 755.2, 64.5039, 832, 64, 908.8, 64.5039, 960, 80.6299, 1062.4, 80.6299, 1113.6, 64.5039, 1132.8, 64.5039, 1184, 32.252, 1184, 0)
+
+[node name="ColorRect" type="ColorRect" parent="GlobalInformation"]
+layout_mode = 0
+offset_left = 64.0
+offset_right = 704.0
+offset_bottom = 103.47
+color = Color(0.180392, 0.180392, 0.180392, 0.741176)
+
+[node name="GridContainer" type="GridContainer" parent="GlobalInformation/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 4
+
+[node name="FundsLabel" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "Funds"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="Funds" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "4599"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="ManpowerLabel" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "Manpower"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="Manpower" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "3358"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="MetalsLabel" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "Metals"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="Metals" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "25"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="VolatilesLabel" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "Volatiles"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="Volatiles" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "25"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="MunitionsLabel" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "Munitions"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="Munitions" type="Label" parent="GlobalInformation/ColorRect/GridContainer"]
+layout_mode = 2
+text = "25"
+label_settings = SubResource("LabelSettings_4o3vg")
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="GlobalInformation"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 1736.0
+offset_top = 31.0
+offset_right = 1864.0
+offset_bottom = 45.0
+grow_vertical = 2
+text = "4599"
+label_settings = SubResource("LabelSettings_4o3vg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MapOverlayDial" type="Control" parent="." node_paths=PackedStringArray("RotationControl", "SelectedOnlyButton")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 255.0
+offset_bottom = 210.0
+grow_horizontal = 2
+script = ExtResource("10_ns0v5")
+RotationControl = NodePath("RotationControl")
+SelectedOnlyButton = NodePath("Button")
+
+[node name="RotationControl" parent="MapOverlayDial" instance=ExtResource("10_ybhn6")]
+layout_mode = 0
+offset_left = 36.4974
+offset_top = 18.0
+offset_right = 106.497
+offset_bottom = 88.0
+rotation = 0.785398
+MinRotation = 45.0
+MaxRotation = 225.0
+RotationPerClick = 45.0
+
+[node name="Line2D5" type="Line2D" parent="MapOverlayDial/RotationControl"]
+texture_filter = 2
+points = PackedVector2Array(35, 1, 35, 35)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D" type="Line2D" parent="MapOverlayDial"]
+position = Vector2(-843.503, -22)
+points = PackedVector2Array(944, 46, 955, 35, 975, 35)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D3" type="Line2D" parent="MapOverlayDial"]
+position = Vector2(-843.503, 58)
+points = PackedVector2Array(944, 24, 955, 35, 975, 35)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D2" type="Line2D" parent="MapOverlayDial"]
+position = Vector2(-832.503, 7)
+points = PackedVector2Array(944, 46, 975, 46, 981, 46)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D4" type="Line2D" parent="MapOverlayDial"]
+position = Vector2(-899.503, 88)
+points = PackedVector2Array(971, 6, 971, 25)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D5" type="Line2D" parent="MapOverlayDial"]
+position = Vector2(8, 4)
+points = PackedVector2Array(35, 77, 18, 94, -2, 94)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Label" type="Label" parent="MapOverlayDial"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 136.497
+offset_top = 2.0
+offset_right = 178.497
+offset_bottom = 25.0
+text = "None"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Label2" type="Label" parent="MapOverlayDial"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 151.0
+offset_top = 42.0
+offset_right = 191.0
+offset_bottom = 65.0
+text = "Radar"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Label3" type="Label" parent="MapOverlayDial"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 135.0
+offset_top = 82.0
+offset_right = 148.0
+offset_bottom = 103.0
+text = "IR"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Label4" type="Label" parent="MapOverlayDial"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 55.0
+offset_top = 113.0
+offset_right = 88.0
+offset_bottom = 134.0
+text = "RWR"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Label5" type="Label" parent="MapOverlayDial"]
+texture_filter = 2
+layout_mode = 0
+offset_left = -21.0
+offset_top = 88.0
+offset_right = 3.0
+offset_bottom = 109.0
+text = "ALL"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Button" type="Button" parent="MapOverlayDial"]
+layout_mode = 0
+offset_left = 205.0
+offset_top = 11.0
+offset_right = 261.0
+offset_bottom = 58.0
+toggle_mode = true
+button_pressed = true
+text = "S"
+
+[node name="MapSettlementOverlayDail" type="Control" parent="." node_paths=PackedStringArray("RotationControl")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -171.0
+offset_top = 20.0
+offset_right = -99.0
+offset_bottom = 92.0
+grow_horizontal = 2
+script = ExtResource("14_xrofo")
+RotationControl = NodePath("RotationControl")
+
+[node name="RotationControl" parent="MapSettlementOverlayDail" instance=ExtResource("10_ybhn6")]
+layout_mode = 0
+rotation = 0.785398
+MinRotation = 45.0
+MaxRotation = 135.0
+RotationPerClick = 45.0
+
+[node name="Line2D" type="Line2D" parent="MapSettlementOverlayDail/RotationControl"]
+points = PackedVector2Array(35, 1, 35, 35)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Line2D" type="Line2D" parent="MapSettlementOverlayDail"]
+position = Vector2(-881, -39)
+points = PackedVector2Array(944, 46, 955, 35, 975, 35)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Label" type="Label" parent="MapSettlementOverlayDail"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 99.0
+offset_top = -15.0
+offset_right = 141.0
+offset_bottom = 8.0
+text = "None"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Line2D2" type="Line2D" parent="MapSettlementOverlayDail"]
+position = Vector2(-867, -11)
+points = PackedVector2Array(944, 46, 975, 46, 981, 46)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Label2" type="Label" parent="MapSettlementOverlayDail"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 116.503
+offset_top = 24.0
+offset_right = 156.503
+offset_bottom = 47.0
+text = "Stockpiles"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Line2D3" type="Line2D" parent="MapSettlementOverlayDail"]
+position = Vector2(-880, 40)
+points = PackedVector2Array(944, 24, 955, 35, 975, 35)
+width = 2.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Label3" type="Label" parent="MapSettlementOverlayDail"]
+texture_filter = 2
+layout_mode = 0
+offset_left = 98.503
+offset_top = 64.0
+offset_right = 166.503
+offset_bottom = 85.0
+text = "Production"
+label_settings = SubResource("LabelSettings_ngd41")
+
+[node name="Targeter" type="Control" parent="." node_paths=PackedStringArray("VerticalArm", "HorizontalArm", "TargetReticle", "TopLeft", "BottomRight") groups=["UIFleetElements"]]
+visible = false
+texture_filter = 1
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1081.0
+mouse_filter = 2
+script = ExtResource("12_d3d4g")
+VerticalArm = NodePath("VerticalArm")
+HorizontalArm = NodePath("HorizontalArm")
+TargetReticle = NodePath("Target")
+TopLeft = NodePath("TopLeft")
+BottomRight = NodePath("BottomRight")
+
+[node name="Target" type="TextureRect" parent="Targeter"]
+layout_mode = 0
+offset_left = 1830.0
+offset_top = 990.0
+offset_right = 1901.0
+offset_bottom = 1061.0
+pivot_offset = Vector2(35.5, 35.5)
+mouse_filter = 2
+texture = ExtResource("14_06tfl")
+expand_mode = 1
+
+[node name="HorizontalArm" type="TextureRect" parent="Targeter"]
+layout_mode = 0
+offset_left = 803.0
+offset_top = 1060.0
+offset_right = 2004.0
+offset_bottom = 1080.0
+scale = Vector2(0.93, 1)
+mouse_filter = 2
+texture = ExtResource("12_jgjvy")
+expand_mode = 1
+
+[node name="VerticalArm" type="TextureRect" parent="Targeter"]
+layout_mode = 0
+offset_left = 1900.0
+offset_right = 1921.0
+offset_bottom = 1081.0
+mouse_filter = 2
+texture = ExtResource("13_v4hgb")
+expand_mode = 1
+
+[node name="TopLeft" type="Marker2D" parent="Targeter"]
+position = Vector2(803, 0)
+
+[node name="TopRight" type="Marker2D" parent="Targeter"]
+position = Vector2(1920, 0)
+
+[node name="ButtomLeft" type="Marker2D" parent="Targeter"]
+position = Vector2(803, 1079)
+
+[node name="BottomRight" type="Marker2D" parent="Targeter"]
+position = Vector2(1920, 1080)
+
+[node name="FleetControlOverlay" type="Control" parent="." node_paths=PackedStringArray("AnimationPlayer") groups=["UIFleetElements"]]
+anchors_preset = 0
+offset_left = -30.0
+offset_top = 64.0
+offset_right = 770.0
+offset_bottom = 764.0
+rotation = 1.5708
+pivot_offset = Vector2(46, 46)
+script = ExtResource("12_g7spt")
+AnimationPlayer = NodePath("AnimationPlayer")
+metadata/_edit_group_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FleetControlOverlay"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_ymrsm")
+}
+script = ExtResource("21_ki4b1")
+
+[node name="FleetPanel" parent="FleetControlOverlay" instance=ExtResource("15_rmqoq")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+pivot_offset = Vector2(46, 46)
+
+[node name="UIArea2D" parent="FleetControlOverlay" instance=ExtResource("11_6uyvt")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FleetControlOverlay/UIArea2D"]
+position = Vector2(473.00104, 369.999)
+shape = SubResource("RectangleShape2D_caihw")
+
+[node name="SettlementControlOverlay" type="Control" parent="." node_paths=PackedStringArray("AnimationPlayer") groups=["UISettlementElements"]]
+anchors_preset = 0
+offset_left = 110.0
+offset_top = 150.0
+offset_right = 761.0
+offset_bottom = 1092.0
+rotation = -1.5708
+pivot_offset = Vector2(612, 900)
+script = ExtResource("18_i7e61")
+AnimationPlayer = NodePath("AnimationPlayer")
+metadata/_edit_group_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SettlementControlOverlay"]
+libraries = {
+&"": SubResource("AnimationLibrary_b2hkj")
+}
+script = ExtResource("21_ki4b1")
+
+[node name="TextureRect" parent="SettlementControlOverlay" node_paths=PackedStringArray("FleetPanel") instance=ExtResource("17_ueo0i")]
+layout_mode = 0
+FleetPanel = NodePath("../../FleetControlOverlay/FleetPanel")
+
+[node name="UIArea2D" parent="SettlementControlOverlay" instance=ExtResource("11_6uyvt")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SettlementControlOverlay/UIArea2D"]
+position = Vector2(302.0011, 446.91998)
+shape = SubResource("RectangleShape2D_mfws3")
+
+[node name="MapToolButtons" type="Control" parent="." node_paths=PackedStringArray("PenToolButton", "CircleToolButton", "AngleToolButton", "NoneButton")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("24_tgara")
+PenToolButton = NodePath("Button")
+CircleToolButton = NodePath("Button2")
+AngleToolButton = NodePath("Button3")
+NoneButton = NodePath("Button4")
+
+[node name="Button" type="Button" parent="MapToolButtons"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = -92.0
+offset_right = 38.0
+offset_bottom = -3.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_n0knb")
+text = "P"
+
+[node name="Button2" type="Button" parent="MapToolButtons"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = -92.0
+offset_right = 86.0
+offset_bottom = -3.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_n0knb")
+text = "C"
+
+[node name="Button3" type="Button" parent="MapToolButtons"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = -92.0
+offset_right = 134.0
+offset_bottom = -3.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_n0knb")
+text = "A"
+
+[node name="Button4" type="Button" parent="MapToolButtons"]
+layout_mode = 0
+offset_left = 152.0
+offset_top = -92.0
+offset_right = 182.0
+offset_bottom = -3.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_n0knb")
+text = "N"
+
+[node name="SidePanel" type="Panel" parent="." node_paths=PackedStringArray("FleetList", "SettlementList", "UpdateTimer")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = 101.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("25_m7pvx")
+FleetList = NodePath("MarginContainer/VBoxContainer/FoldableContainer/FleetList")
+SettlementList = NodePath("MarginContainer/VBoxContainer/Settlements/VBoxContainer")
+UpdateTimer = NodePath("UpdateTimer")
+
+[node name="MarginContainer" type="MarginContainer" parent="SidePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SidePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="OpenShipEditorButton" type="Button" parent="SidePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Open Editor"
+script = ExtResource("18_1ercw")
+
+[node name="FoldableContainer" type="FoldableContainer" parent="SidePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+title = "Fleets"
+title_alignment = 1
+
+[node name="FleetList" type="ItemList" parent="SidePanel/MarginContainer/VBoxContainer/FoldableContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+auto_height = true
+
+[node name="Settlements" type="FoldableContainer" parent="SidePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+title = "Settlements"
+title_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SidePanel/MarginContainer/VBoxContainer/Settlements"]
+layout_mode = 2
+
+[node name="UpdateTimer" type="Timer" parent="SidePanel"]
+autostart = true
+ignore_time_scale = true

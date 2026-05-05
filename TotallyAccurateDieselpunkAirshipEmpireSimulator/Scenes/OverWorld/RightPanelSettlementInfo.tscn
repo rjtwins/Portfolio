@@ -1,0 +1,107 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctb60kmqyu3nm"]
+
+[ext_resource type="Script" uid="uid://bj71bjqt5yqqh" path="res://Scenes/OverWorld/RightPanelSettlementInfo.cs" id="1_13tgi"]
+
+[node name="HBoxContainer" type="HBoxContainer" node_paths=PackedStringArray("UpdateTimer", "QueueNr", "MetalNr", "OilNr", "ManNr", "MunitNr", "FundsNr", "GoToSettlementButton", "FoldableContainer")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_13tgi")
+UpdateTimer = NodePath("FoldableContainer/UpdateTimer")
+QueueNr = NodePath("FoldableContainer/VBoxContainer/GridContainer/ShipsInQueueNumber")
+MetalNr = NodePath("FoldableContainer/VBoxContainer/GridContainer/MetalNr")
+OilNr = NodePath("FoldableContainer/VBoxContainer/GridContainer/VolatilesNr")
+ManNr = NodePath("FoldableContainer/VBoxContainer/GridContainer/ManNr")
+MunitNr = NodePath("FoldableContainer/VBoxContainer/GridContainer/MunitNr")
+FundsNr = NodePath("FoldableContainer/VBoxContainer/GridContainer/FundsNr")
+GoToSettlementButton = NodePath("Button")
+FoldableContainer = NodePath("FoldableContainer")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "+"
+
+[node name="FoldableContainer" type="FoldableContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+title = "Settlement Title"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FoldableContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="FoldableContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Go to Settlment"
+
+[node name="GridContainer" type="GridContainer" parent="FoldableContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="ShipsInQueueLabel" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Ships in Queue"
+
+[node name="ShipsInQueueNumber" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "000"
+
+[node name="HSeparator" type="HSeparator" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Tax"
+
+[node name="FundsNr" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "000"
+
+[node name="Label" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Metal"
+
+[node name="MetalNr" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "000"
+
+[node name="Label3" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Volatiles"
+
+[node name="VolatilesNr" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "000"
+
+[node name="Label5" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Manpower"
+
+[node name="ManNr" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "000"
+
+[node name="Label7" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Munitions"
+
+[node name="MunitNr" type="Label" parent="FoldableContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "000"
+
+[node name="UpdateTimer" type="Timer" parent="FoldableContainer"]
+autostart = true
+ignore_time_scale = true

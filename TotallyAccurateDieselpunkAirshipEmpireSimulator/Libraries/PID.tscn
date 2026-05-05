@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cry1of5x2e1br"]
+
+[ext_resource type="Script" path="res://Libraries/PID.cs" id="1_4lpcl"]
+
+[node name="PID" type="Node" node_paths=PackedStringArray("Sampler", "OutputLabel")]
+script = ExtResource("1_4lpcl")
+Sampler = NodePath("Sampler")
+OutputLabel = NodePath("Label")
+
+[node name="Sampler" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0

@@ -1,0 +1,264 @@
+[gd_scene load_steps=37 format=3 uid="uid://dq466b24id2ox"]
+
+[ext_resource type="Script" uid="uid://dhmblmh0gr7q4" path="res://Scenes/OverWorld/OverWorld.cs" id="1_xcxni"]
+[ext_resource type="PackedScene" uid="uid://dmua4t0ctdx3w" path="res://Scenes/OverWorld/Settlement/Settlement.tscn" id="3_nq1su"]
+[ext_resource type="Script" uid="uid://chg6a186sdoqu" path="res://Scenes/OverWorld/GlobalBackgroundBlue.cs" id="4_2c2b2"]
+[ext_resource type="PackedScene" uid="uid://duqm5ukm83sr1" path="res://Libraries/ScreenLine2D.tscn" id="4_c2p8g"]
+[ext_resource type="Script" uid="uid://dkxv44wrdn6mv" path="res://Scenes/OverWorld/GlobalBackground.cs" id="4_isnf7"]
+[ext_resource type="Script" uid="uid://c8xvu6yrsf42x" path="res://Scenes/OverWorld/OverworldMouseFollower.cs" id="4_jogga"]
+[ext_resource type="Shader" uid="uid://ca8rdm17six6t" path="res://Scenes/OverWorld/OverWorldBackground3.tres" id="4_ra86x"]
+[ext_resource type="Script" uid="uid://o5gk812awy0b" path="res://Scenes/OverWorld/Grid.cs" id="4_yccew"]
+[ext_resource type="Script" uid="uid://x0norsjudq6a" path="res://Scenes/OverWorld/DragManager.cs" id="5_1oc7b"]
+[ext_resource type="PackedScene" uid="uid://o0kma3t5fdqs" path="res://Scenes/OverWorld/OverworldUI.tscn" id="5_sdyrq"]
+[ext_resource type="PackedScene" uid="uid://dri03ny3fx5ny" path="res://Scenes/OverWorld/Fleet/Fleet.tscn" id="6_byga7"]
+[ext_resource type="Script" uid="uid://cdwo2ge014tog" path="res://Scenes/OverWorld/DesertBG.cs" id="6_obked"]
+[ext_resource type="Script" uid="uid://df53vlfh0brlg" path="res://Scenes/OverWorld/OverworldSpeedControl.cs" id="9_d02xj"]
+[ext_resource type="Script" uid="uid://dvv2mtwfxnlvk" path="res://Scenes/OverWorld/ConvoyManager.cs" id="10_n5tf7"]
+[ext_resource type="Script" uid="uid://c1kha371icspn" path="res://Scenes/OverWorld/Clouds.cs" id="11_gsuxx"]
+[ext_resource type="PackedScene" uid="uid://efd3cghuwm3a" path="res://Scenes/OverWorld/Fleet/Convoy.tscn" id="11_xnyv6"]
+[ext_resource type="Script" uid="uid://kegog3osb5bo" path="res://Scenes/OverWorld/GameTimer.cs" id="12_1lfbs"]
+[ext_resource type="Texture2D" uid="uid://dftdyi7j071i" path="res://Resources/Stolen/HFDesertBG.png" id="12_wtg04"]
+[ext_resource type="Script" uid="uid://d1siucydeqtuf" path="res://Scenes/OverWorld/CloudParalaxLayer.cs" id="13_jnyqf"]
+[ext_resource type="Script" uid="uid://qmvs5s3jcgei" path="res://Scenes/OverWorld/MapToolManger.cs" id="14_nwyw1"]
+[ext_resource type="Texture2D" uid="uid://csgiu0peknorx" path="res://Resources/Stolen/HFDesert2.png" id="15_ut2yc"]
+[ext_resource type="PackedScene" uid="uid://diwi27lx1cran" path="res://Libraries/PenLine.tscn" id="16_t2aco"]
+[ext_resource type="Script" uid="uid://dvrsk53aqbe7t" path="res://Scenes/OverWorld/LightLevelManger.cs" id="17_ch7kj"]
+[ext_resource type="PackedScene" uid="uid://2mlgd6h461ss" path="res://Libraries/PenCircle.tscn" id="18_lk6hq"]
+[ext_resource type="PackedScene" uid="uid://dslxerpxmqgpw" path="res://Libraries/Protractor.tscn" id="19_vxawx"]
+[ext_resource type="Script" uid="uid://dgii8vdo5rcqh" path="res://Scenes/OverWorld/FleetManager.cs" id="20_xmcuo"]
+[ext_resource type="PackedScene" uid="uid://5hnshupjcqbt" path="res://Libraries/CustomCamera2D.tscn" id="22_7h75n"]
+[ext_resource type="Texture2D" uid="uid://bq67a8hgce727" path="res://Resources/FX/new_noise_texture_2d.tres" id="22_qsj8r"]
+[ext_resource type="Shader" uid="uid://2g2cilcw870k" path="res://Scenes/OverWorld/OverWorldViewCircle.gdshader" id="23_n0r27"]
+
+[sub_resource type="Environment" id="Environment_sw4yy"]
+background_mode = 3
+glow_enabled = true
+adjustment_enabled = true
+adjustment_brightness = 1.2
+adjustment_contrast = 1.2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sfj6q"]
+radius = 40.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gbpl6"]
+shader = ExtResource("4_ra86x")
+shader_parameter/Texture_1 = ExtResource("15_ut2yc")
+shader_parameter/light_intensity = 1.0
+
+[sub_resource type="Gradient" id="Gradient_qsj8r"]
+offsets = PackedFloat32Array(0, 0.583333, 0.723684, 0.802632)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.546448, 0.28485, 0.28485, 0.28485, 1, 0.201527, 0.201527, 0.201527, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_n0r27"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eu2ij"]
+noise = SubResource("FastNoiseLite_n0r27")
+color_ramp = SubResource("Gradient_qsj8r")
+seamless = true
+normalize = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k0ehm"]
+shader = ExtResource("23_n0r27")
+shader_parameter/vision_world_pos = Vector2(0.5, 0.5)
+shader_parameter/vision_radius = 0.245
+shader_parameter/softness = 0.094000004465
+
+[node name="Overworld" type="Node2D"]
+script = ExtResource("1_xcxni")
+MinNodes = 50
+MaxNodes = 100
+SettlementScene = ExtResource("3_nq1su")
+LineScene = ExtResource("4_c2p8g")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sw4yy")
+
+[node name="OverworldMouseFollower" type="Area2D" parent="."]
+visible = false
+collision_layer = 1537
+collision_mask = 1537
+script = ExtResource("4_jogga")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OverworldMouseFollower"]
+shape = SubResource("CircleShape2D_sfj6q")
+
+[node name="UICanvas" type="CanvasLayer" parent="."]
+layer = 4
+
+[node name="OverworldUi" parent="UICanvas" instance=ExtResource("5_sdyrq")]
+
+[node name="Node" type="Node2D" parent="."]
+
+[node name="Grid4" type="Node2D" parent="Node" node_paths=PackedStringArray("MapCamera2D")]
+script = ExtResource("4_yccew")
+Color = Color(0.151276, 0.151276, 0.151276, 1)
+GridSize = 500
+MapCamera2D = NodePath("../../CustomCamera2D")
+
+[node name="Grid3" type="Node2D" parent="Node" node_paths=PackedStringArray("MapCamera2D")]
+script = ExtResource("4_yccew")
+Color = Color(0.295866, 0.295867, 0.295866, 1)
+GridSize = 2000
+MapCamera2D = NodePath("../../CustomCamera2D")
+
+[node name="Grid2" type="Node2D" parent="Node" node_paths=PackedStringArray("MapCamera2D")]
+script = ExtResource("4_yccew")
+Color = Color(0.548962, 0.548963, 0.548962, 1)
+GridSize = 10000
+MapCamera2D = NodePath("../../CustomCamera2D")
+
+[node name="Grid" type="Node2D" parent="Node" node_paths=PackedStringArray("MapCamera2D")]
+script = ExtResource("4_yccew")
+Color = Color(0.94902, 0.94902, 0.94902, 0.905882)
+GridSize = 50000
+MapCamera2D = NodePath("../../CustomCamera2D")
+MaxSquares = 100
+
+[node name="DragManager" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("5_1oc7b")
+
+[node name="BehindStuffParalax" type="ParallaxBackground" parent="."]
+layer = -1
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="BehindStuffParalax"]
+
+[node name="GlobalBackgroundBlue" type="ColorRect" parent="BehindStuffParalax/ParallaxLayer"]
+offset_left = -1000000.0
+offset_top = -1000000.0
+offset_right = 1000000.0
+offset_bottom = 1000000.0
+color = Color(0.35766, 0.473962, 0.501968, 1)
+script = ExtResource("4_2c2b2")
+
+[node name="GlobalBackground" type="ColorRect" parent="BehindStuffParalax/ParallaxLayer"]
+visible = false
+z_index = 2
+offset_left = -1000000.0
+offset_top = -1000000.0
+offset_right = 1000000.0
+offset_bottom = 1000000.0
+color = Color(0.87451, 0.835294, 0.729412, 1)
+script = ExtResource("4_isnf7")
+
+[node name="DesertBG" type="TextureRect" parent="BehindStuffParalax/ParallaxLayer"]
+self_modulate = Color(1, 1, 1, 0.94902)
+z_index = 3
+material = SubResource("ShaderMaterial_gbpl6")
+offset_left = -1000000.0
+offset_top = -1000000.0
+offset_right = 1000000.0
+offset_bottom = 1000000.0
+texture = ExtResource("12_wtg04")
+expand_mode = 1
+stretch_mode = 1
+script = ExtResource("6_obked")
+
+[node name="CloudShadowLayer" type="ParallaxLayer" parent="BehindStuffParalax"]
+script = ExtResource("13_jnyqf")
+WindSpeed = 1.0
+WindDirection = 3.0
+
+[node name="Clouds3" type="TextureRect" parent="BehindStuffParalax/CloudShadowLayer"]
+show_behind_parent = true
+z_index = 4
+offset_left = -1000030.0
+offset_top = -999980.0
+offset_right = 999975.0
+offset_bottom = 1000020.0
+scale = Vector2(2, 2)
+texture = SubResource("NoiseTexture2D_eu2ij")
+expand_mode = 1
+stretch_mode = 1
+script = ExtResource("11_gsuxx")
+metadata/_edit_use_anchors_ = true
+
+[node name="MapToolManger" type="Node2D" parent="." groups=["MapToolGroup"]]
+script = ExtResource("14_nwyw1")
+PenLineScene = ExtResource("16_t2aco")
+PenCircle = ExtResource("18_lk6hq")
+Protractor = ExtResource("19_vxawx")
+
+[node name="FleetManager" type="Node2D" parent="."]
+script = ExtResource("20_xmcuo")
+
+[node name="Fleet" parent="FleetManager" instance=ExtResource("6_byga7")]
+position = Vector2(294, 249)
+rotation = 0.785398
+DebugFleet = true
+
+[node name="Fleet2" parent="FleetManager" instance=ExtResource("6_byga7")]
+position = Vector2(600, 600)
+Faction = 1
+MoveToQueue = Array[Vector2]([Vector2(10, 10)])
+DebugFleet = true
+
+[node name="InFrontOfStuffParalax" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="CloudParalaxLayer" type="ParallaxLayer" parent="InFrontOfStuffParalax"]
+script = ExtResource("13_jnyqf")
+WindSpeed = 1.0
+WindDirection = 3.0
+
+[node name="Clouds2" type="TextureRect" parent="InFrontOfStuffParalax/CloudParalaxLayer"]
+offset_left = -999058.0
+offset_top = -1000000.0
+offset_right = 1000942.0
+offset_bottom = 1000000.0
+scale = Vector2(2, 2)
+texture = ExtResource("22_qsj8r")
+expand_mode = 1
+stretch_mode = 1
+script = ExtResource("11_gsuxx")
+metadata/_edit_use_anchors_ = true
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="InFrontOfStuffParalax/CloudParalaxLayer/Clouds2"]
+position = Vector2(-25, 20)
+
+[node name="Node2D" type="ColorRect" parent="InFrontOfStuffParalax"]
+visible = false
+z_index = 10
+z_as_relative = false
+material = SubResource("ShaderMaterial_k0ehm")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -960.0
+offset_right = 960.0
+offset_bottom = 960.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CustomCamera2D" parent="." instance=ExtResource("22_7h75n")]
+MaxZoom = 2.0
+MinZoom = 0.005
+
+[node name="ConvoyManager" type="Node2D" parent="." node_paths=PackedStringArray("UpdateTimer")]
+script = ExtResource("10_n5tf7")
+UpdateTimer = NodePath("Timer")
+ConvoyScene = ExtResource("11_xnyv6")
+
+[node name="Timer" type="Timer" parent="ConvoyManager"]
+autostart = true
+
+[node name="OverworldSpeedControl" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("9_d02xj")
+
+[node name="GameTimer" type="Node2D" parent="."]
+script = ExtResource("12_1lfbs")
+
+[node name="LightLevelManger" type="Node2D" parent="." node_paths=PackedStringArray("UpdateTimer", "DesertBackground", "Clouds", "GlobalBackground")]
+script = ExtResource("17_ch7kj")
+UpdateTimer = NodePath("Timer")
+DesertBackground = NodePath("../BehindStuffParalax/ParallaxLayer/DesertBG")
+Clouds = NodePath("../InFrontOfStuffParalax/CloudParalaxLayer/Clouds2")
+GlobalBackground = NodePath("../BehindStuffParalax/ParallaxLayer/GlobalBackground")
+
+[node name="Timer" type="Timer" parent="LightLevelManger"]
+autostart = true

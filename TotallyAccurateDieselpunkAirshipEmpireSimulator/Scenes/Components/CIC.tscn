@@ -1,0 +1,112 @@
+[gd_scene load_steps=13 format=3 uid="uid://nnapqf6n4t3v"]
+
+[ext_resource type="Script" uid="uid://caplf28jc6o7v" path="res://Scenes/Components/Component.cs" id="1_ni5eu"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="2_07esc"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="3_07esc"]
+[ext_resource type="Script" uid="uid://bh8xdixkvpfpy" path="res://Scenes/Components/ComponentScripts/BridgeComponent.cs" id="4_e3hxp"]
+[ext_resource type="PackedScene" uid="uid://d1ie81vge2rmk" path="res://Resources/ComponentMeshes/FullBlock2.glb" id="5_xnf8l"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ni5eu"]
+size = Vector3(0.99, 0.99, 0.99)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favpo"]
+atlas = ExtResource("2_07esc")
+region = Rect2(0, 0, 92, 92)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ni5eu"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.s3tc.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07esc"]
+atlas = SubResource("CompressedTexture2D_ni5eu")
+region = Rect2(0, 188, 92, 92)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lq1pm"]
+size = Vector3(0.91098785, 1.1352806, 0.9283843)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xnf8l"]
+size = Vector3(0.86118317, 0.92274284, 1.1457138)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vvjs1"]
+size = Vector3(1.1435609, 0.92274284, 0.9219265)
+
+[node name="CIC" type="Node3D" node_paths=PackedStringArray("CollisionDetector", "ConnectionDetector", "Outline", "Data")]
+script = ExtResource("1_ni5eu")
+ComponentType = "CIC"
+IsMovable = false
+IsRotatable = false
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="CollisionDetector"]
+shape = SubResource("BoxShape3D_ni5eu")
+
+[node name="Surfaces" type="Node3D" parent="."]
+
+[node name="Z+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1, 0, 0, 0.5)
+visible = false
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1, 0, 0, -0.5)
+visible = false
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0.5, 0)
+axis = 1
+texture = SubResource("AtlasTexture_07esc")
+
+[node name="Y-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, -0.5, 0)
+visible = false
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0.5, 0, 0)
+visible = false
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, -0.5, 0, 0)
+visible = false
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Outline" parent="." instance=ExtResource("3_07esc")]
+visible = false
+
+[node name="ComponentData" type="Node" parent="."]
+script = ExtResource("4_e3hxp")
+Label = "CIC"
+Description = "Command Information Center"
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0221138, 0.005537033, 0.009503603)
+shape = SubResource("BoxShape3D_lq1pm")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0027885437, 0.013417244, 0.0028190613)
+shape = SubResource("BoxShape3D_xnf8l")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005418062, 0.013417244, -0.009362221)
+shape = SubResource("BoxShape3D_vvjs1")
+
+[node name="FullBlock2" parent="." instance=ExtResource("5_xnf8l")]
+transform = Transform3D(0.165, 0, 0, 0, 0.165, 0, 0, 0, 0.165, 0, -0.4872818, 0.047023773)

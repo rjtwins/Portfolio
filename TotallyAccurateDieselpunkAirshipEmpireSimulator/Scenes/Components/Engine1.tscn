@@ -1,0 +1,221 @@
+[gd_scene load_steps=27 format=3 uid="uid://qmjtvv1mjgqg"]
+
+[ext_resource type="Script" uid="uid://bvdtal3lykvgj" path="res://Scenes/Components/EngineComponentV2.cs" id="1_ni3th"]
+[ext_resource type="Material" uid="uid://cwduynb7wu5vt" path="res://Scenes/Components/Helpers/StructureMat.tres" id="2_bt2kh"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="3_s52wo"]
+[ext_resource type="Texture2D" uid="uid://eyfkxo8psqqa" path="res://Resources/NotStolen/TurretBase.png" id="4_bt2kh"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="5_s52wo"]
+[ext_resource type="Script" uid="uid://dwqt1u5i06vc1" path="res://Scenes/Components/EngineGimbleYaw.cs" id="6_0i2ja"]
+[ext_resource type="Script" uid="uid://ro4amg5rr0k6" path="res://Scenes/Components/EngineLight.cs" id="6_63v02"]
+[ext_resource type="Script" uid="uid://cw3ub37vhyic0" path="res://Scenes/Components/EngineComponent.cs" id="6_jfkjg"]
+[ext_resource type="Script" uid="uid://dehome3pcenp2" path="res://Scenes/Components/EngineGimblePitch.cs" id="7_0i2ja"]
+[ext_resource type="PackedScene" uid="uid://d1ie81vge2rmk" path="res://Resources/ComponentMeshes/FullBlock2.glb" id="7_6qs0f"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bt2kh"]
+size = Vector3(0.99, 0.99, 0.99)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favpo"]
+atlas = ExtResource("3_s52wo")
+region = Rect2(0, 0, 92, 92)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ni3th"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.s3tc.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bt2kh"]
+atlas = SubResource("CompressedTexture2D_ni3th")
+region = Rect2(562, 96, 90, 90)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_s52wo"]
+load_path = "res://.godot/imported/ComponentsV2.png-7d7f02cd8c47193846854803fc1adfeb.s3tc.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8kxt"]
+atlas = SubResource("CompressedTexture2D_s52wo")
+region = Rect2(0, 94, 92, 92)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s52wo"]
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("4_bt2kh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b8kxt"]
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("4_bt2kh")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jfkjg"]
+size = Vector3(0.91098785, 1.1352806, 0.9283843)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6qs0f"]
+size = Vector3(1.1524906, 0.90485287, 0.9283843)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_63v02"]
+size = Vector3(0.91098785, 0.9271307, 1.1328529)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yxrgp"]
+size = Vector3(5, 3.31, 5)
+
+[sub_resource type="SphereMesh" id="SphereMesh_0i2ja"]
+radius = 2.0
+height = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_63v02"]
+bottom_radius = 2.5
+height = 3.754
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yxrgp"]
+albedo_color = Color(1, 0.50980395, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.49019608, 0, 1)
+emission_energy_multiplier = 16.0
+texture_repeat = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0i2ja"]
+material = SubResource("StandardMaterial3D_yxrgp")
+top_radius = 2.0
+height = 1.0
+cap_top = false
+
+[node name="Structure1" type="Node3D" node_paths=PackedStringArray("TopReference1", "TopReference2", "BottomReference1", "BottomReference2", "Gimble", "CollisionDetector", "ConnectionDetector", "Outline", "Data")]
+script = ExtResource("1_ni3th")
+TopReference1 = NodePath("Top1")
+TopReference2 = NodePath("Top2")
+BottomReference1 = NodePath("Buttom1")
+BottomReference2 = NodePath("Buttom2")
+Gimble = NodePath("Block")
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="CollisionDetector"]
+shape = SubResource("BoxShape3D_bt2kh")
+
+[node name="Top1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Top2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+
+[node name="Buttom1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="Buttom2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+
+[node name="Surfaces" type="Node3D" parent="."]
+visible = false
+
+[node name="Z+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0.5)
+material_override = ExtResource("2_bt2kh")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_bt2kh")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0.5, 0)
+material_override = ExtResource("2_bt2kh")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_bt2kh")
+
+[node name="Y-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(-1.1, 9.616505e-08, 0, -9.616505e-08, -1.1, 0, 0, 0, 1.1, 0, -0.5, 0)
+material_override = ExtResource("2_bt2kh")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_b8kxt")
+
+[node name="X+" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0.5, 0, 0)
+material_override = SubResource("StandardMaterial3D_s52wo")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = ExtResource("4_bt2kh")
+
+[node name="X-" type="Sprite3D" parent="Surfaces"]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, -0.5, 0, 0)
+material_override = SubResource("StandardMaterial3D_b8kxt")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = ExtResource("4_bt2kh")
+
+[node name="Outline" parent="." instance=ExtResource("5_s52wo")]
+visible = false
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0221138, 0.005537033, 0.009503603)
+shape = SubResource("BoxShape3D_jfkjg")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0013132095, -0.00944376, 0.0028190613)
+shape = SubResource("BoxShape3D_6qs0f")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005418062, -0.010810375, 0.007747829)
+shape = SubResource("BoxShape3D_63v02")
+
+[node name="Block" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.16, 0, 0, 0, 0.15999997, 0, 0, 0, 0.15999997, 0, 0, 0)
+mesh = SubResource("BoxMesh_yxrgp")
+
+[node name="BallJoin" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.16, 0, 0, 0, 0.15999997, 0, 0, 0, 0.15999997, 0, -0.27164602, 0)
+mesh = SubResource("SphereMesh_0i2ja")
+
+[node name="GimbleYaw" type="Node3D" parent="." node_paths=PackedStringArray("EngineComponent")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4598503, 0)
+script = ExtResource("6_0i2ja")
+EngineComponent = NodePath("../ComponentData")
+MaxYaw = -1.0
+MinYaw = -2.0
+
+[node name="GimblePitch" type="Node3D" parent="GimbleYaw" node_paths=PackedStringArray("EngineComponent")]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+script = ExtResource("7_0i2ja")
+EngineComponent = NodePath("../../ComponentData")
+MaxPitch = 0.5
+MinPitch = -0.5
+
+[node name="Nozzl" type="MeshInstance3D" parent="GimbleYaw/GimblePitch"]
+transform = Transform3D(0.16, 0, 0, 0, -6.993818e-09, -0.1599999, 0, 0.1599999, -6.993818e-09, 0, 0, 0)
+mesh = SubResource("CylinderMesh_63v02")
+skeleton = NodePath("../../..")
+
+[node name="Cone" type="MeshInstance3D" parent="GimbleYaw/GimblePitch/Nozzl" node_paths=PackedStringArray("EngineComponent")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.2, 0)
+mesh = SubResource("CylinderMesh_0i2ja")
+skeleton = NodePath("../../../../Block")
+script = ExtResource("6_63v02")
+EngineComponent = NodePath("../../../../ComponentData")
+
+[node name="FullBlock2" parent="." instance=ExtResource("7_6qs0f")]
+transform = Transform3D(0.165, 0, 0, 0, 0.165, 0, 0, 0, 0.165, 0, -0.4872818, 0.047023773)
+
+[node name="ComponentData" type="Node" parent="."]
+script = ExtResource("6_jfkjg")
+Thrust = 2000.0
+Label = "Thruster"

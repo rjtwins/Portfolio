@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://vtqlmpwe18yc"]
+
+[ext_resource type="Script" path="res://Libraries/ScreenSizeHelper.cs" id="1_t11e1"]
+
+[node name="ScreenSizeHelper" type="Node"]
+script = ExtResource("1_t11e1")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cscbi7r7q1s3a"]
+
+[ext_resource type="Texture2D" uid="uid://bpsupsne0i5xi" path="res://Resources/LineUI/test.png" id="1_exs0v"]
+[ext_resource type="Script" uid="uid://ddjfwwochj1ss" path="res://Scenes/OverWorld/RadarPing.cs" id="2_4yxri"]
+
+[node name="RadarPing" type="Sprite2D"]
+texture = ExtResource("1_exs0v")
+script = ExtResource("2_4yxri")
+lifeTime = 2.1

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://beyf1u4bw3bd2"]
+
+[ext_resource type="Script" uid="uid://c1dyo642c3xux" path="res://Scenes/FX/MuzzleFlash.cs" id="1_cceac"]
+
+[node name="MuzzleFlash" type="Node3D"]
+script = ExtResource("1_cceac")

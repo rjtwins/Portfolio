@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3lvmanmtifkh"]
+
+[ext_resource type="Shader" path="res://Scenes/OverWorld/TestShader.gdshader" id="1_pqq76"]
+[ext_resource type="Script" path="res://Scenes/OverWorld/FleetVisionOverlay.cs" id="2_ty6e0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_407k0"]
+shader = ExtResource("1_pqq76")
+shader_parameter/circle_size = 0.066
+
+[node name="FleetVisionOverlay" type="ColorRect"]
+visible = false
+material = SubResource("ShaderMaterial_407k0")
+offset_right = 4000.0
+offset_bottom = 4000.0
+mouse_filter = 2
+color = Color(0.87451, 0.835294, 0.729412, 1)
+script = ExtResource("2_ty6e0")

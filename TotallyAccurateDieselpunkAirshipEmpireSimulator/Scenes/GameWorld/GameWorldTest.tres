@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://5hblsghglnb4"]
+
+[ext_resource type="Shader" uid="uid://dbg51pojbib7b" path="res://Scenes/GameWorld/texture_shader.gdshader" id="1_nwasl"]
+[ext_resource type="Texture2D" uid="uid://dvaoyvic8m4xg" path="res://Resources/NotStolen/empty-grass-background.jpg" id="2_a4ju5"]
+[ext_resource type="Texture2D" uid="uid://c4grxursnmxrl" path="res://Resources/NotStolen/blue-stone-texture.jpg" id="3_cx2mv"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_nwasl")
+shader_parameter/terrain_grass = ExtResource("2_a4ju5")
+shader_parameter/terrain_rock = ExtResource("3_cx2mv")
+shader_parameter/min_grass_height = 0.0
+shader_parameter/max_rock_height = 300.0
+shader_parameter/uvscale_rock = Vector2(5, 5)
+shader_parameter/uvscale_grass = Vector2(100, 100)

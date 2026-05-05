@@ -1,0 +1,344 @@
+[
+  {
+    "id": "basic_mining",
+    "prerequisites": [],
+    "name": "Basic Mining Techniques",
+    "description": "Foundational mineral extraction methods that improve raw resource yields from planetary surfaces.",
+    "cost": 100,
+    "progress": 0.0,
+    "effects": [
+      { "MiningYieldMultiplier": 1.2 }
+    ]
+  },
+  {
+    "id": "basic_construction",
+    "prerequisites": [],
+    "name": "Basic Construction",
+    "description": "Standard building protocols that reduce material waste and accelerate structure completion.",
+    "cost": 100,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingSpeedMultiplier": 1.15 }
+    ]
+  },
+  {
+    "id": "research_methodology",
+    "prerequisites": [],
+    "name": "Research Methodology",
+    "description": "Systematic scientific processes that increase laboratory throughput across all disciplines.",
+    "cost": 100,
+    "progress": 0.0,
+    "effects": [
+      { "ResearchSpeedMultiplier": 1.2 }
+    ]
+  },
+  {
+    "id": "industrial_logistics",
+    "prerequisites": [],
+    "name": "Industrial Logistics",
+    "description": "Optimized supply chains and transport networks that boost overall industrial output.",
+    "cost": 100,
+    "progress": 0.0,
+    "effects": [
+      { "IndustrialCapacityMultiplier": 1.1 }
+    ]
+  },
+  {
+    "id": "cost_accounting",
+    "prerequisites": [],
+    "name": "Cost Accounting",
+    "description": "Advanced resource accounting techniques that cut construction overhead significantly.",
+    "cost": 80,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingCostMultiplier": 0.9 }
+    ]
+  },
+  {
+    "id": "advanced_mining",
+    "prerequisites": ["basic_mining"],
+    "name": "Advanced Mining",
+    "description": "Precision drill arrays and seismic mapping tools that dramatically increase extraction rates.",
+    "cost": 250,
+    "progress": 0.0,
+    "effects": [
+      { "MiningYieldMultiplier": 1.35 }
+    ]
+  },
+  {
+    "id": "automated_construction",
+    "prerequisites": ["basic_construction"],
+    "name": "Automated Construction",
+    "description": "Robotic assembly crews operate around the clock, cutting build times and material costs.",
+    "cost": 250,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingSpeedMultiplier": 1.3 },
+      { "BuildingCostMultiplier": 0.85 }
+    ]
+  },
+  {
+    "id": "advanced_research_labs",
+    "prerequisites": ["research_methodology"],
+    "name": "Advanced Research Labs",
+    "description": "Cutting-edge lab facilities with AI-assisted data analysis, dramatically accelerating discovery.",
+    "cost": 250,
+    "progress": 0.0,
+    "effects": [
+      { "ResearchSpeedMultiplier": 1.4 }
+    ]
+  },
+  {
+    "id": "heavy_industry",
+    "prerequisites": ["industrial_logistics"],
+    "name": "Heavy Industry",
+    "description": "Large-scale smelters and fabrication plants multiply the colony's manufacturing capacity.",
+    "cost": 250,
+    "progress": 0.0,
+    "effects": [
+      { "IndustrialCapacityMultiplier": 1.25 }
+    ]
+  },
+  {
+    "id": "lean_engineering",
+    "prerequisites": ["cost_accounting", "basic_construction"],
+    "name": "Lean Engineering",
+    "description": "Waste elimination principles applied across all construction phases reduce costs significantly.",
+    "cost": 200,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingCostMultiplier": 0.8 }
+    ]
+  },
+  {
+    "id": "deep_core_mining",
+    "prerequisites": ["advanced_mining"],
+    "name": "Deep Core Mining",
+    "description": "Plasma-bore technology allows extraction from planetary cores, unlocking rare mineral deposits.",
+    "cost": 500,
+    "progress": 0.0,
+    "effects": [
+      { "MiningYieldMultiplier": 1.5 }
+    ]
+  },
+  {
+    "id": "megastructure_engineering",
+    "prerequisites": ["automated_construction"],
+    "name": "Megastructure Engineering",
+    "description": "Novel architectural principles enable construction at civilizational scale.",
+    "cost": 500,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingSpeedMultiplier": 1.5 },
+      { "IndustrialCapacityMultiplier": 1.2 }
+    ]
+  },
+  {
+    "id": "quantum_computing",
+    "prerequisites": ["advanced_research_labs"],
+    "name": "Quantum Computing",
+    "description": "Quantum processors run simulations millions of times faster, revolutionizing scientific research.",
+    "cost": 500,
+    "progress": 0.0,
+    "effects": [
+      { "ResearchSpeedMultiplier": 1.6 }
+    ]
+  },
+  {
+    "id": "fusion_power",
+    "prerequisites": ["heavy_industry", "advanced_research_labs"],
+    "name": "Fusion Reactors",
+    "description": "Compact fusion plants provide near-limitless energy, powering massive industrial expansion.",
+    "cost": 600,
+    "progress": 0.0,
+    "effects": [
+      { "IndustrialCapacityMultiplier": 1.4 }
+    ]
+  },
+  {
+    "id": "modular_fabrication",
+    "prerequisites": ["lean_engineering", "heavy_industry"],
+    "name": "Modular Fabrication",
+    "description": "Standardized interchangeable components slash construction costs across all building types.",
+    "cost": 400,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingCostMultiplier": 0.75 },
+      { "BuildingSpeedMultiplier": 1.2 }
+    ]
+  },
+  {
+    "id": "asteroid_harvesting",
+    "prerequisites": ["deep_core_mining"],
+    "name": "Asteroid Harvesting",
+    "description": "Autonomous mining fleets extract mineral wealth from asteroid belts at enormous scale.",
+    "cost": 800,
+    "progress": 0.0,
+    "effects": [
+      { "MiningYieldMultiplier": 1.7 }
+    ]
+  },
+  {
+    "id": "orbital_shipyard",
+    "prerequisites": ["megastructure_engineering"],
+    "name": "Orbital Shipyard",
+    "description": "Zero-gravity assembly platforms enable construction of vessel classes impossible planetside.",
+    "cost": 800,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingSpeedMultiplier": 1.6 },
+      { "BuildingCostMultiplier": 0.7 }
+    ]
+  },
+  {
+    "id": "neural_research_network",
+    "prerequisites": ["quantum_computing"],
+    "name": "Neural Research Network",
+    "description": "A colony-wide mesh of quantum-linked research nodes that share findings in real time.",
+    "cost": 800,
+    "progress": 0.0,
+    "effects": [
+      { "ResearchSpeedMultiplier": 1.8 }
+    ]
+  },
+  {
+    "id": "antimatter_synthesis",
+    "prerequisites": ["fusion_power", "quantum_computing"],
+    "name": "Antimatter Synthesis",
+    "description": "Controlled antimatter production unlocks energy densities that dwarf all prior technologies.",
+    "cost": 900,
+    "progress": 0.0,
+    "effects": [
+      { "IndustrialCapacityMultiplier": 1.6 },
+      { "ResearchSpeedMultiplier": 1.3 }
+    ]
+  },
+  {
+    "id": "nanobot_assembly",
+    "prerequisites": ["modular_fabrication", "quantum_computing"],
+    "name": "Nanobot Assembly",
+    "description": "Programmable nanoscale assemblers build structures atom by atom, minimizing waste entirely.",
+    "cost": 900,
+    "progress": 0.0,
+    "effects": [
+      { "BuildingCostMultiplier": 0.6 },
+      { "BuildingSpeedMultiplier": 1.4 }
+    ]
+  },
+  {
+    "id": "nanobot_mining_swarms",
+    "prerequisites": ["asteroid_harvesting", "nanobot_assembly"],
+    "name": "Nanobot Mining Swarms",
+    "description": "Self-replicating nanoswarms dissolve entire asteroids into refined feedstock within days.",
+    "cost": 1200,
+    "progress": 0.0,
+    "effects": [
+      { "MiningYieldMultiplier": 2.0 }
+    ]
+  },
+  {
+    "id": "galactic_assembly_lines",
+    "prerequisites": ["orbital_shipyard", "nanobot_mining_swarms"],
+    "name": "Galactic Assembly Lines",
+    "description": "Continent-spanning factory complexes powered by refined asteroid ore produce at unimaginable rates.",
+    "cost": 1500,
+    "progress": 0.0,
+    "effects": [
+      { "IndustrialCapacityMultiplier": 2.0 },
+      { "BuildingSpeedMultiplier": 1.8 }
+    ]
+  },
+  {
+    "id": "unified_science_grid",
+    "prerequisites": ["neural_research_network", "antimatter_synthesis"],
+    "name": "Unified Science Grid",
+    "description": "All research facilities merge into a single planetary intelligence, compressing research time exponentially.",
+    "cost": 1200,
+    "progress": 0.0,
+    "effects": [
+      { "ResearchSpeedMultiplier": 2.2 }
+    ]
+  },
+  {
+    "id": "dyson_sphere",
+    "prerequisites": ["antimatter_synthesis", "megastructure_engineering"],
+    "name": "Dyson Sphere Project",
+    "description": "A shell of solar collectors encloses the star itself, capturing its total energy output.",
+    "cost": 2000,
+    "progress": 0.0,
+    "effects": [
+      { "IndustrialCapacityMultiplier": 2.5 },
+      { "BuildingCostMultiplier": 0.5 }
+    ]
+  },
+  {
+    "id": "stellar_engineering",
+    "prerequisites": ["dyson_sphere", "galactic_assembly_lines", "unified_science_grid"],
+    "name": "Stellar Engineering",
+    "description": "The pinnacle of science: reshaping stars and planetary systems to the colony's will.",
+    "cost": 3000,
+    "progress": 0.0,
+    "effects": [
+      { "ResearchSpeedMultiplier": 3.0 },
+      { "MiningYieldMultiplier": 3.0 },
+      { "IndustrialCapacityMultiplier": 3.0 },
+      { "BuildingSpeedMultiplier": 3.0 },
+      { "BuildingCostMultiplier": 0.3 }
+    ]
+  },
+  {
+    "id": "chemical_propulsion",
+    "prerequisites": [],
+    "name": "Advanced Chemical Propulsion",
+    "description": "Optimized chemical rocket formulas deliver improved thrust and better fuel economy then traditional chemical rocked engines.",
+    "cost": 100,
+    "progress": 1.0,
+    "effects": [
+      { "EngineTech": { "thrust_multiplier": 1, "fuel_efficiency_multiplier": 1, "fuel_type": "LightElements" } }
+    ]
+  },
+  {
+    "id": "ion_drives",
+    "prerequisites": ["chemical_propulsion"],
+    "name": "Ion Drives",
+    "description": "Low-thrust, high-efficiency electric propulsion dramatically reduces fuel consumption on long voyages.",
+    "cost": 250,
+    "progress": 1.0,
+    "effects": [
+      { "EngineTech": { "thrust_multiplier": 0.33333333, "fuel_efficiency_multiplier": 0.1, "fuel_type": "LightElements" } }
+    ]
+  },
+  {
+    "id": "plasma_thrusters",
+    "prerequisites": ["ion_drives", "fusion_power"],
+    "name": "Plasma Thrusters",
+    "description": "Superheated plasma expelled through magnetic nozzles combines strong thrust with solid efficiency.",
+    "cost": 500,
+    "progress": 0.0,
+    "effects": [
+      { "EngineTech": { "thrust_multiplier": 1.5, "fuel_efficiency_multiplier": 1.4, "fuel_type": "LightElements" } }
+    ]
+  },
+  {
+    "id": "fusion_drives",
+    "prerequisites": ["plasma_thrusters"],
+    "name": "Fusion Drives",
+    "description": "Miniaturized fusion reactors directly power the drive, delivering exceptional thrust and range.",
+    "cost": 800,
+    "progress": 0.0,
+    "effects": [
+      { "EngineTech": { "thrust_multiplier": 1.8, "fuel_efficiency_multiplier": 1.8, "fuel_type": "LightElements" } }
+    ]
+  },
+  {
+    "id": "antimatter_drives",
+    "prerequisites": ["fusion_drives", "antimatter_synthesis"],
+    "name": "Antimatter Drives",
+    "description": "Annihilating matter-antimatter pairs release unparalleled energy, pushing ships to a fraction of light speed.",
+    "cost": 1500,
+    "progress": 0.0,
+    "effects": [
+      { "EngineTech": { "thrust_multiplier": 2.5, "fuel_efficiency_multiplier": 2.2, "fuel_type": "SuperElements" } }
+    ]
+  }
+]

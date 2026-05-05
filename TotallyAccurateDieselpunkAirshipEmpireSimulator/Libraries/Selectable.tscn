@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://csynecx3e2vjl"]
+
+[ext_resource type="Script" path="res://Libraries/Selectable.cs" id="1_kgfmb"]
+
+[node name="Selectable" type="Node2D"]
+script = ExtResource("1_kgfmb")

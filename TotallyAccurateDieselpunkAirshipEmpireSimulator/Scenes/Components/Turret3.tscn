@@ -1,0 +1,396 @@
+[gd_scene load_steps=22 format=3 uid="uid://bnbjwpf5aycle"]
+
+[ext_resource type="Script" uid="uid://caplf28jc6o7v" path="res://Scenes/Components/Component.cs" id="1_t6hrd"]
+[ext_resource type="Material" uid="uid://cwduynb7wu5vt" path="res://Scenes/Components/Helpers/StructureMat.tres" id="2_1qx0o"]
+[ext_resource type="Texture2D" uid="uid://b21do7hekrw3s" path="res://Resources/NotStolen/ComponentsV2.png" id="3_tjs3c"]
+[ext_resource type="PackedScene" uid="uid://cvqn2bdmjywf4" path="res://Scenes/Components/Helpers/outline.tscn" id="4_iifbv"]
+[ext_resource type="Script" uid="uid://1bbr5j5d6gsh" path="res://Scenes/Components/ComponentScripts/Turret.cs" id="5_ortur"]
+[ext_resource type="PackedScene" uid="uid://b4coqlgvcfv1f" path="res://Scenes/Components/Bullet/Bullet.tscn" id="6_1y17t"]
+[ext_resource type="Script" uid="uid://xv07vhowwrwv" path="res://Scenes/Components/MultiBarrelAssembly.cs" id="7_t6hrd"]
+[ext_resource type="Script" uid="uid://kleh657ubwjc" path="res://Scenes/Components/ComponentScripts/TurretComponent.cs" id="8_t3prf"]
+[ext_resource type="Script" uid="uid://x3iyen4pb5u4" path="res://Scenes/Components/DebugTargetBall.cs" id="9_ps8p7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gpmwc"]
+size = Vector3(2.0741014, 2.0609179, 0.9243481)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t6hrd"]
+size = Vector3(2.0741014, 3.9826074, 0.47242796)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favpo"]
+atlas = ExtResource("3_tjs3c")
+region = Rect2(0, 0, 92, 92)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_oipwj"]
+top_radius = 0.4
+bottom_radius = 0.4
+height = 0.25
+radial_segments = 6
+rings = 0
+cap_bottom = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_t6hrd"]
+top_radius = 0.08
+bottom_radius = 0.08
+rings = 0
+cap_top = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1qx0o"]
+top_radius = 0.08
+bottom_radius = 0.08
+rings = 0
+cap_top = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tjs3c"]
+top_radius = 0.08
+bottom_radius = 0.08
+rings = 0
+cap_top = false
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1qx0o"]
+size = Vector3(1.886158, 0.27637386, 1.9197586)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cppbo"]
+size = Vector3(1.767664, 0.21725798, 2.1290092)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_caqvb"]
+size = Vector3(2.1186554, 0.18950057, 1.8310804)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vx6d"]
+albedo_color = Color(1, 0, 1, 1)
+emission_enabled = true
+emission = Color(1, 0, 1, 1)
+emission_energy_multiplier = 16.0
+emission_intensity = 100000.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7g4ni"]
+material = SubResource("StandardMaterial3D_5vx6d")
+radius = 0.25
+height = 0.5
+
+[node name="BigTurret" type="Node3D" node_paths=PackedStringArray("CollisionDetector", "ConnectionDetector", "Outline", "Data")]
+script = ExtResource("1_t6hrd")
+CollisionDetector = NodePath("CollisionDetector")
+ConnectionDetector = NodePath("ConnectionDetector")
+Outline = NodePath("Outline")
+Data = NodePath("ComponentData")
+
+[node name="CollisionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="BaseAndTurret" type="CollisionShape3D" parent="CollisionDetector"]
+transform = Transform3D(0.94, 0, 0, 0, -4.1088704e-08, -0.94, 0, 0.94, -4.1088704e-08, -0.5095277, 0.013036333, -0.50333136)
+shape = SubResource("BoxShape3D_gpmwc")
+
+[node name="BaseAndTurret2" type="CollisionShape3D" parent="CollisionDetector"]
+transform = Transform3D(0.94, 0, 0, 0, -4.1088704e-08, -0.94, 0, 0.94, -4.1088704e-08, -0.5095277, 0.22543876, 0.3998627)
+shape = SubResource("BoxShape3D_t6hrd")
+
+[node name="Base" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.5, 0)
+
+[node name="Z+" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Base"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0, 0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Base"]
+transform = Transform3D(-1.1, 1.6609539e-07, 0, -1.6609539e-07, -1.1, 0, 0, 0, 0.5, 0, -0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Base"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, -0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Base2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1, -0.5, 0)
+
+[node name="Z+" type="Sprite3D" parent="Base2"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Base2"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Base2"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0, 0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Base2"]
+transform = Transform3D(-1.1, 1.6609539e-07, 0, -1.6609539e-07, -1.1, 0, 0, 0, 0.5, 0, -0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Base2"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Base2"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, -0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Base3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.5, -1)
+
+[node name="Z+" type="Sprite3D" parent="Base3"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Base3"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Base3"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0, 0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Base3"]
+transform = Transform3D(-1.1, 1.6609539e-07, 0, -1.6609539e-07, -1.1, 0, 0, 0, 0.5, 0, -0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Base3"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Base3"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, -0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Base4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1, -0.5, -1)
+
+[node name="Z+" type="Sprite3D" parent="Base4"]
+transform = Transform3D(1.1, 0, 1.8358784e-07, 0, 1.1, 0, -1.8358784e-07, 0, 1.1, 0, 0, 0)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Z-" type="Sprite3D" parent="Base4"]
+transform = Transform3D(-1.1, 0, -8.742278e-08, 0, 1.1, 0, 9.616505e-08, 0, -1, 0, 0, -0.5)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+texture_filter = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y+" type="Sprite3D" parent="Base4"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0, 0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Y-" type="Sprite3D" parent="Base4"]
+transform = Transform3D(-1.1, 1.6609539e-07, 0, -1.6609539e-07, -1.1, 0, 0, 0, 0.5, 0, -0.5, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 1
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X+" type="Sprite3D" parent="Base4"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, 0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="X-" type="Sprite3D" parent="Base4"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 0.5, -0.5, 0, -0.25033048)
+material_override = ExtResource("2_1qx0o")
+lod_bias = 0.001
+gi_mode = 2
+axis = 0
+texture = SubResource("AtlasTexture_favpo")
+
+[node name="Outline" parent="." instance=ExtResource("4_iifbv")]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -1.5, 0, 2, -6.556708e-08, -0.55687714, 0.2571129, -0.5338516)
+visible = false
+
+[node name="Turret" type="Node3D" parent="." node_paths=PackedStringArray("FireRateTimer", "MagazineReloadTimer", "BarrelAssembly", "DebugTargetBall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.4072876, -0.5)
+script = ExtResource("5_ortur")
+AngularVelocity = 0.25
+ProjectileSpeed = 100.0
+Magazine = 0
+MagazineCap = 0
+FireRate = 1.0
+MagazineReloadTime = 0.0
+FireRateTimer = NodePath("FireRateTimer")
+MagazineReloadTimer = NodePath("MagazineReloadTimer")
+BulletScene = ExtResource("6_1y17t")
+BarrelAssembly = NodePath("BarrelAssembly")
+DebugTargetBall = NodePath("../DebugTargetBall")
+
+[node name="FireRateTimer" type="Timer" parent="Turret"]
+
+[node name="MagazineReloadTimer" type="Timer" parent="Turret"]
+wait_time = 6.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Turret"]
+process_mode = 4
+transform = Transform3D(-1.12119714e-07, 0, -2.565, 0, 2, 0, 2.565, 0, -1.12119714e-07, 0, 0.6220169, 0)
+mesh = SubResource("CylinderMesh_oipwj")
+
+[node name="BarrelAssembly" type="Node3D" parent="Turret" node_paths=PackedStringArray("Barrels")]
+process_mode = 4
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.6220169, 0.8319802)
+script = ExtResource("7_t6hrd")
+Barrels = [NodePath("ThreeBarrels/MeshInstance3D2"), NodePath("ThreeBarrels/MeshInstance3D4"), NodePath("ThreeBarrels/MeshInstance3D3")]
+
+[node name="ThreeBarrels" type="Node3D" parent="Turret/BarrelAssembly"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.11920929, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Turret/BarrelAssembly/ThreeBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 1.4210855e-14, 1, -4.371139e-08, 6.527245e-22, 0, 1.4210855e-14, 1, 1, 0.12, 0.4)
+mesh = SubResource("CylinderMesh_t6hrd")
+skeleton = NodePath("../../..")
+
+[node name="Muzzle" type="Node3D" parent="Turret/BarrelAssembly/ThreeBarrels/MeshInstance3D2"]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9000001, 0)
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Turret/BarrelAssembly/ThreeBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 1.4210855e-14, 1, -4.371139e-08, 6.527245e-22, 0, 1.4210855e-14, 1, 1, 0.12, 0)
+mesh = SubResource("CylinderMesh_1qx0o")
+skeleton = NodePath("../../..")
+
+[node name="Muzzle" type="Node3D" parent="Turret/BarrelAssembly/ThreeBarrels/MeshInstance3D4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Turret/BarrelAssembly/ThreeBarrels"]
+transform = Transform3D(-4.371139e-08, -1, 1.4210855e-14, 1, -4.371139e-08, 4.73649e-22, 2.1175824e-22, 1.4210855e-14, 1, 1, 0.12, -0.4)
+mesh = SubResource("CylinderMesh_tjs3c")
+skeleton = NodePath("../../..")
+
+[node name="Muzzle" type="Node3D" parent="Turret/BarrelAssembly/ThreeBarrels/MeshInstance3D3"]
+transform = Transform3D(1, 0, 2.1175824e-22, 0, 1, 0, -2.1175824e-22, 0, 1, 0, -0.9, 0)
+
+[node name="ComponentData" type="Node" parent="." node_paths=PackedStringArray("Turret")]
+script = ExtResource("8_t3prf")
+Turret = NodePath("../Turret")
+Label = "300MM Triple"
+
+[node name="ConnectionDetector" type="Area3D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5095768, -0.42088747, -0.48619115)
+shape = SubResource("BoxShape3D_1qx0o")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48935604, -0.3393252, -0.48882866)
+shape = SubResource("BoxShape3D_cppbo")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="ConnectionDetector"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.49296534, -0.3532039, -0.4639392)
+shape = SubResource("BoxShape3D_caqvb")
+
+[node name="DebugTargetBall" type="MeshInstance3D" parent="." node_paths=PackedStringArray("DebugTextLabel3D")]
+visible = false
+mesh = SubResource("CapsuleMesh_7g4ni")
+script = ExtResource("9_ps8p7")
+DebugTextLabel3D = NodePath("Label3D")
+
+[node name="Label3D" type="Label3D" parent="DebugTargetBall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3725891, 0)
+visible = false
+billboard = 1
+double_sided = false
+fixed_size = true
+modulate = Color(1, 0, 1, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "100s"
+font_size = 10
+uppercase = true
+autowrap_trim_flags = 0
+justification_flags = 0

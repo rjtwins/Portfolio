@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc63inqpfm68i"]
+
+[ext_resource type="Script" path="res://Libraries/UIArea2d.cs" id="1_7psvl"]
+
+[node name="UIArea2D" type="Area2D"]
+script = ExtResource("1_7psvl")

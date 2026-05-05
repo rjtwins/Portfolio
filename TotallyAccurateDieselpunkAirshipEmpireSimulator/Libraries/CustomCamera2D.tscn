@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://5hnshupjcqbt"]
+
+[ext_resource type="Script" uid="uid://brihdg077bpd2" path="res://Scenes/GameWorld/GameWorldCamera.cs" id="1_vvs2g"]
+
+[node name="Camera2D" type="Camera2D"]
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("1_vvs2g")

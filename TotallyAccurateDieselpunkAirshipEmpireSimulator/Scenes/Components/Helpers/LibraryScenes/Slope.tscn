@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cusxlx4jmexpj"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_pmp7t"]
+left_to_right = 1.0
+size = Vector3(0.25, 0.25, 0.25)
+
+[node name="Slope" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PrismMesh_pmp7t")

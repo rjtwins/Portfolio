@@ -1,0 +1,398 @@
+[gd_scene load_steps=11 format=3 uid="uid://cfr0v1088iske"]
+
+[ext_resource type="Script" uid="uid://b2cb0quk5law0" path="res://Scenes/ShipEditor4/ShipEditor4.cs" id="1_ei7h2"]
+[ext_resource type="PackedScene" uid="uid://cx1pysbdnky20" path="res://Scenes/Ship/EditorShip.tscn" id="2_i2f82"]
+[ext_resource type="Script" uid="uid://dp2xa4ryywaf6" path="res://Scenes/ShipEditor4/GridDots.cs" id="3_q1vux"]
+[ext_resource type="Script" uid="uid://bpc3b7scbdrv6" path="res://Scenes/ShipEditor4/Exit.cs" id="4_wdfkv"]
+[ext_resource type="Script" uid="uid://bfl7sf5n0ymvy" path="res://Scenes/ShipEditor4/SaveLoad.cs" id="5_wdfkv"]
+[ext_resource type="PackedScene" uid="uid://cf7brgwaxlmud" path="res://addons/3d_rts_camera/rtscam.tscn" id="7_hm742"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wdfkv"]
+sky_top_color = Color(0.91548276, 0.87666065, 0.8715091, 1)
+sky_horizon_color = Color(1.1520114, 1.1373361, 1.1360736, 1)
+ground_bottom_color = Color(0.18382886, 0.1639497, 0.1640513, 1)
+ground_horizon_color = Color(1.1520114, 1.1373361, 1.1360736, 1)
+energy_multiplier = 0.5
+
+[sub_resource type="Sky" id="Sky_hm742"]
+sky_material = SubResource("ProceduralSkyMaterial_wdfkv")
+
+[sub_resource type="Environment" id="Environment_mnnkb"]
+background_mode = 2
+sky = SubResource("Sky_hm742")
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_6sax8"]
+
+[node name="ShipEditor4" type="Node3D" node_paths=PackedStringArray("Camera", "EditorShip", "SaveLoadPanel", "ComponentGrid", "MassLabel", "LiftLabel", "ThrustLabel")]
+script = ExtResource("1_ei7h2")
+Camera = NodePath("RTScamera")
+EditorShip = NodePath("EditorShip")
+UID = "uid://3m0ko00n8v62"
+CICUUID = "uid://nnapqf6n4t3v"
+SaveLoadPanel = NodePath("CanvasLayer/SaveLoadOverlay/SaveLoad")
+ComponentGrid = NodePath("CanvasLayer/Control/ScrollContainer/GridContainer")
+MassLabel = NodePath("CanvasLayer/Control/MassLabel")
+LiftLabel = NodePath("CanvasLayer/Control/LiftLabel")
+ThrustLabel = NodePath("CanvasLayer/Control/ThrustLabel")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mnnkb")
+camera_attributes = SubResource("CameraAttributesPractical_6sax8")
+
+[node name="EditorShip" parent="." instance=ExtResource("2_i2f82")]
+
+[node name="GridDots" type="Node3D" parent="EditorShip"]
+visible = false
+script = ExtResource("3_q1vux")
+DotScale = 0.01
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -58.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Exit" type="Button" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+text = "Exit"
+script = ExtResource("4_wdfkv")
+
+[node name="SaveLoad" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 207.0
+offset_bottom = 59.0
+text = "Save/Load"
+
+[node name="ToggleLOS" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 65.0
+offset_right = 207.0
+offset_bottom = 119.0
+text = "Toggle Turret LOS"
+
+[node name="ButtonRotateShip" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 125.0
+offset_right = 57.0
+offset_bottom = 175.0
+text = "RS"
+
+[node name="ButtonFlipShip" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 125.0
+offset_right = 117.0
+offset_bottom = 175.0
+text = "RS"
+
+[node name="ButtonSave" type="Button" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 233.0
+offset_bottom = 57.0
+text = "Save"
+
+[node name="ButtonLoad" type="Button" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 0
+offset_left = 7.0
+offset_top = 65.0
+offset_right = 233.0
+offset_bottom = 115.0
+text = "Load"
+
+[node name="Label" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 186.0
+offset_right = 96.0
+offset_bottom = 200.0
+text = "Mass:"
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 208.0
+offset_right = 96.0
+offset_bottom = 222.0
+text = "Lift:"
+
+[node name="Label3" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 230.0
+offset_right = 96.0
+offset_bottom = 244.0
+text = "Thrust:"
+
+[node name="MassLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 186.0
+offset_right = 245.0
+offset_bottom = 200.0
+text = "0"
+
+[node name="LiftLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 208.0
+offset_right = 245.0
+offset_bottom = 222.0
+text = "0"
+
+[node name="ThrustLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 230.0
+offset_right = 245.0
+offset_bottom = 244.0
+text = "0"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 0
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/ScrollContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/h_separation = 20
+columns = 1024
+
+[node name="ButtonBox" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "B"
+
+[node name="ButtonSlope" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "S"
+
+[node name="ButtonEngine" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "E"
+
+[node name="ButtonArmor" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "A"
+
+[node name="ButtonTurret" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "T"
+
+[node name="ButtonTurret2" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Big T"
+
+[node name="ButtonLift" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "L"
+
+[node name="ButtonHanger" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "H"
+
+[node name="ButtonTacMissile" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "M"
+
+[node name="ButtonIRSensor" type="Button" parent="CanvasLayer/Control/ScrollContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "IR"
+
+[node name="SaveLoadOverlay" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.65834004, 0.6583399, 0.6583399, 0.39215687)
+
+[node name="SaveLoad" type="Control" parent="CanvasLayer/SaveLoadOverlay" node_paths=PackedStringArray("LineEdit", "ShipEditor4", "ShipList")]
+clip_contents = true
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_wdfkv")
+LineEdit = NodePath("VBoxContainer/HBoxContainer/LineEdit")
+ShipEditor4 = NodePath("../../..")
+ShipList = NodePath("VBoxContainer/ScrollContainer/ItemList")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/SaveLoadOverlay/SaveLoad"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.26293245, 0.26293245, 0.26293245, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/SaveLoadOverlay/SaveLoad"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.11
+theme_override_constants/separation = 25
+
+[node name="Load" type="Button" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Load"
+
+[node name="Save" type="Button" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Close" type="Button" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "x"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="ItemList" type="ItemList" parent="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_search = false
+auto_width = true
+auto_height = true
+wraparound_items = false
+same_column_width = true
+
+[node name="RTScamera" parent="." instance=ExtResource("7_hm742")]
+transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.70710677, -0.7071068, -0.5, 0.5, 10, 15, 10)
+current = true
+camera_zoom_speed = 100.0
+camera_zoom_min = 1.0
+pitch_min_deg = -89.0
+pitch_max_deg = 89.0
+capture_mouse_on_mmb = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.3479614, -4.5134583)
+light_energy = 1.286
+light_indirect_energy = 16.0
+light_volumetric_fog_energy = 16.0
+light_size = 1.0
+omni_range = 14.846
+omni_attenuation = 1.785
+omni_shadow_mode = 0
+
+[connection signal="pressed" from="CanvasLayer/Control/SaveLoad" to="." method="_on_save_load_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ToggleLOS" to="." method="_on_toggle_los_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ButtonRotateShip" to="." method="_on_button_rotate_ship_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ButtonFlipShip" to="." method="_on_button_flip_ship_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ButtonSave" to="." method="_on_button_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ButtonLoad" to="." method="_on_button_load_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonBox" to="." method="on_create_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonSlope" to="." method="on_button_slope_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonEngine" to="." method="on_button_engine_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonArmor" to="." method="on_button_armor_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonTurret" to="." method="_on_button_turret_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonTurret2" to="." method="_on_button_turret_2_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonLift" to="." method="_on_button_lift_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonHanger" to="." method="_on_button_hanger_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonTacMissile" to="." method="_on_button_tac_missile_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/ScrollContainer/GridContainer/ButtonIRSensor" to="." method="_on_button_ir_sensor_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer/Load" to="CanvasLayer/SaveLoadOverlay/SaveLoad" method="_on_load_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer/Save" to="CanvasLayer/SaveLoadOverlay/SaveLoad" method="_on_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/HBoxContainer/Close" to="CanvasLayer/SaveLoadOverlay/SaveLoad" method="_on_close_pressed"]
+[connection signal="item_selected" from="CanvasLayer/SaveLoadOverlay/SaveLoad/VBoxContainer/ScrollContainer/ItemList" to="CanvasLayer/SaveLoadOverlay/SaveLoad" method="_on_item_list_item_selected"]

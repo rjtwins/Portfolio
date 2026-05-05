@@ -1,0 +1,42 @@
+[package]
+name = "tui-tree-widget"
+description = "Tree Widget for ratatui"
+version = "0.24.0"
+license = "MIT"
+repository = "https://github.com/EdJoPaTo/tui-rs-tree-widget"
+authors = ["EdJoPaTo <tui-tree-widget-rust-crate@edjopato.de>"]
+edition = "2024"
+rust-version = "1.86"
+keywords = ["tui", "terminal", "tree", "widget"]
+categories = ["command-line-interface"]
+include = ["src/**/*", "examples/**/*", "benches/**/*", "README.md"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lints.rust]
+unsafe_code = "forbid"
+unused_qualifications = "warn"
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+allow_attributes = "warn"
+min_ident_chars = "warn"
+std_instead_of_core = "warn"
+unused_trait_names = "warn"
+
+[profile.bench]
+codegen-units = 1
+debug = true
+lto = true
+
+[dependencies]
+ratatui-core = { version = "0.1.0", default-features = false }
+ratatui-widgets = "0.3.0"
+unicode-width = "0.2"
+
+[dev-dependencies]
+criterion = "0.8"
+ratatui = "0.30"
+
+[[bench]]
+name = "bench"
+harness = false

@@ -1,0 +1,159 @@
+[gd_scene load_steps=6 format=3 uid="uid://bl17ksv5musjw"]
+
+[ext_resource type="Texture2D" uid="uid://eyfkxo8psqqa" path="res://Resources/NotStolen/TurretBase.png" id="2_wt7oh"]
+[ext_resource type="Texture2D" uid="uid://bivajh14tyr8f" path="res://Resources/NotStolen/ground_shaker_asset/Blue/Weapons/VLS2.png" id="3_5oox3"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_pfh31"]
+script/source = "using Godot;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public partial class SubComponentRoot : Node2D, IComponent
+{
+	public bool InEditor {get; set;}
+	public bool InEditorOnMouse {get; set;}
+	[Export] public int ForcedZLevel {get; set;}
+	[Export] public bool RotatedDown {get; set; }= false;
+	[Export] public int ZLevel {get; set; }
+	[Export] public Area2D EditorCollision {get; set;}
+	[Export] public Area2D[] HardPoints {get; set;}	
+	[Export] public bool IsMounted {get; set;} = false;
+	[Export] public bool CanRotateDownFlag {get; set;} = false;
+	[Export] Sprite2D SideSprite {get; set;}
+	[Export] Sprite2D DownSprite {get; set;}
+	[Export] public bool HalfSnap {get; set;}
+	[Export] public string GUID {get; set;}
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		if(string.IsNullOrEmpty(GUID))
+			GUID = Guid.NewGuid().ToString();
+			
+		if(InEditor && InEditorOnMouse)
+		{
+			ZLevel = 0;
+			GlobalPosition = GetGlobalMousePosition().Snapped(Vector2.One * 45);
+		}
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		if(!OnHardPoint())
+			IsMounted = false;
+		else
+			IsMounted = true;
+		
+		if(IsMounted)
+			ZIndex = GetMountedOn().Min(x => x.ZLevel) + 1;
+		
+		if(InEditor && InEditorOnMouse)
+		{
+			var snap = HalfSnap ? 22.5f : 45f;
+			ZLevel = 0;
+			GlobalPosition = GetGlobalMousePosition().Snapped(Vector2.One * snap);
+		}
+	}
+	
+	public List<IComponent> GetMountedOn()
+	{		
+		return HardPoints
+			.Select(x => x.GetOverlappingAreas().FirstOrDefault())
+			.Where(x => x != null)
+			.Select(x => x.GetParent() as IComponent)
+			.Distinct()
+			.ToList();
+	}
+
+	public bool IsEditorColliding()
+	{
+		return EditorCollision.HasOverlappingAreas();
+	}
+	
+	public bool CanPlaceDown()
+	{
+		if(IsEditorColliding())
+			return false;
+		
+		// if(!OnHardPoint())
+		// 	return false;
+		
+		return true;
+	}
+	
+	public bool OnHardPoint()
+	{
+		if(!HardPoints.All(x => x.HasOverlappingAreas()))
+			return false;
+		
+		var structureHardPoints = HardPoints.Select(x => x.GetOverlappingAreas().FirstOrDefault()).ToList();
+		
+		if(structureHardPoints?.Any(x => x.GetOverlappingAreas()?.Count > 1) ?? false)
+			return false;
+			
+		if(structureHardPoints.Select(x => x.GetParent()).OfType<IComponent>().DistinctBy(x => x.ZLevel).Count() > 1)
+			return false;
+		
+		return true;
+	}
+
+	public virtual void OnShipLoaded()
+	{
+		//GetComponent().OnShipLoaded();
+	}
+}
+
+public interface IComponent
+{
+	public bool InEditor {get; set;}
+	public bool InEditorOnMouse {get; set;}
+	
+	[Export] public string GUID {get; set;}
+	[Export] public Area2D EditorCollision {get; set;}
+	[Export] public bool RotatedDown {get; set;}
+	[Export] public int ZLevel {get; set;}
+	[Export] public int ForcedZLevel {get; set;}
+	
+	Vector2 GlobalPosition {get; set;}
+	public bool CanPlaceDown();
+	public void OnShipLoaded();
+}
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cwql7"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0du1j"]
+radius = 40.0
+
+[node name="SubComponentRoot" type="Node2D" node_paths=PackedStringArray("EditorCollision", "HardPoints")]
+script = SubResource("CSharpScript_pfh31")
+EditorCollision = NodePath("EditorCollision")
+HardPoints = [NodePath("HardPoint")]
+
+[node name="BG" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.47, 0.47)
+texture = ExtResource("2_wt7oh")
+
+[node name="FG" type="Sprite2D" parent="."]
+scale = Vector2(0.565, 0.565)
+texture = ExtResource("3_5oox3")
+
+[node name="HardPoint" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HardPoint"]
+shape = SubResource("CircleShape2D_cwql7")
+
+[node name="EditorCollision" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EditorCollision"]
+shape = SubResource("CircleShape2D_0du1j")
+
+[node name="Component" type="Node2D" parent="."]

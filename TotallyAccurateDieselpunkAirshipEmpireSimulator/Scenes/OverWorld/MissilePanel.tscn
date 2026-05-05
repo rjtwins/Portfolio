@@ -1,0 +1,137 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpb0exckawdqe"]
+
+[ext_resource type="Script" uid="uid://catigx5lryxcr" path="res://Scenes/OverWorld/MissilePanel.cs" id="1_o2j27"]
+
+[node name="MissilePanal" type="Control" node_paths=PackedStringArray("MissileList", "StrikeQueue", "LauncherList", "MissileInfo", "AddButton", "RemoveButton", "LaunchButton", "CloseButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o2j27")
+MissileList = NodePath("PanelContainer/HBoxContainer/PanelContainer/MissileList")
+StrikeQueue = NodePath("PanelContainer/HBoxContainer/PanelContainer/StrikeQueue")
+LauncherList = NodePath("PanelContainer/HBoxContainer/PanelContainer2/LauncherList")
+MissileInfo = NodePath("PanelContainer/HBoxContainer/PanelContainer2/MissileInfo")
+AddButton = NodePath("PanelContainer/HBoxContainer/PanelContainer/VBoxContainer/AddButton")
+RemoveButton = NodePath("PanelContainer/HBoxContainer/PanelContainer/VBoxContainer/RemoveButton")
+LaunchButton = NodePath("PanelContainer/HBoxContainer/PanelContainer2/VBoxContainer2/LaunchButton")
+CloseButton = NodePath("PanelContainer/HBoxContainer/PanelContainer2/VBoxContainer2/CloseButton")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainer/Panel"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "Missile Stores"
+
+[node name="MissileList" type="ItemList" parent="PanelContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+auto_width = true
+auto_height = true
+
+[node name="Panel2" type="Panel" parent="PanelContainer/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainer/Panel2"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "Strike Queue"
+
+[node name="StrikeQueue" type="ItemList" parent="PanelContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+
+[node name="VBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="PanelContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Add"
+
+[node name="RemoveButton" type="Button" parent="PanelContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Remove"
+
+[node name="PanelContainer2" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Panel" type="Panel" parent="PanelContainer/HBoxContainer/PanelContainer2"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainer2/Panel"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "Missile Info"
+
+[node name="MissileInfo" type="ItemList" parent="PanelContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+allow_search = false
+
+[node name="Panel2" type="Panel" parent="PanelContainer/HBoxContainer/PanelContainer2"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/PanelContainer2/Panel2"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 397.0
+offset_bottom = 18.0
+text = "Select a Launching platform:"
+
+[node name="LauncherList" type="ItemList" parent="PanelContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="PanelContainer/HBoxContainer/PanelContainer2"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="LaunchButton" type="Button" parent="PanelContainer/HBoxContainer/PanelContainer2/VBoxContainer2"]
+layout_mode = 2
+text = "Launch Strike"
+
+[node name="CloseButton" type="Button" parent="PanelContainer/HBoxContainer/PanelContainer2/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Close"
