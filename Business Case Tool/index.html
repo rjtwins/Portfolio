@@ -55,59 +55,84 @@
 <body>
   <main>
     <nav><a href="../index.html">← Portfolio</a></nav>
-    <h1>Business Case Tool</h1>
+    <h1>Smart Industry – Innovation Business Case Tool</h1>
+    <p class="meta">Duration: ~3 months</p>
+    <div class="meta">
+    ASP.NET Core Blazor Server · Clean Architecture · Event-Driven System
+    Lead Developer / Full-Stack Engineer (Solo Delivery) <br>
+    </div>
 
-    <h2>Overview</h2>
+    <h2>Context</h2>
     <p>
-      Small and medium-sized businesses looking to invest in IT or automation often struggle to make
-      a well-founded decision: the financial implications are complex, the variables are many, and
-      there is rarely a structured way to compare options. The Business Case Tool was developed for
-      the <strong>Brabant Development Agency (BOM)</strong> and <strong>Smart Industry</strong> to
-      address exactly that gap — giving businesses a clear, quantitative foundation for their IT and
-      automation investment decisions.
-    </p>
-    <p>
-      The application allows users to create and manage business cases through an intuitive interface.
-      By entering a set of project parameters, the tool evaluates financial viability across multiple
-      indicators — including <strong>payback period</strong> and <strong>Net Present Value (NPV)</strong>
-      — and presents the results both in structured tables and interactive charts. A convenient
-      dashboard export makes it easy to share findings with stakeholders. Beyond a single scenario,
-      the tool supports side-by-side scenario comparisons, letting users tweak individual parameters
-      to stress-test assumptions and fine-tune their business case before committing to an investment.
+    Smart Industry, a Dutch innovation think tank and consultancy organization, required a digital platform to support coaches working with SME clients in the manufacturing sector. 
+    The goal was to replace spreadsheet-based workflows with a structured application for building, evaluating, and tracking innovation investment business cases.
     </p>
 
-    <h2>Collaboration</h2>
     <p>
-      The requirements for the application were shaped in close collaboration with experts at
-      <strong>TNO</strong> (the Dutch national innovation and applied-science consultancy), combining
-      theoretical financial modelling knowledge with practical experience from the field. This
-      cross-domain sparring ensured that the tool's analytical framework was both methodologically
-      sound and directly usable by the businesses it was designed for.
+    The system is used during coaching sessions where coaches and clients collaboratively define and assess innovation scenarios, investment decisions, and expected outcomes.
     </p>
 
-    <h2>My Role</h2>
-    <p>
-      I was responsible for the application from first requirements through to release and ongoing
-      maintenance. My contributions included:
-    </p>
+    <h2>Problem</h2>
     <ul>
-      <li>Sparring with domain and financial experts at TNO to translate theoretical and practical knowledge into concrete application requirements.</li>
-      <li>Designing the data models and overall system architecture, following <strong>clean architecture</strong> principles to keep the codebase easy to extend, modify, and integrate with third-party plugins.</li>
-      <li>Fully implementing the application, including the UI, business logic, and all integrations.</li>
-      <li>Integrating <strong>Auth0</strong> for authentication and role-based authorisation.</li>
-      <li>Integrating with <strong>HubSpot</strong> for CRM-linked user and company management.</li>
-      <li>Configuring <strong>Azure</strong> services to handle transactional email delivery outside the authentication flow.</li>
-      <li>Releasing and maintaining the production application across its lifecycle.</li>
-      <li>Running structured feedback cycles with key users and translating their input into prioritised improvements.</li>
+        <li>Business case development was fragmented across spreadsheets and documents</li>
+        <li>No centralized system for tracking or reusing client cases</li>
+        <li>Lack of structured guidance in innovation decision-making</li>
+        <li>No real-time collaboration between coach and client during sessions</li>
     </ul>
 
-    <h2>Project Phase</h2>
+    <h2>Solution</h2>
     <p>
-      The tool was delivered as a <strong>production application</strong>, actively used by businesses
-      engaging with BOM and Smart Industry to evaluate IT and automation investments. The structured
-      feedback cycle ensured the tool evolved continuously based on real user needs, moving beyond
-      an initial release into a maintained product with an ongoing improvement loop.
+    I designed and implemented a full-stack web application from scratch, including architecture, domain modeling, and deployment. 
+    The system was built using a clean/hexagonal architecture with event-driven communication enabling real-time interaction between users.
     </p>
+
+    <ul>
+        <li>ASP.NET Core Blazor Server application with SQL Lite persistence</li>
+        <li>Auth0-based authentication and role separation (coach/client)</li>
+        <li>Azure-based email workflows for notifications and session coordination</li>
+        <li>Real-time updates enabling live collaboration during coaching sessions</li>
+    </ul>
+
+    <h2>Domain-Driven Workflow</h2>
+    <p>
+    The core workflow was co-designed with domain experts from TNO to ensure alignment with real-world innovation investment practices in the manufacturing sector.
+    </p>
+
+    <ul>
+        <li>Guided step-by-step business case structuring</li>
+        <li>Structured capture of assumptions, costs, and expected outcomes</li>
+        <li>Standardized evaluation of innovation investment scenarios</li>
+    </ul>
+
+    <h2>Key Features</h2>
+
+    <p><b>Real-time collaboration</b><br>
+    Coaches and clients work on shared business cases with instant updates across sessions.
+    </p>
+
+    <p><b>Scenario analysis</b><br>
+    Users can modify assumptions and immediately compare alternative investment outcomes.
+    </p>
+
+    <p><b>Export system</b><br>
+    Business cases can be exported as structured dashboards for reporting and decision-making.
+    </p>
+
+    <h2>Impact</h2>
+    <ul>
+        <li>Replaced fragmented spreadsheet workflows with a centralized decision-support tool</li>
+        <li>Enabled structured, repeatable innovation coaching sessions</li>
+        <li>Improved traceability and consistency in business case development</li>
+        <li>Allowed real-time collaborative evaluation between coaches and clients</li>
+    </ul>
+
+    <h2>Technical Highlights</h2>
+    <ul>
+        <li>Clean / Hexagonal architecture separating domain logic from infrastructure</li>
+        <li>Event-driven system enabling live UI synchronization</li>
+        <li>Domain-specific calculation models implemented in C#</li>
+        <li>Scalable modular workflow designed for extension to new industries</li>
+    </ul>
   </main>
 </body>
 </html>
